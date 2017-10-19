@@ -11,4 +11,9 @@ public class PersonController {
         return "hoi";
     }
 
+    @RequestMapping(value = "/maarten")
+    public String maarten(){
+        return "maarten";
+    }
+
 }
