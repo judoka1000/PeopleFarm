@@ -3,6 +3,15 @@ html, body {
     height: 100%;
 }
 
+.container-fluid{
+	height : 90%;
+	padding-top: 10px;
+}
+
+.row{
+	height : 100%;
+}
+
 .people{
     float: left;
     width: auto;
@@ -186,15 +195,17 @@ p.percLabel{
     margin-right: 3px;
 }
 
-#hud{
-    width: 100%;
-    display: block;
-    padding: 10px;
-    float: left;
-    clear: both;
-    border-width: 1px 0;
-    border-color: gray;
-    border-style: solid;
+.settingScreen{
+	min-width : 300px;
+	//width : 80%;
+	height : 100%;
+	border-width : 1px 1px;
+	border-color : gray;
+	border-style : solid;
+}
+
+.tab-content{
+	padding-left: 15px;
 }
 
 .actionButton{

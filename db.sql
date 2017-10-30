@@ -33,7 +33,15 @@ CREATE TABLE IF NOT EXISTS `person` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- Data exporteren was gedeselecteerd
+-- Dumpen data van tabel persondb.person: ~1 rows (ongeveer)
+DELETE FROM `person`;
+/*!40000 ALTER TABLE `person` DISABLE KEYS */;
+INSERT INTO `person` (`id`, `iq`, `metabolism`, `speed`, `stamina`, `gender`, `sprite`, `age`, `hunger`, `tiredness`) VALUES
+	(1, 0, 0, 0, 0, NULL, 0, 0, 0, 0),
+	(2, 0, 0, 0, 0, NULL, 0, 0, 0, 0),
+	(3, 0, 0, 0, 0, NULL, 0, 0, 0, 0);
+/*!40000 ALTER TABLE `person` ENABLE KEYS */;
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
