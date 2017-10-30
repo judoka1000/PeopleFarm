@@ -7,7 +7,9 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     }
 
     apiEngine.people( function (response) {
-        $scope.persons = personsFactory.addPersons(response.data.people);
+        console.log(response);
+        $scope.persons = personsFactory.addPersons(response.data);
+        //$scope.persons = personsFactory.addPersons(response.data);
     });
 
     $scope.cursor = "";
@@ -42,7 +44,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 console.log("Kill");
                 person.sprite = "Tombstone";
                 $timeout(function(){$scope.removePeople(person)},3500);
-                var audio = new Audio('sounds/screem.mp3');
+                var audio = new Audio('resources/sounds/screem.mp3');
                 audio.play();
             break;
 
@@ -54,9 +56,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
             default:
                 apiEngine.people(function (response) {
-                    //console.log(response.data.people);
-                    //$scope.people = response.data.people;
-                    tPeople = response.data.people;
+                    tPeople = response.data;
                     for (key of Object.keys(tPeople)) {
                         for (key2 of Object.keys(tPeople[key])) {
                             //console.log(key, tPeople[key]);

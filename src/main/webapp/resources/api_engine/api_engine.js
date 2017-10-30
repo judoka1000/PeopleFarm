@@ -1,23 +1,23 @@
 
 
 app.factory('apiEngine', function apiEngine($http){
-    var mock = true;
-    var baseUrl = "http://home.maartenschipper.com:8002/PeopleFarmMock/";
+    var mock = false;
+    var baseUrl = "http://localhost:8080/peoplefarm";
 
     return {
         people: function(func){
             var functionPath = "/persons";
             console.log("Requesting " + functionPath + mock ? " (mock)" : "");
             if(mock) func(getMockData(functionPath));
-            else return $http.get(baseUrl + "status.jsp?task=getAll").then(func);
+            else return $http.get(baseUrl + functionPath).then(func);
         },
 
         personStatus: function(id,func){
-            //var functionPath = "/person/status/:" + id;
-            var functionPath = "/hoi";
+            var functionPath = "/person/" + id;
+            //var functionPath = "/hoi";
             console.log("Requesting " + functionPath);
             if(mock) func(getMockData("/person/status"));
-            else return $http.get(baseUrl + "status.jsp?id=" + id).then(func);
+            else return $http.get(baseUrl + functionPath).then(func);
         },
 
         personTask: function(id,func){

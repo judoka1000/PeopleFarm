@@ -10,6 +10,8 @@ app.factory('personsFactory', ['apiEngine',
         }
 
         setFields(person){
+            console.log("Person:");
+            console.log(person);
             if (typeof this.id == 'undefined'){
                 this.status = person.status;
             } else {
@@ -19,7 +21,7 @@ app.factory('personsFactory', ['apiEngine',
             }
             this.id = person.id;
             this.gender = person.gender;
-            this.fullGender = person.gender == "m" ? "male" : "female";
+            this.fullGender = person.gender;
             this.abilities = person.abilities;
             this.sprite = person.sprite;
         }
