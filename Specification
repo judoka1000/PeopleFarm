@@ -1,5 +1,6 @@
 People:
  - Gender
+ - sprite
  - Status
   - Hungry
   - Tireness
@@ -15,7 +16,7 @@ Tasks:
  - Sleeping
  - Eating
  - Reproducing
-
+ - Dying
 
 
 

@@ -1,0 +1,23 @@
+
+
+
+
+
+
+{
+      "id": "1",
+      "gender": "f",
+      "sprite": "6",
+      "status": {
+        "hungry": "55",
+        "tiredness": "55",
+        "age": "75"
+      },
+      "abilities": {
+        "speed": "40",
+        "iq": "84",
+        "metabolisme": "71",
+        "stamina": "64"
+      }
+}
+
