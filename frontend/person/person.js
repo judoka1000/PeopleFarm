@@ -27,7 +27,7 @@ app.factory('personsFactory', ['apiEngine',
         getStatus(){
             console.log("getstatus");
             var obj = this;
-            apiEngine.status(this.id, function(response){
+            apiEngine.personStatus(this.id, function(response){
                 console.log("response: ");
                 console.log(response.data);
                 obj.setFields(response.data);
@@ -56,6 +56,10 @@ app.factory('personsFactory', ['apiEngine',
             apiEngine.setTask(this.id,"sleeping",function(response){
                 obj.getStatus();
             });
+        }
+
+        remove(){
+            this.visible = false;
         }
     }
 

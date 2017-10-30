@@ -53,7 +53,7 @@ html, body {
     float: left;
     width: 34px;
     height: 55px;
-    background: url("/sprites3.png");
+    background: url("images/sprites.png");
     margin-top: 3px;
 }
 
@@ -120,7 +120,7 @@ html, body {
 }
 
 .spriteTombstone .imgContainer{
-    background: url("/tombstone.png");
+    background: url("images/tombstone.png");
     background-position: 0 10px;
     background-repeat: no-repeat;
 }
@@ -222,11 +222,11 @@ p.percLabel{
 }
 
 #actionEating{
-    background: url("/hamburger.png");
+    background: url("images/hamburger.png");
 }
 
 #actionSleeping{
-    background: url("/sleep.png");
+    background: url("images/sleep.png");
 }
 
 #actionKill{
@@ -238,15 +238,15 @@ p.percLabel{
 }
 
 #actionNone{
-    background: url("/pointercursor.png");
+    background: url("images/pointercursor.png");
 }
 
-.hamburgerCur {
-    cursor: url('/hamburger.png'), auto;
+.eatCur {
+    cursor: url('images/hamburger.png'), auto;
 }
 
 .sleepingCur{
-    cursor: url('/sleep.png'), auto;
+    cursor: url('images/sleep.png'), auto;
 }
 
 
