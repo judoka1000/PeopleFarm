@@ -23,7 +23,7 @@ Tasks:
 API:
  - GET  /persons                       -> retrieve status for all persons
  - GET  /person/:id                    -> retrieve status for person with id
- - GET  /person/task/:id               -> retrieve task for person
  - PUT  /person/settask/:task/:id      -> set task for person with id
  - PUT  /person/settask/:task/:id/:id  -> set task for two persons
+ - GET  /score                         -> retrieve number of completed captchas
 
