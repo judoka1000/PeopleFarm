@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import com.amazone.peoplefarm.model.*;
+
 
 @Controller
 public class PersonController {
@@ -32,4 +34,30 @@ public class PersonController {
         return persons;
     }
 
+    //TODO: - PUT  /person/settask/:task/:id      -> set task for person with id
+    @ResponseBody
+    @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
+    public String setTask(@PathVariable String task, @PathVariable int id){
+       Person person = personService.findOne(id);
+       Status state = person.getStatus();
+        switch (task){
+            case "eating":
+                int food = 100;
+                state.setHunger(state.getHunger()+ food);
+                break;
+            case "sleeping":
+                int sleepTime = 100;
+                state.setTiredness(state.getTiredness()+sleepTime);
+                break;
+            case "captcha":
+                break;
+            case "dying":
+                break;
+            default:
+                break;
+        }
+        person.setStatus(state);
+        personService.save(person);
+        return "main";
+    }
 }
