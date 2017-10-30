@@ -112,7 +112,7 @@ html, body {
 }
 
 .spriteTombstone .imgContainer{
-    background: url("../images/tombstone.png");
+    background: url("..//images/tombstone.png");
     background-position: 0 10px;
     background-repeat: no-repeat;
 }

@@ -4,13 +4,13 @@
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="resources/css/main.css">
 
-    <script type="text/javascript" src="controller/controller.js"></script>
-    <script type="text/javascript" src="api_engine/api_engine.js"></script>
-    <script type="text/javascript" src="api_engine/mock.js"></script>
+    <script type="text/javascript" src="resources/controller/controller.js"></script>
+    <script type="text/javascript" src="resources/api_engine/api_engine.js"></script>
+    <script type="text/javascript" src="resources/api_engine/mock.js"></script>
 
-    <script type="text/javascript" src="person/person.js"></script>
+    <script type="text/javascript" src="resources/person/person.js"></script>
 
 </head>
 <body ng-app="PeopleApp" ng-controller="PeopleCtrl" ng-class="cursor">
