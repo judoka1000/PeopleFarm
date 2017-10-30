@@ -5,35 +5,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
-@Entity
+@Embeddable
 public class Status {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JsonBackReference
-    Person person;
-
     int hunger;
     int tiredness;
     int age;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
 
     public int getHunger() {
         return hunger;

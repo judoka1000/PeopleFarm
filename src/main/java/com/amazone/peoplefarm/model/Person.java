@@ -14,13 +14,11 @@ public class Person {
     String gender;
     int sprite;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    List<Status> status = new ArrayList<Status>();
+    @Embedded
+    Status status;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    List<Abilities> abilities = new ArrayList<Abilities>();
+    @Embedded
+    Abilities abilities;
 
 
     public int getId() {
@@ -47,22 +45,20 @@ public class Person {
         this.sprite = sprite;
     }
 
-    public List<Status> getStatus() {
+    public Status getStatus() {
         return status;
     }
 
     public void setStatus(Status status) {
-        status.setPerson(this);
-        this.status.add(status);
+        this.status = status;
     }
 
-    public List<Abilities> getAbilities() {
+    public Abilities getAbilities() {
         return abilities;
     }
 
     public void setAbilities(Abilities abilities) {
-        abilities.setPerson(this);
-        this.abilities.add(abilities);
+        this.abilities = abilities;
     }
 
 
