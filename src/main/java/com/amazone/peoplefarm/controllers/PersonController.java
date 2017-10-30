@@ -1,8 +1,6 @@
 package com.amazone.peoplefarm.controllers;
 
-import com.amazone.peoplefarm.model.Abilities;
 import com.amazone.peoplefarm.model.Person;
-import com.amazone.peoplefarm.model.Status;
 import com.amazone.peoplefarm.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,18 +14,17 @@ public class PersonController {
     private PersonService personService;
 
     @ResponseBody
-    @RequestMapping(value = "/hoi")
-    public Person zegHoi(){
-        Person person = new Person();
-        person.setStatus(new Status());
-        person.setAbilities(new Abilities());
-        personService.save(person);
+    @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
+    public Person getPerson(@PathVariable int id){
+        Person person = personService.findOne(id);
         return person;
     }
-
-    @RequestMapping(value = "/maarten")
-    public String maarten(){
-        return "maarten";
+    
+    @ResponseBody
+    @RequestMapping(value = "/persons", method = RequestMethod.GET)
+    public Iterable<Person> getPersons(){
+        Iterable<Person> persons = personService.findAll();
+        return persons;
     }
 
 }
