@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
 
 @Controller
 public class PersonController {
@@ -17,13 +15,14 @@ public class PersonController {
     @Autowired
     private PersonService personService;
 
+    @ResponseBody
     @RequestMapping(value = "/hoi")
-    public String zegHoi(){
+    public Person zegHoi(){
         Person person = new Person();
         person.setStatus(new Status());
         person.setAbilities(new Abilities());
         personService.save(person);
-        return "hoi";
+        return person;
     }
 
     @RequestMapping(value = "/maarten")

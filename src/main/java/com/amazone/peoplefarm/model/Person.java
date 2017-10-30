@@ -1,4 +1,7 @@
 package com.amazone.peoplefarm.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +15,11 @@ public class Person {
     int sprite;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = CascadeType.ALL)
+    @JsonManagedReference
     List<Status> status = new ArrayList<Status>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "person", cascade = CascadeType.ALL)
+    @JsonManagedReference
     List<Abilities> abilities = new ArrayList<Abilities>();
 
 

@@ -1,5 +1,8 @@
 package com.amazone.peoplefarm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,6 +12,7 @@ public class Status {
     int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     Person person;
 
     int hunger;
