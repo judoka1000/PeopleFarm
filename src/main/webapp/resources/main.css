@@ -1,0 +1,235 @@
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+.people{
+    float: left;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin-right: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    display: block;
+    -webkit-transition:opacity 4s;
+    transition:opacity 4s -in;
+}
+
+.spriteTombstone{
+    opacity:0;
+}
+
+.people h1{
+    margin: 0;
+    padding: 2px 2px;
+    font-size: 1em;
+    background-color: gray;
+    color: white;
+}
+
+.male h1{
+    background-color: dodgerblue;
+}
+
+.female h1{
+    background-color: hotpink;
+}
+
+.spriteTombstone h1{
+    background-color: gray;
+}
+
+.people .imgContainer{
+    display: block;
+    float: left;
+    width: 34px;
+    height: 55px;
+    background: url("images/sprites.png");
+    margin-top: 3px;
+}
+
+.people .overview{
+    display: block;
+    float: left;
+    border: 1px solid gray;
+    min-width: 150px;
+    font-size: .8em;
+    margin-left: 5px;
+    min-height: 50px;
+}
+
+.male .overview{
+    border-color: dodgerblue;
+}
+
+.female .overview{
+    border-color: hotpink;
+}
+
+.spriteTombstone .overview{
+    border-color: grey;
+}
+
+.sprite0 .imgContainer{
+    background-position: -2px -7px;
+}
+
+.sprite1 .imgContainer{
+    background-position: -38px -7px;
+}
+
+.sprite2 .imgContainer{
+    background-position: -74px -7px;
+}
+
+.sprite3 .imgContainer{
+    background-position: -108px -7px;
+}
+
+.sprite4 .imgContainer{
+    background-position: -144px -7px;
+}
+
+.sprite5 .imgContainer{
+    background-position: -180px -7px;
+}
+
+.sprite6 .imgContainer{
+    background-position: -216px -7px;
+}
+
+.sprite7 .imgContainer{
+    background-position: -252px -7px;
+}
+
+.sprite8 .imgContainer{
+    background-position: -288px -7px;
+}
+
+.sprite9 .imgContainer{
+    background-position: -324px -7px;
+}
+
+.spriteTombstone .imgContainer{
+    background: url("images/tombstone.png");
+    background-position: 0 10px;
+    background-repeat: no-repeat;
+}
+
+.percBarContainer{
+    width: 100px;
+    height: 10px;
+    border: none;
+    padding: 0;
+    float: left;
+    margin: 7px 5px 0 5px;
+    clear: right;
+}
+
+.percBarContainer div{
+    width: 100%;
+    height: 10px;
+    background-color: gray;
+    font-size: .6em;
+    color: white;
+    text-align: center;
+
+    -webkit-transition:left .5s ease 0s, width .5s linear 0s;
+    transition:left .5s ease 0s, width .5s linear 0s;
+}
+
+
+.percBarContainer.good {
+    background-color: lightgreen;
+}
+
+.percBarContainer.oke{
+    background-color: #ffdbbb;
+}
+
+.percBarContainer.danger {
+    background-color: lightcoral;
+}
+
+.percBarContainer.good div{
+    background-color: forestgreen;
+}
+
+.percBarContainer.oke div{
+    background-color: orange;
+}
+
+.percBarContainer.danger div{
+    background-color: red;
+}
+
+p.percLabel{
+    float: left;
+    clear:left;
+    width: 65px;
+    margin: 2px 2px 0 2px;
+}
+
+.abilityBar{
+    clear: both;
+}
+
+.abilityBar p{
+    float: left;
+    display block;
+}
+
+.abilityBar p.abilityLabel{
+    display: block;
+    float: left;
+    margin-right: 3px;
+}
+
+#hud{
+    width: 100%;
+    display: block;
+    padding: 10px;
+    float: left;
+    clear: both;
+    border-width: 1px 0;
+    border-color: gray;
+    border-style: solid;
+}
+
+.actionButton{
+    width: 32px;
+    height: 32px;
+    float: left;
+    margin-right: 10px;
+}
+
+#actionEating{
+    background: url("images/hamburger.png");
+}
+
+#actionSleeping{
+    background: url("images/sleep.png");
+}
+
+#actionKill{
+    background-color: red;
+}
+
+#actionUpdate{
+    background-color: green;
+}
+
+#actionNone{
+    background: url("images/pointercursor.png");
+}
+
+.eatCur {
+    cursor: url('images/hamburger.png'), auto;
+}
+
+.sleepingCur{
+    cursor: url('images/sleep.png'), auto;
+}
+
+

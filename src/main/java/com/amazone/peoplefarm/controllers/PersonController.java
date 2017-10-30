@@ -25,9 +25,9 @@ public class PersonController {
         return person;
     }
 
-    @RequestMapping(value = "/maarten")
+    @RequestMapping(value = "/main")
     public String maarten(){
-        return "maarten";
+        return "main";
     }
 
 }
