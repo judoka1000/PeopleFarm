@@ -45,10 +45,19 @@
 				<div class="tab-content" id="myTabContent">
  					<div class="tab-pane fade show active" id="game" role="tabpanel" aria-labelledby="game-tab">
  						<h1>Game</h1>
+ 						<div id="playerScore">Score : 1337</div>
+ 						
+ 						</br>
+ 						<div id="actionButtons">
+					    	<div id="actionEating" class="actionButton" ng-click="setClickAction('eat')"></div>
+					    	<div id="actionSleeping" class="actionButton" ng-click="setClickAction('sleep')"></div>
+					    	<div id="actionNone" class="actionButton" ng-click="actionNone()"></div>
+					    	<div id="actionKill" class="actionButton" ng-click="setClickAction('kill')"></div>
+					    	<div id="actionUpdate" class="actionButton" ng-click="actionUpdate()"></div>
+						</div>
  					</div>
  					<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
  						<h1>Settings</h1>
- 						</br>
  						
  					</div>
 				</div>
@@ -56,13 +65,6 @@
 		</div>
 	</div>
 	
-	<div id="hud">
-    	<div id="actionEating" class="actionButton" ng-click="setClickAction('eat')"></div>
-    	<div id="actionSleeping" class="actionButton" ng-click="setClickAction('sleep')"></div>
-    	<div id="actionNone" class="actionButton" ng-click="actionNone()"></div>
-    	<div id="actionKill" class="actionButton" ng-click="setClickAction('kill')"></div>
-    	<div id="actionUpdate" class="actionButton" ng-click="actionUpdate()"></div>
-	</div>
 </div>
 
 </body>

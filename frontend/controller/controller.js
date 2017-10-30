@@ -106,6 +106,6 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         console.log("actionNone");
         $scope.cursor = "";
     }
-
+    
     $scope.init();
 }
