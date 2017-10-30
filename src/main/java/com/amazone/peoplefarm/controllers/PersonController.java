@@ -19,7 +19,7 @@ public class PersonController {
         Person person = personService.findOne(id);
         return person;
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
     public Iterable<Person> getPersons(){
