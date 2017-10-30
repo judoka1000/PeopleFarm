@@ -21,9 +21,10 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/main")
-    public String main(){
+    public String main() {
         return "main";
-
+    }
+    
     @ResponseBody
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
     public Iterable<Person> getPersons(){
