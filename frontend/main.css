@@ -3,6 +3,14 @@ html, body {
     height: 100%;
 }
 
+.container-fluid{
+	height : 90%;
+}
+
+.row{
+	height : 100%;
+}
+
 .people{
     float: left;
     width: auto;
@@ -195,6 +203,15 @@ p.percLabel{
     border-width: 1px 0;
     border-color: gray;
     border-style: solid;
+}
+
+.settingScreen{
+	min-width : 300px;
+	//width : 80%;
+	height : 100%;
+	border-width : 1px 1px;
+	border-color : gray;
+	border-style : solid;
 }
 
 .actionButton{
