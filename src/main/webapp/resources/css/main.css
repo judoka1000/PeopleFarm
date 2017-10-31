@@ -3,6 +3,15 @@ html, body {
     height: 100%;
 }
 
+.container-fluid{
+	height : 90%;
+	padding-top: 10px;
+}
+
+.row{
+	height : 100%;
+}
+
 .people{
     float: left;
     width: auto;
@@ -45,7 +54,7 @@ html, body {
     float: left;
     width: 34px;
     height: 55px;
-    background: url("images/sprites.png");
+    background: url("../images/sprites.png");
     margin-top: 3px;
 }
 
@@ -112,7 +121,7 @@ html, body {
 }
 
 .spriteTombstone .imgContainer{
-    background: url("images/tombstone.png");
+    background: url("..//images/tombstone.png");
     background-position: 0 10px;
     background-repeat: no-repeat;
 }
@@ -186,15 +195,17 @@ p.percLabel{
     margin-right: 3px;
 }
 
-#hud{
-    width: 100%;
-    display: block;
-    padding: 10px;
-    float: left;
-    clear: both;
-    border-width: 1px 0;
-    border-color: gray;
-    border-style: solid;
+.settingScreen{
+	min-width : 300px;
+	//width : 80%;
+	height : 100%;
+	border-width : 1px 1px;
+	border-color : gray;
+	border-style : solid;
+}
+
+.tab-content{
+	padding-left: 15px;
 }
 
 .actionButton{
@@ -205,11 +216,11 @@ p.percLabel{
 }
 
 #actionEating{
-    background: url("images/hamburger.png");
+    background: url("../images/hamburger.png");
 }
 
 #actionSleeping{
-    background: url("images/sleep.png");
+    background: url("../images/sleep.png");
 }
 
 #actionKill{
@@ -221,15 +232,15 @@ p.percLabel{
 }
 
 #actionNone{
-    background: url("images/pointercursor.png");
+    background: url("../images/pointercursor.png");
 }
 
 .eatCur {
-    cursor: url('images/hamburger.png'), auto;
+    cursor: url('../images/hamburger.png'), auto;
 }
 
-.sleepingCur{
-    cursor: url('images/sleep.png'), auto;
+.sleepCur{
+    cursor: url('../images/sleep.png'), auto;
 }
 
 

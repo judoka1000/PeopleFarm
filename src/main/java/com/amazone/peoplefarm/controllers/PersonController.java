@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.amazone.peoplefarm.model.*;
+
 
 @Controller
 @SessionAttributes("gameState")
@@ -35,7 +37,7 @@ public class PersonController {
         }
         return "main";
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
     public Iterable<Person> getPersons(){
@@ -43,4 +45,33 @@ public class PersonController {
         return persons;
     }
 
+    //TODO: - PUT  /person/settask/:task/:id      -> set task for person with id
+    @ResponseBody
+    @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
+    public Response setTask(@PathVariable String task, @PathVariable int id){
+       Person person = personService.findOne(id);
+       Status state = person.getStatus();
+       Response response = new Response(false);
+        switch (task){
+            case "eating":
+                int food = 100;
+                state.setHunger(state.getHunger()+ food);
+                response.setSucces(true);
+                break;
+            case "sleeping":
+                int sleepTime = 100;
+                state.setTiredness(state.getTiredness()+sleepTime);
+                response.setSucces(true);
+                break;
+            case "captcha":
+                break;
+            case "dying":
+                break;
+            default:
+                break;
+        }
+        person.setStatus(state);
+        personService.save(person);
+        return response;
+    }
 }

@@ -3,11 +3,13 @@ app.controller('PeopleCtrl', PeopleCtrl);
 
 function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsFactory){
     $scope.init = function(){
-        //$interval($scope.updateGamestate, 5000);
+        $interval($scope.updateGamestate, 10000);
     }
 
     apiEngine.people( function (response) {
-        $scope.persons = personsFactory.addPersons(response.data.people);
+        console.log(response);
+        $scope.persons = personsFactory.addPersons(response.data);
+        //$scope.persons = personsFactory.addPersons(response.data);
     });
 
     $scope.cursor = "";
@@ -18,7 +20,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         var persons = personsFactory.getPersons();
 
         for (key in persons) {
-            persons[key].updateStatus();
+            persons[key].getStatus();
             console.log("person:");
             console.log(persons[key]);
         }
@@ -39,11 +41,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 break;
 
             case "kill":
-                console.log("Kill");
-                person.sprite = "Tombstone";
-                $timeout(function(){$scope.removePeople(person)},3500);
-                var audio = new Audio('sounds/screem.mp3');
-                audio.play();
+                person.die();
             break;
 
             case "update":
@@ -54,9 +52,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
             default:
                 apiEngine.people(function (response) {
-                    //console.log(response.data.people);
-                    //$scope.people = response.data.people;
-                    tPeople = response.data.people;
+                    tPeople = response.data;
                     for (key of Object.keys(tPeople)) {
                         for (key2 of Object.keys(tPeople[key])) {
                             //console.log(key, tPeople[key]);

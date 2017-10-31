@@ -16,6 +16,8 @@ public class Status {
     }
 
     public void setHunger(int hunger) {
+        if(hunger<=0) hunger = 0;
+        if(hunger > 100) hunger = 100;
         this.hunger = hunger;
     }
 
@@ -24,6 +26,8 @@ public class Status {
     }
 
     public void setTiredness(int tiredness) {
+        if(tiredness<=0) tiredness = 0;
+        if(tiredness > 100) tiredness = 100;
         this.tiredness = tiredness;
     }
 
