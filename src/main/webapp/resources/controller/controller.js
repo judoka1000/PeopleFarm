@@ -7,7 +7,6 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     }
 
     apiEngine.people( function (response) {
-        console.log(response);
         $scope.persons = personsFactory.addPersons(response.data);
         //$scope.persons = personsFactory.addPersons(response.data);
     });
@@ -106,6 +105,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.actionNone = function(){
         console.log("actionNone");
         $scope.cursor = "";
+        $scope.clickAction = "none";
     }
 
     $scope.init();

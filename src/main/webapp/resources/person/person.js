@@ -2,7 +2,7 @@
 
 app.factory('personsFactory', ['apiEngine','$timeout',
     function(apiEngine,$timeout) {
-
+    var persons = {};
     class Person{
         constructor(person){
             this.setFields(person);
@@ -20,19 +20,21 @@ app.factory('personsFactory', ['apiEngine','$timeout',
                 }
             }
             this.id = person.id;
-            this.gender = person.gender;
-            this.fullGender = person.gender;
+            this.gender = person.gender.toLowerCase();;
+            this.fullGender = person.gender.toLowerCase();;
             this.abilities = person.abilities;
             this.sprite = person.sprite;
+
         }
 
         getStatus(){
             console.log("getstatus");
             var obj = this;
             apiEngine.personStatus(this.id, function(response){
-                console.log("response: ");
-                console.log(response.data);
                 obj.setFields(response.data);
+                if(obj.status.health=="DEAD"){
+                    obj.die();
+                }
             });
         }
 
@@ -55,15 +57,18 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         }
 
         die(){
-            console.log("Kill");
+            apiEngine.delete(this.id,function(response){
+
+            });
             this.sprite = "Tombstone";
-            $timeout(function(obj){obj.visible=false;},3500,true,this);
+            $timeout(function(obj, persons){delete persons[obj.id];},3500,true,this,persons);
             var audio = new Audio('resources/sounds/screem.mp3');
             audio.play();
+
         }
     }
 
-    var persons = {};
+
 
     return {
         addPerson: function(person){
@@ -85,7 +90,7 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         getPerson: function(id){
             return persons[id];
         },
-        getPersons: function(){
+        getPersons: function() {
             return persons;
         }
     };
