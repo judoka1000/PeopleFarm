@@ -28,6 +28,17 @@ public class PersonController {
         return person;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
+    public Boolean deletePerson(@PathVariable int id) {
+        Person person = personService.findOne(id);
+        if(person.getStatus().getHealth() == Status.Health.DEAD) {
+            personService.delete(person);
+            return true;
+        }
+        return false;
+    }
+
     @RequestMapping(value = "/main")
     public String main(Model model) {
         if(!model.containsAttribute("gameState")){

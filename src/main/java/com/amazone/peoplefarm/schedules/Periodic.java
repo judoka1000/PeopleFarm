@@ -15,7 +15,7 @@ public class Periodic {
     @Autowired
     private PersonService personService;
 
-    public void updatePersonStatus(Person person) {
+    private void updatePersonStatus(Person person) {
         Status personStatus = person.getStatus();
         Abilities personAbilities = person.getAbilities();
         Random r = new Random();
@@ -48,7 +48,7 @@ public class Periodic {
         personStatus.setTiredness(personStatus.getTiredness() - (100 - personAbilities.getStamina())/100);
     }
 
-    public void updatePersonAbilities(Person person) {
+    private void updatePersonAbilities(Person person) {
         Abilities personAbilities = person.getAbilities();
 
         Random r = new Random();
@@ -70,7 +70,7 @@ public class Periodic {
         }
     }
 
-    public void updateGameStatus() {
+    private void updateGameStatus() {
     }
 
     public void execute() {
