@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.amazone.peoplefarm.model.*;
 
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 @SessionAttributes("gameState")
@@ -45,6 +47,7 @@ public class PersonController {
             GameState gameState = new GameState();
             gameStateService.save(gameState);
             model.addAttribute("gameState", gameState.getId());
+
         }
         return "main";
     }
@@ -58,7 +61,7 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
-    public Response setTask( Model model, @PathVariable String task, @PathVariable int id){
+    public Response setTask(@PathVariable String task, @PathVariable int id, HttpSession session){
        Person person = personService.findOne(id);
        Status state = person.getStatus();
        Response response = new Response(false);
@@ -75,6 +78,7 @@ public class PersonController {
                 break;
             case "captcha":
                 // TODO get captcha points from person and add them to gamestate.score
+                System.out.println(session.getAttribute("gameState"));
                 break;
             case "dying":
                 state.setHealth(Status.Health.DEAD);
