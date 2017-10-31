@@ -73,6 +73,11 @@ app.factory('apiEngine', function apiEngine($http){
             console.log("Requesting /person/settask/:" + task + "/" + id);
             console.log("-> on " + url)
             return $http.get(url).then(func);
+        },
+        newGame: function(func) {
+            var url = baseUrl + "/newgame";
+            console.log("Requesting /newgame");
+            return $http.post(url).then(func);
         }
     };
 });

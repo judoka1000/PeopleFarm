@@ -12,6 +12,8 @@ public class GameState {
     int id;
     int score;
 
+    String playerName;
+
     public int getId() {
         return id;
     }
@@ -26,5 +28,13 @@ public class GameState {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
     }
 }

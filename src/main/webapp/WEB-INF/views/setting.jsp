@@ -11,6 +11,9 @@
 		<div class="tab-content" id="myTabContent">
  			<div class="tab-pane fade show active" id="game" role="tabpanel" aria-labelledby="game-tab">
  				<h1>Game</h1>
+ 				<div id="gameButtons">
+ 				    <div id="newGameButton" class="actionButton" ng-click="newGameAction()">New Game</div>
+ 				</div>
  				<div id="playerScore">Score : 1337</div>
  				</br>
  				<div id="actionButtons">

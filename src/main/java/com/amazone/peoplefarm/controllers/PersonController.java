@@ -30,13 +30,13 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
-    public Boolean deletePerson(@PathVariable int id) {
+    public Response deletePerson(@PathVariable int id) {
         Person person = personService.findOne(id);
         if(person.getStatus().getHealth() == Status.Health.DEAD) {
             personService.delete(person);
-            return true;
+            return new Response(true);
         }
-        return false;
+        return new Response(false);
     }
 
     @RequestMapping(value = "/main")

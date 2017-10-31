@@ -6,11 +6,13 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         $interval($scope.updateGamestate, 10000);
     }
 
-    apiEngine.people( function (response) {
-        console.log(response);
-        $scope.persons = personsFactory.addPersons(response.data);
-        //$scope.persons = personsFactory.addPersons(response.data);
-    });
+    $scope.initializePeople = function() {
+        apiEngine.people( function (response) {
+            console.log(response);
+            $scope.persons = personsFactory.addPersons(response.data);
+            //$scope.persons = personsFactory.addPersons(response.data);
+    })};
+    $scope.initializePeople();
 
     $scope.cursor = "";
     $scope.clickAction = "";
@@ -103,6 +105,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         $scope.cursor = "";
         $scope.clickAction = "none";
     }
+
+    $scope.newGameAction = function() {
+        apiEngine.newGame(function(){$scope.initializePeople();});
+    };
 
     $scope.init();
 }
