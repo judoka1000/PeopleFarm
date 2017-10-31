@@ -37,17 +37,20 @@ public class PersonController {
     //TODO: - PUT  /person/settask/:task/:id      -> set task for person with id
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
-    public String setTask(@PathVariable String task, @PathVariable int id){
+    public Response setTask(@PathVariable String task, @PathVariable int id){
        Person person = personService.findOne(id);
        Status state = person.getStatus();
+       Response response = new Response(false);
         switch (task){
             case "eating":
                 int food = 100;
                 state.setHunger(state.getHunger()+ food);
+                response.setSucces(true);
                 break;
             case "sleeping":
                 int sleepTime = 100;
                 state.setTiredness(state.getTiredness()+sleepTime);
+                response.setSucces(true);
                 break;
             case "captcha":
                 break;
@@ -58,6 +61,6 @@ public class PersonController {
         }
         person.setStatus(state);
         personService.save(person);
-        return "main";
+        return response;
     }
 }
