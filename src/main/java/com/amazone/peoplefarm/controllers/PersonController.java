@@ -56,10 +56,9 @@ public class PersonController {
         return persons;
     }
 
-    //TODO: - PUT  /person/settask/:task/:id      -> set task for person with id
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
-    public Response setTask(@PathVariable String task, @PathVariable int id){
+    public Response setTask( Model model, @PathVariable String task, @PathVariable int id){
        Person person = personService.findOne(id);
        Status state = person.getStatus();
        Response response = new Response(false);
@@ -75,8 +74,11 @@ public class PersonController {
                 savePersonState(person, state, response);
                 break;
             case "captcha":
+                // TODO get captcha points from person and add them to gamestate.score
                 break;
             case "dying":
+                state.setHealth(Status.Health.DEAD);
+                savePersonState(person, state, response);
                 break;
             default:
                 break;
@@ -84,10 +86,9 @@ public class PersonController {
         return response;
     }
 
-    Response savePersonState(Person person , Status state, Response response){
+    void savePersonState(Person person , Status state, Response response){
         response.setSucces(true);
         person.setStatus(state);
         personService.save(person);
-        return response;
     }
 }
