@@ -58,6 +58,19 @@ html, body {
     margin-top: 3px;
 }
 
+.people .imgContainer .captchaCount{
+    background-color: yellow;
+    width: 1.7em;
+    height: 1.7em;
+    font-size: 0.6em;
+    border-radius: 0.7em;
+    border: 2px solid darkorange;
+    text-align: center;
+    padding-top: -4px;
+    line-height: 1.3em;
+    font-weight: bold;
+}
+
 .people .overview{
     display: block;
     float: left;

@@ -7,7 +7,6 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     }
 
     apiEngine.people( function (response) {
-        console.log(response);
         $scope.persons = personsFactory.addPersons(response.data);
         //$scope.persons = personsFactory.addPersons(response.data);
     });
