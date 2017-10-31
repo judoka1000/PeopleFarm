@@ -10,18 +10,33 @@
 		</ul>
 		<div class="tab-content" id="myTabContent">
  			<div class="tab-pane fade show active" id="game" role="tabpanel" aria-labelledby="game-tab">
- 				<h1>Game</h1>
- 				<div id="playerScore">Score : 1337</div>
- 				</br>
- 				<div id="actionButtons">
-					   <div id="actionEating" class="actionButton" ng-click="setClickAction('eat')"></div>
-					   <div id="actionSleeping" class="actionButton" ng-click="setClickAction('sleep')"></div>
-					   <div id="actionNone" class="actionButton" ng-click="actionNone()"></div>
-					   <div id="actionKill" class="actionButton" ng-click="setClickAction('kill')"></div>
-					   <div id="actionUpdate" class="actionButton" ng-click="actionUpdate()"></div>
+ 			 	<h1>Game</h1>
+ 				<div class="container">
+ 					<div class="row">
+		 				<div id="playerScore">Score : 1337</div>
+		 			</div>
+		 			<div class="row">
+		 				<div id="actionButtons">
+							   <div id="actionEating" class="actionButton" ng-click="setClickAction('eat')"></div>
+							   <div id="actionSleeping" class="actionButton" ng-click="setClickAction('sleep')"></div>
+							   <div id="actionNone" class="actionButton" ng-click="actionNone()"></div>
+							   <div id="actionKill" class="actionButton" ng-click="setClickAction('kill')"></div>
+							   <div id="actionUpdate" class="actionButton" ng-click="actionUpdate()"></div>
+							   <div id="actionInfo" class="actionButton" ng-click="setClickAction('info')"></div>
+						</div>
+					</div>
 				</div>
-						
-				<div id="peopleStat">
+				</br>
+				</br>
+				<div id="peopleStat" ng-if="showPeopleId >= 0">
+					<h6>People Statistics:</h6>
+					<div>ID : {{persons[showPeopleId].id}}</div>
+					<div>Age : {{persons[showPeopleId].status.age}}</div>
+					<div>Hunger : {{persons[showPeopleId].status.hunger}}</div>
+					<div>Tiredness : {{persons[showPeopleId].status.tiredness}}</div>
+					<div>IQ : {{persons[showPeopleId].abilities.iq}}</div>
+					<div>Speed : {{persons[showPeopleId].abilities.speed}}</div>
+					<div>Metabolism : {{persons[showPeopleId].abilities.metabolism}}</div>
 				</div>
  			</div>
  			<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
