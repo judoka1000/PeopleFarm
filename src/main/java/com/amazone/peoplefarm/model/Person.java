@@ -11,7 +11,16 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     int id;
-    String gender;
+
+    public enum Gender {
+        MALE,
+        FEMALE,
+        CHILD
+    }
+
+    @Enumerated(EnumType.STRING)
+    Gender gender;
+
     int sprite;
 
     @Embedded
@@ -29,11 +38,11 @@ public class Person {
         this.id = id;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
