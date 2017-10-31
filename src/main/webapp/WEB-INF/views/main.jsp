@@ -28,7 +28,7 @@
        			<div class="overview">
             		<div class="title"><h1>Worker &num;{{("000" + person.id).slice(-4)}}</h1></div>
             		<p class="percLabel">Tiredness:</p><div class="percBarContainer {{getBarPc(person.status.tiredness)}}"><div ng-style="{'width': person.status.tiredness + '%' }">{{person.status.tiredness}}</div></div>
-            		<p class="percLabel">Hunger:</p><div class="percBarContainer {{getBarPc(person.status.hungry)}}"><div ng-style="{'width': person.status.hungry + '%' }">{{person.status.hungry}}</div></div>
+            		<p class="percLabel">Hunger:</p><div class="percBarContainer {{getBarPc(person.status.hunger)}}"><div ng-style="{'width': person.status.hunger + '%' }">{{person.status.hunger}}</div></div>
         		</div>
     		</div>
 		</div>

@@ -3,7 +3,7 @@ app.controller('PeopleCtrl', PeopleCtrl);
 
 function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsFactory){
     $scope.init = function(){
-        //$interval($scope.updateGamestate, 5000);
+        $interval($scope.updateGamestate, 10000);
     }
 
     apiEngine.people( function (response) {
@@ -20,7 +20,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         var persons = personsFactory.getPersons();
 
         for (key in persons) {
-            persons[key].updateStatus();
+            persons[key].getStatus();
             console.log("person:");
             console.log(persons[key]);
         }
@@ -41,11 +41,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 break;
 
             case "kill":
-                console.log("Kill");
-                person.sprite = "Tombstone";
-                $timeout(function(){$scope.removePeople(person)},3500);
-                var audio = new Audio('resources/sounds/screem.mp3');
-                audio.play();
+                person.die();
             break;
 
             case "update":

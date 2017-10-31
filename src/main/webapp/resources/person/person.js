@@ -1,7 +1,7 @@
 
 
-app.factory('personsFactory', ['apiEngine',
-    function(apiEngine) {
+app.factory('personsFactory', ['apiEngine','$timeout',
+    function(apiEngine,$timeout) {
 
     class Person{
         constructor(person){
@@ -36,32 +36,30 @@ app.factory('personsFactory', ['apiEngine',
             });
         }
 
-        updateStatus(){
-            console.log("updateStatus");
-            var obj = this;
-            apiEngine.updateStatus(this.id, function(response){
-                console.log("response: ");
-                console.log(response.data);
-                obj.setFields(response.data);
-            });
-        }
-
         eat(amount=10){
             var obj = this;
-            apiEngine.setTask(this.id,"eating",function(response){
+            apiEngine.personSettask(this.id,"eating",function(response){
                 obj.getStatus();
             });
         }
 
         sleep(amount=10){
             var obj = this;
-            apiEngine.setTask(this.id,"sleeping",function(response){
+            apiEngine.personSettask(this.id,"sleeping",function(response){
                 obj.getStatus();
             });
         }
 
         remove(){
             this.visible = false;
+        }
+
+        die(){
+            console.log("Kill");
+            this.sprite = "Tombstone";
+            $timeout(function(obj){obj.visible=false;},3500,true,this);
+            var audio = new Audio('resources/sounds/screem.mp3');
+            audio.play();
         }
     }
 
