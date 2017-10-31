@@ -28,10 +28,10 @@ app.factory('apiEngine', function apiEngine($http){
         },
 
         personSettask: function(id,task,func){
-            var functionPath = "/person/settask/:" + task + "/:+" + id;
+            var functionPath = "/person/settask/" + task + "/" + id;
             console.log("Requesting " + functionPath);
             if(mock) func(getMockData("/person/settask"));
-            else return $http.get(baseUrl + "status.jsp?task=getAll").then(func);
+            else return $http.put(baseUrl + functionPath).then(func);
         },
 
         personSetTwoTask: function(id1, id2, task,func){
