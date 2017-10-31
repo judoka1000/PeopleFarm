@@ -26,7 +26,7 @@
 							   <div id="actionSleeping" class="actionButton" ng-click="setClickAction('sleep')"></div>
 							   <div id="actionNone" class="actionButton" ng-click="actionNone()"></div>
 							   <div id="actionKill" class="actionButton" ng-click="setClickAction('kill')"></div>
-							   <div id="actionUpdate" class="actionButton" ng-click="actionUpdate()"></div>
+							   <div id="actionTest" class="actionButton" ng-click="setClickAction('test')">test</div>
 							   <div id="actionInfo" class="actionButton" ng-click="setClickAction('info')"></div>
 						</div>
 					</div>

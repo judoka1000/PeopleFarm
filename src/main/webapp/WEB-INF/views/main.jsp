@@ -24,7 +24,7 @@
 		<div id="PeopleGrid" class="col-md-9">
 			<div id="people_{{person.id}}" class="people" ng-class="'sprite' + person.sprite + ' ' + person.fullGender" ng-repeat="person in persons" ng-show="person.visible" ng-click="personClicked(person)">
         		<div class="imgContainer">
-					<div class="captchaCount">{{person.status.currentCaptchas}}</div>
+					<div class="captchaCount" ng-class="person.status.captchaChange">{{person.status.currentCaptchas}}</div>
         		</div>
        			<div class="overview">
             		<div class="title"><h1>Worker &num;{{("000" + person.id).slice(-4)}}</h1></div>

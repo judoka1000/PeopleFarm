@@ -20,20 +20,32 @@ app.factory('personsFactory', ['apiEngine','$timeout',
                 }
             }
             this.id = person.id;
-            this.gender = person.gender.toLowerCase();;
-            this.fullGender = person.gender.toLowerCase();;
+            this.gender = person.gender.toLowerCase();
+            this.fullGender = person.gender.toLowerCase();
             this.abilities = person.abilities;
             this.sprite = person.sprite;
 
         }
 
+        setCurrentCaptchas(add){
+            this.status.currentCaptchas += add;
+        }
+
         getStatus(){
             console.log("getstatus");
             var obj = this;
+            var oldCollectedCaptchas = this.status.currentCaptchas;
+            console.log("old col:" + oldCollectedCaptchas);
             apiEngine.personStatus(this.id, function(response){
                 obj.setFields(response.data);
                 if(obj.status.health=="DEAD"){
                     obj.die();
+                }
+                if(oldCollectedCaptchas != obj.status.currentCaptchas){
+                    obj.status.captchaChange = "newCaptchas";
+                    $timeout(function(person){person.status.captchaChange="";},300,true,obj);
+                    var audio = new Audio('resources/sounds/coin.mp3');
+                    audio.play();
                 }
             });
         }
