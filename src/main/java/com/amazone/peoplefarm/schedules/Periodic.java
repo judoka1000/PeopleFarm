@@ -15,7 +15,7 @@ public class Periodic {
     @Autowired
     private PersonService personService;
 
-    public void updatePersonStatus(Person person) {
+    private void updatePersonStatus(Person person) {
         Status personStatus = person.getStatus();
         Abilities personAbilities = person.getAbilities();
         Random r = new Random();
@@ -23,16 +23,16 @@ public class Periodic {
         // Update age
         personStatus.setAge(personStatus.getAge() + 1);
         if(r.nextInt(70) < 1) {
-            // die
+            personStatus.setHealth(Status.Health.DEAD);
         }
-        if(personStatus.getAge() >= 18 && person.getGender().equals("child")) {
+        if(personStatus.getAge() >= 18 && person.getGender().equals(Person.Gender.CHILD)) {
             int[] sprites_male = {0, 1, 2, 3, 5, 7};
             int[] sprites_female = {4, 6, 8, 9};
             if(r.nextInt(2) < 1) {
-                person.setGender("male");
+                person.setGender(Person.Gender.MALE);
                 person.setSprite(sprites_male[r.nextInt(sprites_male.length)]);
             } else {
-                person.setGender("female");
+                person.setGender(Person.Gender.FEMALE);
                 person.setSprite(sprites_female[r.nextInt(sprites_female.length)]);
             }
         }
@@ -40,20 +40,15 @@ public class Periodic {
         // Update hunger
         personStatus.setHunger(personStatus.getHunger() - personAbilities.getMetabolism());
         // Minimum is 0
-        if(personStatus.getHunger() < 0) {
-            personStatus.setHunger(0);
-            // die
+        if(personStatus.getHunger() == 0) {
+            personStatus.setHealth(Status.Health.DEAD);
         }
 
         // Update tiredness
-        personStatus.setTiredness(personStatus.getTiredness() - (100 - personAbilities.getStamina())/10);
-        // Minimum is 0
-        if(personStatus.getTiredness() < 0) {
-            personStatus.setTiredness(0);
-        }
+        personStatus.setTiredness(personStatus.getTiredness() - (100 - personAbilities.getStamina())/100);
     }
 
-    public void updatePersonAbilities(Person person) {
+    private void updatePersonAbilities(Person person) {
         Abilities personAbilities = person.getAbilities();
 
         Random r = new Random();
@@ -75,7 +70,7 @@ public class Periodic {
         }
     }
 
-    public void updateGameStatus() {
+    private void updateGameStatus() {
     }
 
     public void execute() {
