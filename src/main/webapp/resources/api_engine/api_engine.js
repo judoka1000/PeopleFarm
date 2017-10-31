@@ -41,6 +41,12 @@ app.factory('apiEngine', function apiEngine($http){
             else return $http.get(baseUrl + "status.jsp?task=getAll").then(func);
         },
 
+        delete: function(id,func){
+            var functionPath = "/person/" + id;
+            console.log("Requesting " + functionPath + " (delete)");
+            return $http.delete(baseUrl + functionPath).then(func);
+        },
+
         ppeople: function(func){
             console.log("Requesting /persons/");
             return $http.get(baseUrl + "status.jsp?task=getAll").then(func);

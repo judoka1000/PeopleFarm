@@ -101,6 +101,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.actionNone = function(){
         console.log("actionNone");
         $scope.cursor = "";
+        $scope.clickAction = "none";
     }
 
     $scope.init();
