@@ -1,17 +1,23 @@
 package com.amazone.peoplefarm.controllers;
 
+import com.amazone.peoplefarm.model.GameState;
 import com.amazone.peoplefarm.model.Person;
+import com.amazone.peoplefarm.services.GameStateService;
 import com.amazone.peoplefarm.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
 @Controller
+@SessionAttributes("gameState")
 public class PersonController {
 
     @Autowired
     private PersonService personService;
+    @Autowired
+    private GameStateService gameStateService;
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
@@ -21,7 +27,12 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/main")
-    public String main() {
+    public String main(Model model) {
+        if(!model.containsAttribute("gameState")){
+            GameState gameState = new GameState();
+            gameStateService.save(gameState);
+            model.addAttribute("gameState", gameState.getId());
+        }
         return "main";
     }
     
