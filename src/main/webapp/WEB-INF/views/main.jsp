@@ -24,8 +24,6 @@
 		<div id="PeopleGrid" class="col-md-9">
 			<div id="people_{{person.id}}" class="people" ng-class="'sprite' + person.sprite + ' ' + person.fullGender" ng-repeat="person in persons" ng-show="person.visible">
         		<div class="imgContainer" ng-click="personClicked(person)">
-
-
         		</div>
        			<div class="overview">
             		<div class="title"><h1>Worker &num;{{("000" + person.id).slice(-4)}}</h1></div>
@@ -60,12 +58,14 @@
  					</div>
  					<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
  						<h1>Settings</h1>
- 						
  					</div>
 				</div>
 			</div>	
 		</div>
 	</div>
 </div>
+<footer>
+	<small class="rainbow">&copy; Copyright 2017, PeopleFarm Company</small>
+</footer>
 </body>
 </html>
