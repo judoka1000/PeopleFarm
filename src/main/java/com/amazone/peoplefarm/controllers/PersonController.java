@@ -56,12 +56,12 @@ public class PersonController {
             case "eating":
                 int food = 100;
                 state.setHunger(state.getHunger()+ food);
-                response.setSucces(true);
+                savePersonState(person, state, response);
                 break;
             case "sleeping":
                 int sleepTime = 100;
                 state.setTiredness(state.getTiredness()+sleepTime);
-                response.setSucces(true);
+                savePersonState(person, state, response);
                 break;
             case "captcha":
                 break;
@@ -70,6 +70,11 @@ public class PersonController {
             default:
                 break;
         }
+        return response;
+    }
+
+    Response savePersonState(Person person , Status state, Response response){
+        response.setSucces(true);
         person.setStatus(state);
         personService.save(person);
         return response;
