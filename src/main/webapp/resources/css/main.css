@@ -66,9 +66,13 @@ html, body {
     border-radius: 0.7em;
     border: 2px solid darkorange;
     text-align: center;
-    padding-top: -4px;
-    line-height: 1.3em;
     font-weight: bold;
+    -webkit-transition:width 0.3s,height 0.3s,font-size 0.3s;
+    transition:opacity 4s -in;
+}
+
+.people .imgContainer .newCaptchas{
+    font-size: 0.8em;
 }
 
 .people .overview{
@@ -240,7 +244,7 @@ p.percLabel{
     background-color: red;
 }
 
-#actionUpdate{
+#actionTest{
     background-color: green;
 }
 

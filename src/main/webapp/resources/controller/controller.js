@@ -47,9 +47,9 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 person.die();
             break;
 
-            case "update":
-                console.log("reset");
-                person.update();
+            case "test":
+                console.log("test");
+                person.status.currentCaptchas += 1;2
             break;
 
             case "info":
@@ -101,8 +101,12 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         console.log("ready to " + action);
     }
 
-    $scope.actionUpdate = function(){
-        apiEngine.reset(function(){});
+    $scope.actionUpdate = function(person){
+        console.log("change on person " + person.id);
+    }
+
+    $scope.actionTest = function(person){
+
     }
 
     $scope.actionNone = function(){
