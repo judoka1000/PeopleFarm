@@ -23,7 +23,7 @@ public class Periodic {
         // Update age
         personStatus.setAge(personStatus.getAge() + 1);
         if(r.nextInt(70) < 1) {
-            // die
+            personStatus.setHealth(Status.Health.DEAD);
         }
         if(personStatus.getAge() >= 18 && person.getGender().equals("child")) {
             int[] sprites_male = {0, 1, 2, 3, 5, 7};
@@ -40,17 +40,12 @@ public class Periodic {
         // Update hunger
         personStatus.setHunger(personStatus.getHunger() - personAbilities.getMetabolism());
         // Minimum is 0
-        if(personStatus.getHunger() < 0) {
-            personStatus.setHunger(0);
-            // die
+        if(personStatus.getHunger() == 0) {
+            personStatus.setHealth(Status.Health.DEAD);
         }
 
         // Update tiredness
-        personStatus.setTiredness(personStatus.getTiredness() - (100 - personAbilities.getStamina())/10);
-        // Minimum is 0
-        if(personStatus.getTiredness() < 0) {
-            personStatus.setTiredness(0);
-        }
+        personStatus.setTiredness(personStatus.getTiredness() - (100 - personAbilities.getStamina())/100);
     }
 
     public void updatePersonAbilities(Person person) {

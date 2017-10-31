@@ -11,6 +11,14 @@ public class Status {
     int tiredness;
     int age;
 
+    public enum Health {
+        HEALTHY,
+        DEAD
+    }
+
+    @Enumerated(EnumType.STRING)
+    Health health;
+
     public int getHunger() {
         return hunger;
     }
@@ -37,5 +45,13 @@ public class Status {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public Health getHealth() {
+        return health;
+    }
+
+    public void setHealth(Health health) {
+        this.health = health;
     }
 }
