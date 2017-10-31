@@ -20,8 +20,8 @@ app.factory('personsFactory', ['apiEngine','$timeout',
                 }
             }
             this.id = person.id;
-            this.gender = person.gender;
-            this.fullGender = person.gender;
+            this.gender = person.gender.toLowerCase();;
+            this.fullGender = person.gender.toLowerCase();;
             this.abilities = person.abilities;
             this.sprite = person.sprite;
 
@@ -61,7 +61,7 @@ app.factory('personsFactory', ['apiEngine','$timeout',
 
             });
             this.sprite = "Tombstone";
-            $timeout(function(obj, persons){delete persons[this.id];},3500,true,this,persons);
+            $timeout(function(obj, persons){delete persons[obj.id];},3500,true,this,persons);
             var audio = new Audio('resources/sounds/screem.mp3');
             audio.play();
 

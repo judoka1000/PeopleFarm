@@ -16,6 +16,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
     $scope.cursor = "";
     $scope.clickAction = "";
+    $scope.showPeopleId = -1;
 
     $scope.updateGamestate = function(){
         console.log("updategame");
@@ -51,6 +52,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 person.update();
             break;
 
+            case "info":
+                console.log("get info");
+                $scope.showPeopleId = person.id;
+            break;
 
             default:
                 apiEngine.people(function (response) {

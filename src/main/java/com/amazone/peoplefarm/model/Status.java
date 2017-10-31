@@ -7,14 +7,15 @@ import javax.persistence.*;
 
 @Embeddable
 public class Status {
-    int hunger;
-    int tiredness;
-    int age;
-
     public enum Health {
         HEALTHY,
         DEAD
     }
+
+    int hunger;
+    int tiredness;
+    int age;
+    int currentCaptchas;
 
     @Enumerated(EnumType.STRING)
     Health health;
@@ -53,5 +54,15 @@ public class Status {
 
     public void setHealth(Health health) {
         this.health = health;
+    }
+
+    public int getCurrentCaptchas() {
+        return currentCaptchas;
+    }
+
+    public void setCurrentCaptchas(int currentCaptchas) {
+        if(currentCaptchas<=0) currentCaptchas = 0;
+        if(currentCaptchas > 100) currentCaptchas = 100;
+        this.currentCaptchas = currentCaptchas;
     }
 }
