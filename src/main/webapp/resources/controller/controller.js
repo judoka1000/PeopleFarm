@@ -12,6 +12,12 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     })};
     $scope.initializePeople();
 
+    (function(){
+        apiEngine.getPlayername(function(response) {
+            $scope.playername = response.data.name;
+        });
+    })();
+
     $scope.cursor = "";
     $scope.clickAction = "";
     $scope.showPeopleId = -1;
@@ -114,6 +120,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.newGameAction = function() {
         apiEngine.newGame(function(){$scope.initializePeople();});
     };
+
+    $scope.renamePlayer = function(newName) {
+        apiEngine.renamePlayer(newName, function(){});
+    }
 
     $scope.init();
 }
