@@ -16,7 +16,7 @@ public class GameState {
 
     String playerName;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gamestate")
     @JsonManagedReference
     List<Person> persons = new ArrayList<Person>();
 
