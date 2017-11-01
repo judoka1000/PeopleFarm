@@ -13,8 +13,7 @@ public class Person {
 
     public enum Gender {
         MALE,
-        FEMALE,
-        CHILD
+        FEMALE
     }
 
     @Enumerated(EnumType.STRING)
@@ -61,7 +60,7 @@ public class Person {
                 newAbilities.setSpeed(3);
                 newAbilities.setMetabolism(3);
                 newAbilities.setIq(3);
-                this.setGender(Gender.CHILD);
+                this.setGender(Gender.MALE);
                 break;
         }
         this.setStatus(newStatus);
