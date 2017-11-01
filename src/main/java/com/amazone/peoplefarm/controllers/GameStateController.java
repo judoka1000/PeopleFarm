@@ -4,6 +4,7 @@ import com.amazone.peoplefarm.model.DevSettings;
 import com.amazone.peoplefarm.model.GameState;
 import com.amazone.peoplefarm.model.Person;
 import com.amazone.peoplefarm.model.Response;
+import com.amazone.peoplefarm.services.GameLogicService;
 import com.amazone.peoplefarm.services.GameStateService;
 import com.amazone.peoplefarm.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +25,16 @@ public class GameStateController {
     @Autowired
     private PersonService personService;
 
+    @Autowired
+    private GameLogicService gameLogicService;
+
     @ResponseBody
     @RequestMapping(value = "/newgame", method = RequestMethod.POST)
     public Response newGame(Model model) {
         if(model.containsAttribute("gameState")){
             gameStateService.delete((Integer)model.asMap().get("gameState"));
         }
-        GameState gameState = new GameState();
-        gameState.addPerson(new Person("adult"));
-        gameState.addPerson(new Person("adult"));
-        gameState.addPerson(new Person("adult"));
-        gameState.addPerson(new Person("child"));
+        GameState gameState = gameLogicService.newGame();
         gameStateService.save(gameState);
         model.addAttribute("gameState", gameState.getId());
         return new Response(true);

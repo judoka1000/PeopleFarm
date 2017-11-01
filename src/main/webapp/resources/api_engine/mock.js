@@ -1,4 +1,6 @@
-function getMockData(path,id=10){
+function getMockData(path,id){
+    id = typeof id !== 'undefined' ? id : 10;
+
     switch(path) {
         case "/persons":
             var jsonData = {
