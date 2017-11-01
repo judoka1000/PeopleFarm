@@ -14,11 +14,11 @@
  				<div class="container">
  				    <div class="row">
          				<div id="gameButtons">
-         				    <div id="newGameButton" class="actionButton" ng-click="newGameAction()">New Game</div>
+         				    <div id="newGameButton" class="" ng-click="newGameAction()">New Game</div>
                 		</div>
  				    </div>
  					<div class="row">
-		 				<div id="playerScore">Score : 1337</div>
+		 				<div id="playerScore">Score : {{score}}</div>
 		 			</div>
 		 			<div class="row">
 		 				<div id="actionButtons">
@@ -27,7 +27,7 @@
 							   <div id="actionNone" class="actionButton" ng-click="actionNone()"></div>
 							   <div id="actionKill" class="actionButton" ng-click="setClickAction('kill')"></div>
 							   <div id="actionTest" class="actionButton" ng-click="setClickAction('test')">test</div>
-							   <div id="actionInfo" class="actionButton" ng-click="setClickAction('info')"></div>
+							   <div id="actionInfo" class="actionButton" ng-click="setClickAction('info')">info</div>
 						</div>
 					</div>
 				</div>

@@ -17,7 +17,8 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.cursor = "";
     $scope.clickAction = "";
     $scope.showPeopleId = -1;
-
+    $scope.score = 0;
+    
     $scope.updateGamestate = function(){
         console.log("updategame");
         var persons = personsFactory.getPersons();
@@ -27,6 +28,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
             console.log("person:");
             console.log(persons[key]);
         }
+        
+        apiEngine.getScore(function(response){
+        	$scope.score = response.data;
+        });
     }
 
     $scope.personClicked = function(person){

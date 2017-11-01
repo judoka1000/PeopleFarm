@@ -22,7 +22,7 @@ html, body {
     border-radius: 10px;
     display: block;
     -webkit-transition:opacity 4s;
-    transition:opacity 4s -in;
+    transition:opacity 4s;
 }
 
 .spriteTombstone{
@@ -68,7 +68,7 @@ html, body {
     text-align: center;
     font-weight: bold;
     -webkit-transition:width 0.3s,height 0.3s,font-size 0.3s;
-    transition:opacity 4s -in;
+    transition: width 0.3s,height 0.3s,font-size 0.3s;
 }
 
 .people .imgContainer .newCaptchas{
@@ -138,7 +138,7 @@ html, body {
 }
 
 .spriteTombstone .imgContainer{
-    background: url("..//images/tombstone.png");
+    background: url("../images/tombstone.png");
     background-position: 0 10px;
     background-repeat: no-repeat;
 }
@@ -197,21 +197,6 @@ p.percLabel{
     margin: 2px 2px 0 2px;
 }
 
-.abilityBar{
-    clear: both;
-}
-
-.abilityBar p{
-    float: left;
-    display block;
-}
-
-.abilityBar p.abilityLabel{
-    display: block;
-    float: left;
-    margin-right: 3px;
-}
-
 .settingScreen{
 	min-width : 300px;
 	//width : 80%;
@@ -253,7 +238,7 @@ p.percLabel{
 }
 
 #actionInfo{
-	background-color : maroon;
+	background-color : yellow;
 }
 
 .eatCur {
