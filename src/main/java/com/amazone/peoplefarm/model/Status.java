@@ -62,7 +62,7 @@ public class Status {
 
     public void setCurrentCaptchas(int currentCaptchas) {
         if(currentCaptchas<=0) currentCaptchas = 0;
-        if(currentCaptchas > 100) currentCaptchas = 100;
+        if(currentCaptchas > 10) currentCaptchas = 10;
         this.currentCaptchas = currentCaptchas;
     }
 }
