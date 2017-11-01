@@ -20,6 +20,17 @@ public class Status {
     @Enumerated(EnumType.STRING)
     Health health;
 
+    @Override
+    public String toString() {
+        return "Status{" +
+                "hunger=" + hunger +
+                ", tiredness=" + tiredness +
+                ", age=" + age +
+                ", currentCaptchas=" + currentCaptchas +
+                ", health=" + health +
+                '}';
+    }
+
     public int getHunger() {
         return hunger;
     }
