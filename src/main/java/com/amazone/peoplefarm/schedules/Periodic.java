@@ -25,17 +25,7 @@ public class Periodic {
         if(r.nextInt(70) < 1) {
             personStatus.setHealth(Status.Health.DEAD);
         }
-        if(personStatus.getAge() >= 18 && person.getGender().equals(Person.Gender.CHILD)) {
-            int[] sprites_male = {0, 1, 2, 3, 5, 7};
-            int[] sprites_female = {4, 6, 8, 9};
-            if(r.nextInt(2) < 1) {
-                person.setGender(Person.Gender.MALE);
-                person.setSprite(sprites_male[r.nextInt(sprites_male.length)]);
-            } else {
-                person.setGender(Person.Gender.FEMALE);
-                person.setSprite(sprites_female[r.nextInt(sprites_female.length)]);
-            }
-        }
+
 
         // Update hunger
         personStatus.setHunger(personStatus.getHunger() - personAbilities.getMetabolism());
@@ -46,6 +36,9 @@ public class Periodic {
 
         // Update tiredness
         personStatus.setTiredness(personStatus.getTiredness() - (100 - personAbilities.getStamina())/100);
+
+        personStatus.setCurrentCaptchas(personStatus.getCurrentCaptchas() + (int)Math.round( (personAbilities.getSpeed() * 0.1) + (personAbilities.getIq() * 0.1) * (personStatus.getTiredness() * 0.01)) );
+        //System.out.println("add c " + (int)( (personAbilities.getSpeed() * 0.1) + (personAbilities.getIq() * 0.1) * (personStatus.getTiredness() * 0.01)));
     }
 
     private void updatePersonAbilities(Person person) {

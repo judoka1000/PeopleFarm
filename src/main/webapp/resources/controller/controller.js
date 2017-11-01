@@ -3,7 +3,7 @@ app.controller('PeopleCtrl', PeopleCtrl);
 
 function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsFactory){
     $scope.init = function(){
-        $interval($scope.updateGamestate, 10000);
+        $interval($scope.updateGamestate, 2000);
     }
 
     $scope.initializePeople = function() {
