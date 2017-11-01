@@ -67,12 +67,11 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
             default:
                 apiEngine.people(function (response) {
                     tPeople = response.data;
-                    for (key of Object.keys(tPeople)) {
-                        for (key2 of Object.keys(tPeople[key])) {
-                            $scope.people[key][key2] = tPeople[key][key2];
-                        }
-
-                    }
+                    angular.forEach(tPeople, function(value, key) {
+                        angular.forEach(value, function(value2, key2){
+                            $scope.people[key][key2] = value2;
+                        });
+                    });
                 });
         }
 

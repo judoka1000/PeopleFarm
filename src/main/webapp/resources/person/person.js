@@ -13,9 +13,10 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             if (typeof this.id == 'undefined'){
                 this.status = person.status;
             } else {
-                for (var key of Object.keys(person.status)) {
-                    this.status[key] = person.status[key];
-                }
+                var obj = this;
+                angular.forEach(person.status, function(value, key) {
+                    obj.status[key] = value;
+                });
             }
             this.id = person.id;
             this.gender = person.gender.toLowerCase();
@@ -93,9 +94,9 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         },
         addPersons: function (_persons){
             //var index;
-            for (key of Object.keys(_persons)) {
+            angular.forEach(_persons, function(value, key) {
                 persons[_persons[key].id] = new Person(_persons[key]);
-            }
+            });
             return persons;
         },
         getPerson: function(id){
