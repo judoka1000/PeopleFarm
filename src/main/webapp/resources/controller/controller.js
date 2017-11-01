@@ -65,16 +65,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
             break;
 
             default:
-                apiEngine.people(function (response) {
-                    tPeople = response.data;
-                    angular.forEach(tPeople, function(value, key) {
-                        angular.forEach(value, function(value2, key2){
-                            $scope.people[key][key2] = value2;
-                        });
-                    });
-                });
         }
-
     }
 
     $scope.removePeople = function(person){
