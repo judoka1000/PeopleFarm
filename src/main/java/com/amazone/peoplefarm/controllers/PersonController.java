@@ -2,6 +2,7 @@ package com.amazone.peoplefarm.controllers;
 
 import com.amazone.peoplefarm.model.GameState;
 import com.amazone.peoplefarm.model.Person;
+import com.amazone.peoplefarm.services.GameLogicService;
 import com.amazone.peoplefarm.services.GameStateService;
 import com.amazone.peoplefarm.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class PersonController {
     private PersonService personService;
     @Autowired
     private GameStateService gameStateService;
+    @Autowired
+    private GameLogicService gameLogicService;
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
@@ -44,7 +47,7 @@ public class PersonController {
     @RequestMapping(value = "/main")
     public String main(Model model) {
         if(!model.containsAttribute("gameState")){
-            GameState gameState = new GameState();
+            GameState gameState = gameLogicService.newGame();
             gameStateService.save(gameState);
             model.addAttribute("gameState", gameState.getId());
         }

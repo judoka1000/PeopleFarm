@@ -26,7 +26,6 @@ public class Periodic {
             personStatus.setHealth(Status.Health.DEAD);
         }
 
-
         // Update hunger
         personStatus.setHunger(personStatus.getHunger() - personAbilities.getMetabolism());
         // Minimum is 0

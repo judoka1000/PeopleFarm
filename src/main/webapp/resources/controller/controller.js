@@ -65,13 +65,11 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
             default:
                 apiEngine.people(function (response) {
                     tPeople = response.data;
-                    for (key of Object.keys(tPeople)) {
-                        for (key2 of Object.keys(tPeople[key])) {
-                            //console.log(key, tPeople[key]);
-                            $scope.people[key][key2] = tPeople[key][key2];
-                        }
-
-                    }
+                    angular.forEach(tPeople, function(value, key) {
+                        angular.forEach(value, function(value2, key2){
+                            $scope.people[key][key2] = value2;
+                        });
+                    });
                 });
         }
 
@@ -81,7 +79,11 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         person.visible=false;
     }
 
-    $scope.getBarPc = function(val,reverse=false,min=0,max=100){
+    $scope.getBarPc = function(val,reverse,min,max){
+        reverse = typeof reverse !== 'undefined' ? reverse : false;
+        min = typeof min !== 'undefined' ? min : 0;
+        max = typeof max !== 'undefined' ? max : 100;
+
         var result = "";
         var tOkeLow = max*0.33;
         var tOkeHigh = max*0.66;
