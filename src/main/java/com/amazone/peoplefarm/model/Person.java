@@ -71,6 +71,18 @@ public class Person {
         this(kind);
         this.getStatus().setAge(age);
     }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", gender=" + gender +
+                ", sprite=" + sprite +
+                ", status=" + status +
+                ", abilities=" + abilities +
+                '}';
+    }
+
     public int getId() {
         return id;
     }

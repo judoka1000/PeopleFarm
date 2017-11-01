@@ -23,7 +23,7 @@
                 		</div>
  				    </div>
  					<div class="row">
-		 				<div id="playerScore">Score : {{score}}</div>
+		 				<div id="playerScore">$ {{score}}</div>
 		 			</div>
 		 			<div class="row">
 		 				<div id="actionButtons">

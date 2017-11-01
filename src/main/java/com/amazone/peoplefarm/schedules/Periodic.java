@@ -36,7 +36,7 @@ public class Periodic {
         // Update tiredness
         personStatus.setTiredness(personStatus.getTiredness() - (100 - personAbilities.getStamina())/100);
 
-        personStatus.setCurrentCaptchas(personStatus.getCurrentCaptchas() + (int)Math.round( (personAbilities.getSpeed() * 0.1) + (personAbilities.getIq() * 0.1) * (personStatus.getTiredness() * 0.01)) );
+        personStatus.setCurrentCaptchas(personStatus.getCurrentCaptchas() + (int)Math.round( (personAbilities.getSpeed() * 0.1) + (personAbilities.getIq() * 0.01) * (personStatus.getTiredness() * 0.01)) );
         //System.out.println("add c " + (int)( (personAbilities.getSpeed() * 0.1) + (personAbilities.getIq() * 0.1) * (personStatus.getTiredness() * 0.01)));
     }
 
