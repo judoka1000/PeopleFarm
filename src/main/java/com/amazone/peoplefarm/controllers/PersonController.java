@@ -82,7 +82,7 @@ public class PersonController {
             case "collecting":
                 if(model.containsAttribute("gameState")){
                     GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-                    gameState.setScore(gameState.getScore() + state.getCurrentCaptchas());
+                    gameState.setScore(gameState.getScore() + (int)(state.getCurrentCaptchas() * GameLogicService.CAPTCHA_VALUE));
                     state.setCurrentCaptchas(0);
                     gameStateService.save(gameState);
                     savePersonState(person, state, response);

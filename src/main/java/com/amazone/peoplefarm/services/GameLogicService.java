@@ -14,6 +14,8 @@ public class GameLogicService {
     @Autowired
     PersonService personService;
 
+    public static final double CAPTCHA_VALUE = 0.60;
+
     public GameState newGame() {
         GameState gameState = new GameState();
         gameState.addPerson(newPerson());
