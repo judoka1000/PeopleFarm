@@ -104,4 +104,29 @@ public class PersonController {
         personService.save(person);
         return response;
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/person/settask/{task}/{id1}/{id2}", method = RequestMethod.PUT)
+    public Response reproduce(@PathVariable int id1, @PathVariable int id2, Model model){
+        Response response = new Response(false);
+        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+        System.out.println("gameState: " + gameState);
+
+        Person parent1 = personService.findOne(id1);
+        Person parent2 = personService.findOne(id2);
+        System.out.println("Person " + parent1.getId() + " and person " + parent2.getId() + " are reproducing ");
+
+
+        Person newPerson = gameLogicService.newChild(parent1,parent2,gameState);
+        if(newPerson != null){
+            gameState.addPerson(newPerson);
+            newPerson.setGamestate(gameState);
+            personService.save(newPerson);
+            System.out.println("Person " + newPerson.getId() + " is born: " + newPerson);
+            response.setSucces(true);
+        } else {
+            response.setSucces(false);
+        }
+        return response;
+    }
 }
