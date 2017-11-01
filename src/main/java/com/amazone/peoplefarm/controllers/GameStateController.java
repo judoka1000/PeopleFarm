@@ -1,5 +1,6 @@
 package com.amazone.peoplefarm.controllers;
 
+import com.amazone.peoplefarm.model.DevSettings;
 import com.amazone.peoplefarm.model.GameState;
 import com.amazone.peoplefarm.model.Person;
 import com.amazone.peoplefarm.model.Response;
@@ -50,8 +51,8 @@ public class GameStateController {
     @RequestMapping(value = "/mortal", method = RequestMethod.PUT)
     public Response flipMortality(Model model){
         GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-        if(gameState.getDevSettings().isMortal()) gameState.getDevSettings().setMortal(false);
-        else gameState.getDevSettings().setMortal(true);
+        gameState.getDevSettings().setMortal(!gameState.getDevSettings().isMortal());
+        gameStateService.save(gameState);
         return new Response(true);
     }
 
