@@ -30,12 +30,12 @@ public class GameStateController {
             gameStateService.delete((Integer)model.asMap().get("gameState"));
         }
         GameState gameState = new GameState();
+        gameState.addPerson(new Person("adult"));
+        gameState.addPerson(new Person("adult"));
+        gameState.addPerson(new Person("adult"));
+        gameState.addPerson(new Person("child"));
         gameStateService.save(gameState);
         model.addAttribute("gameState", gameState.getId());
-        personService.save(new Person("adult"));
-        personService.save(new Person("adult"));
-        personService.save(new Person("adult"));
-        personService.save(new Person("child"));
         return new Response(true);
     }
 
