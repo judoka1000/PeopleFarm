@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.amazone.peoplefarm.model.*;
 
+import java.util.List;
+
 
 @Controller
 @SessionAttributes("gameState")
@@ -51,15 +53,15 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
-    public Iterable<Person> getPersons(){
-        Iterable<Person> persons = personService.findAll();
-        return persons;
+    public List<Person> getPersons(Model model){
+        GameState gameState = gameStateService.findOne((Integer)model.asMap().get("gameState"));
+        return gameState.getPersons();
     }
 
     //TODO: - PUT  /person/settask/:task/:id      -> set task for person with id
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
-    public Response setTask(@PathVariable String task, @PathVariable int id){
+    public Response setTask(@PathVariable String task, @PathVariable int id, Model model){
        Person person = personService.findOne(id);
        Status state = person.getStatus();
        Response response = new Response(false);
@@ -74,9 +76,18 @@ public class PersonController {
                 state.setTiredness(state.getTiredness()+sleepTime);
                 savePersonState(person, state, response);
                 break;
-            case "captcha":
+            case "collecting":
+                if(model.containsAttribute("gameState")){
+                    GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+                    gameState.setScore(gameState.getScore() + state.getCurrentCaptchas());
+                    state.setCurrentCaptchas(0);
+                    gameStateService.save(gameState);
+                    savePersonState(person, state, response);
+                }
                 break;
             case "dying":
+                state.setHealth(Status.Health.DEAD);
+                savePersonState(person, state, response);
                 break;
             default:
                 break;

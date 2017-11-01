@@ -16,10 +16,9 @@
          				<div id="gameButtons">
          				    <div id="newGameButton" class="" ng-click="newGameAction()">New Game</div>
                 		</div>
-                		</br>
  				    </div>
  					<div class="row">
-		 				<div id="playerScore">Score : 1337</div>
+		 				<div id="playerScore">Score : {{score}}</div>
 		 			</div>
 		 			<div class="row">
 		 				<div id="actionButtons">

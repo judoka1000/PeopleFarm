@@ -14,7 +14,6 @@ app.factory('apiEngine', function apiEngine($http){
 
         personStatus: function(id,func){
             var functionPath = "/person/" + id;
-            //var functionPath = "/hoi";
             console.log("Requesting " + functionPath);
             if(mock) func(getMockData("/person/status"));
             else return $http.get(baseUrl + functionPath).then(func);
@@ -73,6 +72,11 @@ app.factory('apiEngine', function apiEngine($http){
             console.log("Requesting /person/settask/:" + task + "/" + id);
             console.log("-> on " + url)
             return $http.get(url).then(func);
+        },
+        getScore: function(func){
+        	var url = baseUrl + "/score";
+        	console.log("Requesting score");
+        	return $http.get(url).then(func);
         },
         newGame: function(func) {
             var url = baseUrl + "/newgame";
