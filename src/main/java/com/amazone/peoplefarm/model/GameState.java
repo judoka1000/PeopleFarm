@@ -1,9 +1,11 @@
 package com.amazone.peoplefarm.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class GameState {
@@ -13,6 +15,16 @@ public class GameState {
     int score;
 
     String playerName;
+
+    @Embedded
+    DevSettings devSettings = new DevSettings();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gamestate")
+    @JsonManagedReference
+    List<Person> persons = new ArrayList<Person>();
+
+    public GameState() {
+    }
 
     public int getId() {
         return id;
@@ -36,5 +48,22 @@ public class GameState {
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
+    }
+
+    public List<Person> getPersons() {
+        return persons;
+    }
+
+    public void addPerson(Person person) {
+        person.setGamestate(this);
+        this.persons.add(person);
+    }
+
+    public DevSettings getDevSettings() {
+        return devSettings;
+    }
+
+    public void setDevSettings(DevSettings devSettings) {
+        this.devSettings = devSettings;
     }
 }

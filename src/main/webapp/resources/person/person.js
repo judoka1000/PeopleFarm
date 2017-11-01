@@ -50,6 +50,15 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             });
         }
 
+        getAdult(){
+            console.log("getadult");
+            if(this.status.age >= 18) {
+                return "Adult";
+            } else {
+                return "Child";
+            }
+        }
+
         eat(amount=10){
             var obj = this;
             apiEngine.personSettask(this.id,"eating",function(response){

@@ -30,12 +30,12 @@ public class GameStateController {
             gameStateService.delete((Integer)model.asMap().get("gameState"));
         }
         GameState gameState = new GameState();
+        gameState.addPerson(new Person("adult"));
+        gameState.addPerson(new Person("adult"));
+        gameState.addPerson(new Person("adult"));
+        gameState.addPerson(new Person("child"));
         gameStateService.save(gameState);
         model.addAttribute("gameState", gameState.getId());
-        personService.save(new Person("adult"));
-        personService.save(new Person("adult"));
-        personService.save(new Person("adult"));
-        personService.save(new Person("child"));
         return new Response(true);
     }
 
@@ -44,6 +44,15 @@ public class GameStateController {
     public String getGameState(Model model){
         GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
         return "" + gameState.getScore();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/mortal", method = RequestMethod.PUT)
+    public Response flipMortality(Model model){
+        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+        if(gameState.getDevSettings().isMortal()) gameState.getDevSettings().setMortal(false);
+        else gameState.getDevSettings().setMortal(true);
+        return new Response(true);
     }
 
 }

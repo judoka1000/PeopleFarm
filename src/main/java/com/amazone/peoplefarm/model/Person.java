@@ -1,5 +1,8 @@
 package com.amazone.peoplefarm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,8 +13,7 @@ public class Person {
 
     public enum Gender {
         MALE,
-        FEMALE,
-        CHILD
+        FEMALE
     }
 
     @Enumerated(EnumType.STRING)
@@ -24,6 +26,11 @@ public class Person {
 
     @Embedded
     Abilities abilities;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false)
+    @JsonBackReference
+    GameState gamestate;
 
     public Person() {
     }
@@ -53,7 +60,7 @@ public class Person {
                 newAbilities.setSpeed(3);
                 newAbilities.setMetabolism(3);
                 newAbilities.setIq(3);
-                this.setGender(Gender.CHILD);
+                this.setGender(Gender.MALE);
                 break;
         }
         this.setStatus(newStatus);
@@ -100,5 +107,11 @@ public class Person {
         this.abilities = abilities;
     }
 
+    public GameState getGamestate() {
+        return gamestate;
+    }
 
+    public void setGamestate(GameState gamestate) {
+        this.gamestate = gamestate;
+    }
 }

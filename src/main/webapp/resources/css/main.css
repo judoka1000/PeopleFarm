@@ -98,43 +98,52 @@ html, body {
 }
 
 .sprite0 .imgContainer{
-    background-position: -2px -7px;
+    background-position-x: -2px;
 }
 
 .sprite1 .imgContainer{
-    background-position: -38px -7px;
+    background-position-x: -38px;
 }
 
 .sprite2 .imgContainer{
-    background-position: -74px -7px;
+    background-position-x: -74px;
 }
 
 .sprite3 .imgContainer{
-    background-position: -108px -7px;
+    background-position-x: -108px;
 }
 
 .sprite4 .imgContainer{
-    background-position: -144px -7px;
+    background-position-x: -144px;
 }
 
 .sprite5 .imgContainer{
-    background-position: -180px -7px;
+    background-position-x: -180px;
 }
 
 .sprite6 .imgContainer{
-    background-position: -216px -7px;
+    background-position-x: -216px;
 }
 
 .sprite7 .imgContainer{
-    background-position: -252px -7px;
+    background-position-x: -252px;
 }
 
 .sprite8 .imgContainer{
-    background-position: -288px -7px;
+    background-position-x: -288px;
 }
 
 .sprite9 .imgContainer{
-    background-position: -324px -7px;
+    background-position-x: -324px;
+}
+
+.spriteAdult .imgContainer {
+    background-position-y: -7px;
+}
+
+.spriteChild .imgContainer{
+    background-position-y: -56px;
+    background-repeat: no-repeat;
 }
 
 .spriteTombstone .imgContainer{

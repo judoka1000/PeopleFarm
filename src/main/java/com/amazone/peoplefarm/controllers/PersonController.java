@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import com.amazone.peoplefarm.model.*;
 
+import java.util.List;
+
 
 @Controller
 @SessionAttributes("gameState")
@@ -41,19 +43,22 @@ public class PersonController {
 
     @RequestMapping(value = "/main")
     public String main(Model model) {
+        System.out.println("!!!!!!!!!!!!!!!!!!!! 1");
         if(!model.containsAttribute("gameState")){
+            System.out.println("!!!!!!!!!!!!!!!!!!!! 2");
             GameState gameState = new GameState();
             gameStateService.save(gameState);
             model.addAttribute("gameState", gameState.getId());
+            System.out.println("!!!!!!!!!!!!!!!!!!!! 3");
         }
         return "main";
     }
 
     @ResponseBody
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
-    public Iterable<Person> getPersons(){
-        Iterable<Person> persons = personService.findAll();
-        return persons;
+    public List<Person> getPersons(Model model){
+        GameState gameState = gameStateService.findOne((Integer)model.asMap().get("gameState"));
+        return gameState.getPersons();
     }
 
     //TODO: - PUT  /person/settask/:task/:id      -> set task for person with id
