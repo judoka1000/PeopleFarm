@@ -20,7 +20,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.updateGamestate = function(){
         console.log("updategame");
         var persons = personsFactory.getPersons();
-
+        //console.log(persons);
         for (key in persons) {
             persons[key].getStatus();
         }
