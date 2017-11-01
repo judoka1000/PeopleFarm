@@ -1,3 +1,5 @@
+<script type="text/javascript" src="resources/controller/dev_controller.js"></script>
+
 <div id="settingScreenArea" class="col-md-3">
 	<div class="settingScreen">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -7,6 +9,9 @@
   			<li class="nav-item">
     			<a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
   			</li>
+  			<li class="nav-item">
+                <a class="nav-link" id="dev-settings-tab" data-toggle="tab" href="#dev-settings" role="tab" aria-controls="dev-settings" aria-selected="false">Dev Settings</a>
+            </li>
 		</ul>
 		<div class="tab-content" id="myTabContent">
  			<div class="tab-pane fade show active" id="game" role="tabpanel" aria-labelledby="game-tab">
@@ -47,6 +52,17 @@
  			<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
  				<h1>Settings</h1>
  			</div>
+ 			<div class="tab-pane fade" id="dev-settings" role="tabpanel" aria-labelledby="dev-settings-tab">
+ 			    <div ng-app="PeopleApp" ng-controller="DevCtrl" ng-class="cursor">
+                    <h1>Dev Settings</h1>
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" ng-model="mortalEnabled" ng-change="mortalChanged()">
+                        Mortal
+                      </label>
+                    </div>
+                </div>
+            </div>
 		</div>
 	</div>	
 </div>
