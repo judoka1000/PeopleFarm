@@ -16,9 +16,15 @@ public class GameState {
 
     String playerName;
 
+    @Embedded
+    DevSettings devSettings = new DevSettings();
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gamestate")
     @JsonManagedReference
     List<Person> persons = new ArrayList<Person>();
+
+    public GameState() {
+    }
 
     public int getId() {
         return id;
@@ -51,5 +57,13 @@ public class GameState {
     public void addPerson(Person person) {
         person.setGamestate(this);
         this.persons.add(person);
+    }
+
+    public DevSettings getDevSettings() {
+        return devSettings;
+    }
+
+    public void setDevSettings(DevSettings devSettings) {
+        this.devSettings = devSettings;
     }
 }

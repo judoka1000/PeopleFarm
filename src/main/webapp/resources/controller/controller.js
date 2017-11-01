@@ -58,7 +58,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
             break;
 
             case "info":
-                console.log("get info");
+                console.log("Requesting Info");
                 $scope.showPeopleId = person.id;
             break;
 

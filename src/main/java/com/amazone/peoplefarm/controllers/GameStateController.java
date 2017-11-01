@@ -46,4 +46,13 @@ public class GameStateController {
         return "" + gameState.getScore();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/mortal", method = RequestMethod.PUT)
+    public Response flipMortality(Model model){
+        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+        if(gameState.getDevSettings().isMortal()) gameState.getDevSettings().setMortal(false);
+        else gameState.getDevSettings().setMortal(true);
+        return new Response(true);
+    }
+
 }
