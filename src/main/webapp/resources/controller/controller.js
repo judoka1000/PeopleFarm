@@ -8,9 +8,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
     $scope.initializePeople = function() {
         apiEngine.people( function (response) {
-            console.log(response);
             $scope.persons = personsFactory.addPersons(response.data);
-            //$scope.persons = personsFactory.addPersons(response.data);
     })};
     $scope.initializePeople();
 
@@ -25,8 +23,6 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
         for (key in persons) {
             persons[key].getStatus();
-            console.log("person:");
-            console.log(persons[key]);
         }
         
         apiEngine.getScore(function(response){
@@ -62,12 +58,17 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 $scope.showPeopleId = person.id;
             break;
 
+            case "collect":
+                apiEngine.personSettask(person.id,"collecting",function(response){
+                    person.status.currentCaptchas = 0;
+                });
+            break;
+
             default:
                 apiEngine.people(function (response) {
                     tPeople = response.data;
                     for (key of Object.keys(tPeople)) {
                         for (key2 of Object.keys(tPeople[key])) {
-                            //console.log(key, tPeople[key]);
                             $scope.people[key][key2] = tPeople[key][key2];
                         }
 

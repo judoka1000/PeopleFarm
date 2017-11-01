@@ -67,6 +67,10 @@ public class Person {
         this.setAbilities(newAbilities);
     }
 
+    public Person(String kind, int age){
+        this(kind);
+        this.getStatus().setAge(age);
+    }
     public int getId() {
         return id;
     }

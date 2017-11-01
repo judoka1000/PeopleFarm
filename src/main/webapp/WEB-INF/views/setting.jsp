@@ -33,6 +33,7 @@
 							   <div id="actionKill" class="actionButton" ng-click="setClickAction('kill')"></div>
 							   <div id="actionTest" class="actionButton" ng-click="setClickAction('test')">test</div>
 							   <div id="actionInfo" class="actionButton" ng-click="setClickAction('info')">info</div>
+							   <div id="actionCollect" class="actionButton" ng-click="setClickAction('collect')">collect</div>
 						</div>
 					</div>
 				</div>

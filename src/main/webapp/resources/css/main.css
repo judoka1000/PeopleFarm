@@ -250,6 +250,10 @@ p.percLabel{
 	background-color : yellow;
 }
 
+#actionCollect{
+    background-color: lightgreen;
+}
+
 .eatCur {
     cursor: url('../images/hamburger.png'), auto;
 }

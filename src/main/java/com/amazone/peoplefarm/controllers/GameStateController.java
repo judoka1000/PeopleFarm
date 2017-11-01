@@ -33,7 +33,7 @@ public class GameStateController {
         gameState.addPerson(new Person("adult"));
         gameState.addPerson(new Person("adult"));
         gameState.addPerson(new Person("adult"));
-        gameState.addPerson(new Person("child"));
+        gameState.addPerson(new Person("child",16));
         gameStateService.save(gameState);
         model.addAttribute("gameState", gameState.getId());
         return new Response(true);
