@@ -75,11 +75,6 @@ public class PersonController {
        Status state = person.getStatus();
        Response response = new Response(false);
         switch (task){
-            case "eating":
-                int food = 100;
-                state.setHunger(state.getHunger()+ food);
-                savePersonState(person, state, response);
-                break;
             case "sleeping":
                 int sleepTime = 100;
                 state.setTiredness(state.getTiredness()+sleepTime);
@@ -101,6 +96,33 @@ public class PersonController {
             default:
                 break;
         }
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/person/settask/eating{food}/{id}", method = RequestMethod.PUT)
+    public Response setTaskEating(@PathVariable String food, @PathVariable int id, Model model){
+        Person person = personService.findOne(id);
+        Status state = person.getStatus();
+        Response response = new Response(false);
+        int nutrients = 0;
+        int cost = 0;
+        switch (food){
+            case "hamburger":
+                nutrients = 100;
+                cost = 3;
+                break;
+            case "dogfood":
+                nutrients = 50;
+                cost = 1;
+            default:
+                break;
+        }
+        state.setHunger(state.getHunger()+ nutrients);
+        savePersonState(person, state, response);
+        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+        gameState.setScore(gameState.getScore()-cost);
+        gameStateService.save(gameState);
         return response;
     }
 
