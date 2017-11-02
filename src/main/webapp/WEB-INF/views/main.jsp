@@ -25,7 +25,8 @@
 			<div id="people_{{person.id}}" class="people spriteadult" ng-class="'sprite' + person.sprite + ' ' + 'sprite' + person.getAdult() + ' ' + person.fullGender" ng-repeat="person in persons" ng-show="person.visible" ng-click="personClicked(person)">
         		<div class="imgContainer">
 					<div class="captchaCount" ng-class="person.status.captchaChange">{{person.status.currentCaptchas}}</div>
-        		</div>
+                    <div class="reproducing" ng-class="person.status.reproducing" ng-show="person.reproducing"></div>
+                </div>
        			<div class="overview">
             		<div class="title"><h1>Worker &num;{{("000" + person.id).slice(-4)}}</h1></div>
             		<p class="percLabel">Tiredness:</p><div class="percBarContainer {{getBarPc(person.status.tiredness)}}"><div ng-style="{'width': person.status.tiredness + '%' }">{{person.status.tiredness}}</div></div>

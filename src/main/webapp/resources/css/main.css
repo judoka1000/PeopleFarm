@@ -71,6 +71,16 @@ html, body {
     transition: width 0.3s,height 0.3s,font-size 0.3s;
 }
 
+.people .imgContainer .reproducing{
+    background: url("../images/heart.png");
+    display: block;
+    float: left;
+    width: 80%;
+    height: 60%;
+    background-size: 30px 30px;
+    margin-top: 20px;
+}
+
 .people .imgContainer .newCaptchas{
     font-size: 0.8em;
 }
@@ -273,6 +283,10 @@ p.percLabel{
 
 .sleepCur{
     cursor: url('../images/sleep.png'), auto;
+}
+
+.reproduceCur{
+    cursor: url('../images/heart.png'), auto;
 }
 
 footer {

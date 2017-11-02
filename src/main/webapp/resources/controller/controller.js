@@ -60,11 +60,14 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
             case "reproduce":
                 if($scope.person2 == ""){
                     console.log("1 person selected");
+                    person.reproducing = true;
                     $scope.person2 = person;
                 }
                 else {
                     console.log("2 persons selected, reproducing...");
+                    person.reproducing = true;
                     person.reproduce($scope.person2);
+                    $scope.person2 = "";
                 }
                 break;
 

@@ -7,6 +7,7 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         constructor(person){
             this.setFields(person);
             this.visible = true;
+            this.reproducing = false;
         }
 
         setFields(person){
@@ -83,6 +84,8 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             apiEngine.personSetTwoTask(this.id,person.id,"reproducing",function(response){
                 obj.getStatus();
             });
+            this.reproducing = false;
+            person.reproducing = false;
         }
 
         remove(){
