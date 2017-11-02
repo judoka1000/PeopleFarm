@@ -62,12 +62,14 @@ public class GameStateController {
         GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
         return gameState.getDevSettings();
     }
-    /*
+
     @ResponseBody
     @RequestMapping(value = "/putDevSettings", method = RequestMethod.PUT)
-    public DevSettings putDevsettings(Model model){
+    public Response putDevsettings(Model model, @RequestBody DevSettings devSettings){
         GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-        return gameState.getDevSettings();
+        gameState.setDevSettings(devSettings);
+        gameStateService.save(gameState);
+        return new Response(true);
     }
-    */
+
 }
