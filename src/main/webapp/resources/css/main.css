@@ -233,6 +233,10 @@ p.percLabel{
     background: url("../images/sleep.png");
 }
 
+#actionReproducing{
+    background: url("../images/heart.png");
+}
+
 #actionKill{
     background-color: red;
 }

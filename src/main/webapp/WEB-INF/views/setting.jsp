@@ -29,6 +29,7 @@
 		 				<div id="actionButtons">
 							   <div id="actionEating" class="actionButton" ng-click="setClickAction('eat')"></div>
 							   <div id="actionSleeping" class="actionButton" ng-click="setClickAction('sleep')"></div>
+							   <div id="actionReproducing" class="actionButton" ng-click="setClickAction('reproduce')"></div>
 							   <div id="actionNone" class="actionButton" ng-click="actionNone()"></div>
 							   <div id="actionKill" class="actionButton" ng-click="setClickAction('kill')"></div>
 							   <div id="actionTest" class="actionButton" ng-click="setClickAction('test')">test</div>

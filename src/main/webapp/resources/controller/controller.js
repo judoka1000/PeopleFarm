@@ -22,6 +22,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.clickAction = "";
     $scope.showPeopleId = -1;
     $scope.score = 0;
+    $scope.person2 = "";
     
     $scope.updateGamestate = function(){
         console.log("updategame");
@@ -48,6 +49,17 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
             case "sleep":
                 console.log("zzz zzz zzz");
                 person.sleep();
+                break;
+
+            case "reproduce":
+                if($scope.person2 == ""){
+                    console.log("1 person selected");
+                    $scope.person2 = person;
+                }
+                else {
+                    console.log("2 persons selected, reproducing...");
+                    person.reproduce($scope.person2);
+                }
                 break;
 
             case "kill":

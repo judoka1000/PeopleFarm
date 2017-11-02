@@ -69,6 +69,13 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             });
         }
 
+        reproduce(person){
+            var obj = this;
+            apiEngine.personSetTwoTask(this.id,person.id,"reproducing",function(response){
+                obj.getStatus();
+            });
+        }
+
         remove(){
             this.visible = false;
         }

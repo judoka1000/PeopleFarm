@@ -33,10 +33,11 @@ app.factory('apiEngine', function apiEngine($http){
         },
 
         personSetTwoTask: function(id1, id2, task,func){
-            var functionPath = "/person/settask/:" + task + "/:+" + id1 + "/:" + id2;
+            var functionPath = "/person/settask/" + task + "/" + id1 + "/" + id2;
             console.log("Requesting " + functionPath);
-            if(mock) func(getMockData("/person/settask2"));
-            else return $http.get(baseUrl + "status.jsp?task=getAll").then(func);
+            return $http.put(baseUrl + functionPath).then(func);
+//            if(mock) func(getMockData("/person/settask2"));
+//            else return $http.get(baseUrl + "status.jsp?task=getAll").then(func);
         },
 
         delete: function(id,func){
