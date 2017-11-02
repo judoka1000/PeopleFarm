@@ -61,6 +61,18 @@ public class PersonController {
         return gameState.getPersons();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/createperson", method = RequestMethod.POST)
+    public Person createPerson(Model model, @RequestBody Person person){
+        GameState gameState = gameStateService.findOne((Integer)model.asMap().get("gameState"));
+        person.setGamestate(gameState);
+        gameState.addPerson(person);
+        person.getStatus().setHealth(Status.Health.HEALTHY);
+
+        personService.save(person);
+        return person;
+    }
+
     //TODO: - PUT  /person/settask/:task/:id      -> set task for person with id
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
