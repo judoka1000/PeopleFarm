@@ -12,6 +12,16 @@ public class Abilities {
     int metabolism;
     int stamina;
 
+    @Override
+    public String toString() {
+        return "Abilities{" +
+                "speed=" + speed +
+                ", iq=" + iq +
+                ", metabolism=" + metabolism +
+                ", stamina=" + stamina +
+                '}';
+    }
+
     public int getSpeed() {
         return speed;
     }

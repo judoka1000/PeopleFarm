@@ -22,22 +22,24 @@ public class Periodic {
 
         // Update age
         personStatus.setAge(personStatus.getAge() + 1);
-        if(r.nextInt(70) < 1) {
-            personStatus.setHealth(Status.Health.DEAD);
+
+        if(person.getGamestate().getDevSettings().isMortal()) {
+            if(r.nextInt(70) < 1) {
+                personStatus.setHealth(Status.Health.DEAD);
+            }
+
+            // Update hunger
+            personStatus.setHunger(personStatus.getHunger() - personAbilities.getMetabolism());
+            // Minimum is 0
+            if(personStatus.getHunger() == 0) {
+                personStatus.setHealth(Status.Health.DEAD);
+            }
+                // Update tiredness
+                personStatus.setTiredness(personStatus.getTiredness() - (100 - personAbilities.getStamina()) / 100);
+
+                personStatus.setCurrentCaptchas(personStatus.getCurrentCaptchas() + (int)Math.round( (personAbilities.getSpeed() * 0.1) + (personAbilities.getIq() * 0.01) * (personStatus.getTiredness() * 0.01)) );
+                //System.out.println("add c " + (int)( (personAbilities.getSpeed() * 0.1) + (personAbilities.getIq() * 0.1) * (personStatus.getTiredness() * 0.01)));
         }
-
-        // Update hunger
-        personStatus.setHunger(personStatus.getHunger() - personAbilities.getMetabolism());
-        // Minimum is 0
-        if(personStatus.getHunger() == 0) {
-            personStatus.setHealth(Status.Health.DEAD);
-        }
-
-        // Update tiredness
-        personStatus.setTiredness(personStatus.getTiredness() - (100 - personAbilities.getStamina())/100);
-
-        personStatus.setCurrentCaptchas(personStatus.getCurrentCaptchas() + (int)Math.round( (personAbilities.getSpeed() * 0.1) + (personAbilities.getIq() * 0.1) * (personStatus.getTiredness() * 0.01)) );
-        //System.out.println("add c " + (int)( (personAbilities.getSpeed() * 0.1) + (personAbilities.getIq() * 0.1) * (personStatus.getTiredness() * 0.01)));
     }
 
     private void updatePersonAbilities(Person person) {

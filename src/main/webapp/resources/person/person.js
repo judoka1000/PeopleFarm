@@ -10,8 +10,6 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         }
 
         setFields(person){
-            console.log("Person:");
-            console.log(person);
             if (typeof this.id == 'undefined'){
                 this.status = person.status;
             } else {
@@ -33,10 +31,8 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         }
 
         getStatus(){
-            console.log("getstatus");
             var obj = this;
             var oldCollectedCaptchas = this.status.currentCaptchas;
-            console.log("old col:" + oldCollectedCaptchas);
             apiEngine.personStatus(this.id, function(response){
                 obj.setFields(response.data);
                 if(obj.status.health=="DEAD"){
@@ -52,7 +48,6 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         }
 
         getAdult(){
-            console.log("getadult");
             if(this.status.age >= 18) {
                 return "Adult";
             } else {
@@ -94,9 +89,6 @@ app.factory('personsFactory', ['apiEngine','$timeout',
 
     return {
         addPerson: function(person){
-            //var index = !persons.length ? 0 : persons.length;
-            //var test = apiEngine.people(function(response){});
-            //console.log("test: " + test);
             persons[person.id] = new Person(person);
             return persons;
         },

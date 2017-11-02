@@ -8,11 +8,15 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
     $scope.initializePeople = function() {
         apiEngine.people( function (response) {
-            console.log(response);
             $scope.persons = personsFactory.addPersons(response.data);
-            //$scope.persons = personsFactory.addPersons(response.data);
     })};
     $scope.initializePeople();
+
+    (function(){
+        apiEngine.getPlayername(function(response) {
+            $scope.playername = response.data.name;
+        });
+    })();
 
     $scope.cursor = "";
     $scope.clickAction = "";
@@ -22,11 +26,9 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.updateGamestate = function(){
         console.log("updategame");
         var persons = personsFactory.getPersons();
-
+        //console.log(persons);
         for (key in persons) {
             persons[key].getStatus();
-            console.log("person:");
-            console.log(persons[key]);
         }
         
         apiEngine.getScore(function(response){
@@ -62,28 +64,21 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 $scope.showPeopleId = person.id;
             break;
 
-            default:
-                apiEngine.people(function (response) {
-                    tPeople = response.data;
-                    angular.forEach(tPeople, function(value, key) {
-                        angular.forEach(value, function(value2, key2){
-                            $scope.people[key][key2] = value2;
-                        });
-                    });
+            case "collect":
+                apiEngine.personSettask(person.id,"collecting",function(response){
+                    person.status.currentCaptchas = 0;
                 });
-        }
+            break;
 
+            default:
+        }
     }
 
     $scope.removePeople = function(person){
         person.visible=false;
     }
 
-    $scope.getBarPc = function(val,reverse,min,max){
-        reverse = typeof reverse !== 'undefined' ? reverse : false;
-        min = typeof min !== 'undefined' ? min : 0;
-        max = typeof max !== 'undefined' ? max : 100;
-
+    $scope.getBarPc = function(val,reverse=false,min=0,max=100){
         var result = "";
         var tOkeLow = max*0.33;
         var tOkeHigh = max*0.66;
@@ -125,6 +120,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.newGameAction = function() {
         apiEngine.newGame(function(){$scope.initializePeople();});
     };
+
+    $scope.renamePlayer = function(newName) {
+        apiEngine.renamePlayer(newName, function(){});
+    }
 
     $scope.init();
 }

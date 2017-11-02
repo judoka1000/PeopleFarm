@@ -47,7 +47,7 @@ public class PersonController {
     @RequestMapping(value = "/main")
     public String main(Model model) {
         if(!model.containsAttribute("gameState")){
-            GameState gameState = new GameState();
+            GameState gameState = gameLogicService.newGame();
             gameStateService.save(gameState);
             model.addAttribute("gameState", gameState.getId());
         }
@@ -82,7 +82,7 @@ public class PersonController {
             case "collecting":
                 if(model.containsAttribute("gameState")){
                     GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-                    gameState.setScore(gameState.getScore() + state.getCurrentCaptchas());
+                    gameState.setScore(gameState.getScore() + (int)(state.getCurrentCaptchas() * GameLogicService.CAPTCHA_VALUE));
                     state.setCurrentCaptchas(0);
                     gameStateService.save(gameState);
                     savePersonState(person, state, response);
@@ -102,6 +102,31 @@ public class PersonController {
         response.setSucces(true);
         person.setStatus(state);
         personService.save(person);
+        return response;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/person/settask/{task}/{id1}/{id2}", method = RequestMethod.PUT)
+    public Response reproduce(@PathVariable int id1, @PathVariable int id2, Model model){
+        Response response = new Response(false);
+        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+        System.out.println("gameState: " + gameState);
+
+        Person parent1 = personService.findOne(id1);
+        Person parent2 = personService.findOne(id2);
+        System.out.println("Person " + parent1.getId() + " and person " + parent2.getId() + " are reproducing ");
+
+
+        Person newPerson = gameLogicService.newChild(parent1,parent2,gameState);
+        if(newPerson != null){
+            gameState.addPerson(newPerson);
+            newPerson.setGamestate(gameState);
+            personService.save(newPerson);
+            System.out.println("Person " + newPerson.getId() + " is born: " + newPerson);
+            response.setSucces(true);
+        } else {
+            response.setSucces(false);
+        }
         return response;
     }
 }

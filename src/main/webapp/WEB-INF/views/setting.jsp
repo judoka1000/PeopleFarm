@@ -15,7 +15,7 @@
 		</ul>
 		<div class="tab-content" id="myTabContent">
  			<div class="tab-pane fade show active" id="game" role="tabpanel" aria-labelledby="game-tab">
- 				<h1>Game</h1>
+ 				<h1>{{ playername }}&#39;s game</h1>
  				<div class="container">
  				    <div class="row">
          				<div id="gameButtons">
@@ -23,7 +23,7 @@
                 		</div>
  				    </div>
  					<div class="row">
-		 				<div id="playerScore">Score : {{score}}</div>
+		 				<div id="playerScore">$ {{score}}</div>
 		 			</div>
 		 			<div class="row">
 		 				<div id="actionButtons">
@@ -33,6 +33,7 @@
 							   <div id="actionKill" class="actionButton" ng-click="setClickAction('kill')"></div>
 							   <div id="actionTest" class="actionButton" ng-click="setClickAction('test')">test</div>
 							   <div id="actionInfo" class="actionButton" ng-click="setClickAction('info')">info</div>
+							   <div id="actionCollect" class="actionButton" ng-click="setClickAction('collect')">collect</div>
 						</div>
 					</div>
 				</div>
@@ -51,7 +52,8 @@
  			</div>
  			<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
  				<h1>Settings</h1>
- 			</div>
+    		    <input type="text" ng-model="playername" /><button ng-click="renamePlayer(playername)">Rename</button>
+    		</div>
  			<div class="tab-pane fade" id="dev-settings" role="tabpanel" aria-labelledby="dev-settings-tab">
  			    <div ng-app="PeopleApp" ng-controller="DevCtrl" ng-class="cursor">
                     <h1>Dev Settings</h1>

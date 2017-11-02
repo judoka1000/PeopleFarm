@@ -14,8 +14,11 @@ public class GameLogicService {
     @Autowired
     PersonService personService;
 
+    public static final double CAPTCHA_VALUE = 0.60;
+
     public GameState newGame() {
         GameState gameState = new GameState();
+        gameState.setPlayerName("Anonymous");
         gameState.addPerson(newPerson());
         gameState.addPerson(newPerson());
         gameState.addPerson(newPerson());
@@ -53,5 +56,42 @@ public class GameLogicService {
         person.getAbilities().setStamina(r.nextInt(5) + 3);
 
         return person;
+    }
+
+
+    public Person newChild(Person parent1, Person parent2, GameState gameState){
+        double maxVariance = 0.3;
+        if (parent1.getGender() == parent2.getGender()) {
+            System.out.println("Two people of the same gender cannot reproduce :(");
+        } else {
+            int avgSpeed = (parent1.getAbilities().getSpeed() + parent2.getAbilities().getSpeed())/2;
+            int speed = (int) Math.round(avgSpeed + (avgSpeed * getFactor(maxVariance)));
+
+            int avgIq = (parent1.getAbilities().getIq() + parent2.getAbilities().getIq())/2;
+            int iq = (int) Math.round(avgIq + (avgIq * getFactor(maxVariance)));
+
+            int avgMetabolism = (parent1.getAbilities().getMetabolism() + parent2.getAbilities().getMetabolism())/2;
+            int metabolism = (int) Math.round(avgMetabolism + (avgMetabolism * getFactor(maxVariance)));
+
+            int avgStamina = (parent1.getAbilities().getStamina() + parent2.getAbilities().getStamina())/2;
+            int stamina = (int) Math.round(avgStamina + (avgStamina * getFactor(maxVariance)));
+
+            Person person = newPerson();
+
+            person.getAbilities().setSpeed(speed);
+            person.getAbilities().setIq(iq);
+            person.getAbilities().setMetabolism(metabolism);
+            person.getAbilities().setStamina(stamina);
+
+            return person;
+        }
+        return null;
+    }
+
+    double getFactor(double max){
+        Random r = new Random();
+        // Return random number between -max and max
+        double polarity = r.nextBoolean() ? -1 : 1;
+        return polarity * ((double)r.nextInt((int)(max*10))/100);
     }
 }
