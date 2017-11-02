@@ -9,7 +9,8 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.initializePeople = function() {
         apiEngine.people( function (response) {
             $scope.persons = personsFactory.addPersons(response.data);
-    })};
+        });
+    };
     $scope.initializePeople();
 
     (function(){
@@ -17,6 +18,29 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
             $scope.playername = response.data.name;
         });
     })();
+
+    $scope.tiles = (function(){
+        var returnvalue = new Array(8);
+        for(i = 0; i < 8; i++) {
+            returnvalue[i] = new Array(8);
+            for(j = 0; j < 8; j++) {
+                returnvalue[i][j] = {x: i, y: j, type: null};
+            }
+        }
+        return returnvalue;
+    })();
+
+    $scope.$watchCollection('persons', function(newPersons, oldPersons) {
+        for(i = 0; i < 8; i++) {
+            for(j = 0; j < 8; j++) {
+                $scope.tiles[i][j].type = null;
+            }
+        }
+        angular.forEach(newPersons, function(value, key) {
+            $scope.tiles[value.getPosition().x][value.getPosition().y].type = 'person';
+            $scope.tiles[value.getPosition().x][value.getPosition().y].id = value.id;
+        });
+    });
 
     $scope.cursor = "";
     $scope.clickAction = "";
@@ -27,8 +51,6 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.updateGamestate = function(){
         console.log("updategame");
         var persons = personsFactory.getPersons();
-        //console.log(persons);
-
         for (key in persons) {
             persons[key].getStatus();
         }
