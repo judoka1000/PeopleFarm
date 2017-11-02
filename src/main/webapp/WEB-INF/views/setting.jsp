@@ -27,7 +27,8 @@
 		 			</div>
 		 			<div class="row">
 		 				<div id="actionButtons">
-							   <div id="actionEating" class="actionButton" ng-click="setClickAction('eat')"></div>
+							   <div id="actionEating" class="actionButton" ng-click="setClickAction('eatHamburger')"></div>
+							   <div id="actionDogfood" class="actionButton" ng-click="setClickAction('eatDogfood')"></div>
 							   <div id="actionSleeping" class="actionButton" ng-click="setClickAction('sleep')"></div>
 							   <div id="actionReproducing" class="actionButton" ng-click="setClickAction('reproduce')"></div>
 							   <div id="actionNone" class="actionButton" ng-click="actionNone()"></div>

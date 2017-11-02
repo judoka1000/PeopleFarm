@@ -63,9 +63,10 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             }
         }
 
-        eat(amount=10){
+        eat(food){
             var obj = this;
-            apiEngine.personSettask(this.id,"eating",function(response){
+            console.log("eating" + food);
+            apiEngine.personSettask(this.id,"eating" + food,function(response){
                 obj.getStatus();
             });
         }

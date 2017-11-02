@@ -27,7 +27,7 @@ app.factory('apiEngine', function apiEngine($http){
 
         personSettask: function(id,task,func){
             var functionPath = "/person/settask/" + task + "/" + id;
-            //console.log("Requesting " + functionPath);
+            console.log("Requesting " + functionPath);
             return $http.put(baseUrl + functionPath).then(func);
         },
 

@@ -42,10 +42,15 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         console.log("Person " + person.id + " clicked");
         switch($scope.clickAction) {
 
-            case "eat":
+            case "eatHamburger":
                 console.log("Starting to eat, njam njam njam");
-                person.eat();
+                person.eat("hamburger");
             break;
+
+            case "eatDogfood":
+                console.log("Starting to eat dogfood, woef");
+                person.eat("dogfood");
+                break;
 
             case "sleep":
                 console.log("zzz zzz zzz");

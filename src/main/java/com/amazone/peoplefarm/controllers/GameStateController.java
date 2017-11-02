@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -45,9 +46,16 @@ public class GameStateController {
 
     @ResponseBody
     @RequestMapping(value = "/score")
-    public String getGameState(Model model){
-        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-        return "" + gameState.getScore();
+    public String getGameState(Model model, HttpServletResponse response){
+        if(model.asMap().get("gameState") == null){
+            System.out.println("Gamestate = null");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return "";
+        } else {
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            return "" + gameState.getScore();
+        }
+
     }
 
     @ResponseBody
