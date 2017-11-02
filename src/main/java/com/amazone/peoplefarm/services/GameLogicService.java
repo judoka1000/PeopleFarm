@@ -18,6 +18,7 @@ public class GameLogicService {
 
     public GameState newGame() {
         GameState gameState = new GameState();
+        gameState.setPlayerName("Anonymous");
         gameState.addPerson(newPerson());
         gameState.addPerson(newPerson());
         gameState.addPerson(newPerson());

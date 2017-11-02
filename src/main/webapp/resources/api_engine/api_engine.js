@@ -81,6 +81,14 @@ app.factory('apiEngine', function apiEngine($http){
             var url = baseUrl + "/newgame";
             //console.log("Requesting /newgame");
             return $http.post(url).then(func);
+        },
+        renamePlayer: function(name, func) {
+            var url = baseUrl + "/rename/" + name;
+            return $http.post(url).then(func);
+        },
+        getPlayername: function(func) {
+            var url = baseUrl + "/rename";
+            return $http.get(url).then(func);
         }
     };
 });

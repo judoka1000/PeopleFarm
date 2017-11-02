@@ -47,7 +47,7 @@ public class PersonController {
     @RequestMapping(value = "/main")
     public String main(Model model) {
         if(!model.containsAttribute("gameState")){
-            GameState gameState = new GameState();
+            GameState gameState = gameLogicService.newGame();
             gameStateService.save(gameState);
             model.addAttribute("gameState", gameState.getId());
         }
