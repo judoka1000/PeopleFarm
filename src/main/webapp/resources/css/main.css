@@ -174,7 +174,6 @@ html, body {
     transition:left .5s ease 0s, width .5s linear 0s;
 }
 
-
 .percBarContainer.good {
     background-color: lightgreen;
 }

@@ -59,7 +59,7 @@
                     <h1>Dev Settings</h1>
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" ng-model="mortalEnabled" ng-change="mortalChanged()">
+                        <input class="form-check-input" type="checkbox" ng-model="devSettings.mortal" ng-change="settingsChanged()">
                         Mortal
                       </label>
                     </div>
