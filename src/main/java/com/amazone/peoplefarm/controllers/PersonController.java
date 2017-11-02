@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.amazone.peoplefarm.model.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -28,8 +31,11 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
-    public Person getPerson(@PathVariable int id){
+    public Person getPerson(@PathVariable int id, HttpServletResponse response){
         Person person = personService.findOne(id);
+        if(person == null){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
         return person;
     }
 
@@ -61,6 +67,18 @@ public class PersonController {
         return gameState.getPersons();
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/createperson", method = RequestMethod.POST)
+    public Person createPerson(Model model, @RequestBody Person person){
+        GameState gameState = gameStateService.findOne((Integer)model.asMap().get("gameState"));
+        person.setGamestate(gameState);
+        gameState.addPerson(person);
+        person.getStatus().setHealth(Status.Health.HEALTHY);
+
+        personService.save(person);
+        return person;
+    }
+
     //TODO: - PUT  /person/settask/:task/:id      -> set task for person with id
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
@@ -69,11 +87,6 @@ public class PersonController {
        Status state = person.getStatus();
        Response response = new Response(false);
         switch (task){
-            case "eating":
-                int food = 100;
-                state.setHunger(state.getHunger()+ food);
-                savePersonState(person, state, response);
-                break;
             case "sleeping":
                 int sleepTime = 100;
                 state.setTiredness(state.getTiredness()+sleepTime);
@@ -98,6 +111,33 @@ public class PersonController {
         return response;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/person/settask/eating{food}/{id}", method = RequestMethod.PUT)
+    public Response setTaskEating(@PathVariable String food, @PathVariable int id, Model model){
+        Person person = personService.findOne(id);
+        Status state = person.getStatus();
+        Response response = new Response(false);
+        int nutrients = 0;
+        int cost = 0;
+        switch (food){
+            case "hamburger":
+                nutrients = 100;
+                cost = 3;
+                break;
+            case "dogfood":
+                nutrients = 50;
+                cost = 1;
+            default:
+                break;
+        }
+        state.setHunger(state.getHunger()+ nutrients);
+        savePersonState(person, state, response);
+        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+        gameState.setScore(gameState.getScore()-cost);
+        gameStateService.save(gameState);
+        return response;
+    }
+
     Response savePersonState(Person person , Status state, Response response){
         response.setSucces(true);
         person.setStatus(state);
@@ -107,8 +147,7 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id1}/{id2}", method = RequestMethod.PUT)
-    public Response reproduce(@PathVariable int id1, @PathVariable int id2, Model model){
-        Response response = new Response(false);
+    public Map reproduce(@PathVariable int id1, @PathVariable int id2, Model model){
         GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
         System.out.println("gameState: " + gameState);
 
@@ -118,14 +157,17 @@ public class PersonController {
 
 
         Person newPerson = gameLogicService.newChild(parent1,parent2,gameState);
+        Map<String, String> response = new HashMap<String, String>();
         if(newPerson != null){
             gameState.addPerson(newPerson);
             newPerson.setGamestate(gameState);
             personService.save(newPerson);
             System.out.println("Person " + newPerson.getId() + " is born: " + newPerson);
-            response.setSucces(true);
+
+            response.put("succes", "true");
+            response.put("id",""+newPerson.getId());
         } else {
-            response.setSucces(false);
+            response.put("succes", "false");
         }
         return response;
     }

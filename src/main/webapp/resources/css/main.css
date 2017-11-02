@@ -115,7 +115,6 @@ html, body {
     transition:left .5s ease 0s, width .5s linear 0s;
 }
 
-
 .percBarContainer.good {
     background-color: lightgreen;
 }
@@ -171,6 +170,12 @@ p.percLabel{
     background: url("../images/hamburger.png");
 }
 
+#actionDogfood{
+    background: url("../images/dogfood.jpg");
+    background-position-x: center;
+    background-repeat: no-repeat;
+}
+
 #actionSleeping{
     background: url("../images/sleep.png");
 }
@@ -195,8 +200,12 @@ p.percLabel{
     background-color: lightgreen;
 }
 
-.eatCur {
+.eatHamburgerCur {
     cursor: url('../images/hamburger.png'), auto;
+}
+
+.eatDogfoodCur {
+    cursor: url('../images/dogfood.jpg'), auto;
 }
 
 .sleepCur{

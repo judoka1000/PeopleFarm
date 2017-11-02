@@ -63,6 +63,8 @@ public class GameLogicService {
         double maxVariance = 0.3;
         if (parent1.getGender() == parent2.getGender()) {
             System.out.println("Two people of the same gender cannot reproduce :(");
+        } else if (parent1.getStatus().getAge() <= 18 || parent2.getStatus().getAge() <= 18) {
+            System.out.println("A person younger than 18 cannot reproduce :(");
         } else {
             int avgSpeed = (parent1.getAbilities().getSpeed() + parent2.getAbilities().getSpeed())/2;
             int speed = (int) Math.round(avgSpeed + (avgSpeed * getFactor(maxVariance)));
