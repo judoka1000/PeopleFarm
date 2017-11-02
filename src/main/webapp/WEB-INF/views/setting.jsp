@@ -52,10 +52,12 @@
 					<div>Metabolism : {{persons[showPeopleId].abilities.metabolism}}</div>
 				</div>
  			</div>
+
  			<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
  				<h1>Settings</h1>
     		    <input type="text" ng-model="playername" /><button ng-click="renamePlayer(playername)">Rename</button>
     		</div>
+
  			<div class="tab-pane fade" id="dev-settings" role="tabpanel" aria-labelledby="dev-settings-tab">
  			    <div ng-app="PeopleApp" ng-controller="DevCtrl" ng-class="cursor">
                     <h1>Dev Settings</h1>
@@ -65,6 +67,84 @@
                         Mortal
                       </label>
                     </div>
+                    </br>
+
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#personModal">Create Person</button>
+
+                    <div class="modal fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="personModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="personModalLabel">Create a Person!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                                <form>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" name="genderRadios" type="radio" id="maleRadio" value="MALE" ng-model="newPerson.gender" ng-checked="true"> Male
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" name="genderRadios" type="radio" id="femaleRadio" value="FEMALE" ng-model="newPerson.gender" > Female
+                                        </label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="inputAge" class="col-sm-3 col-form-label">Age</label>
+                                        <div class="col-sm-9">
+                                            <input type="age" class="form-control" id="inputAge" placeholder="Age" ng-model="newPerson.status.age">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                         <label for="inputIQ" class="col-sm-3 col-form-label">IQ</label>
+                                         <div class="col-sm-9">
+                                            <input type="iq" class="form-control" id="inputIQ" placeholder="IQ" ng-model="newPerson.abilities.iq">
+                                         </div>
+                                    </div>
+                                    <div class="form-group row">
+                                         <label for="inputSpeed" class="col-sm-3 col-form-label">Speed</label>
+                                         <div class="col-sm-9">
+                                            <input type="speed" class="form-control" id="inputSpeed" placeholder="Speed" ng-model="newPerson.abilities.speed">
+                                         </div>
+                                    </div>
+                                    <div class="form-group row">
+                                         <label for="inputMetabolism" class="col-sm-3 col-form-label">Metabolism</label>
+                                         <div class="col-sm-9">
+                                            <input type="metabolism" class="form-control" id="inputMetabolism" placeholder="Metabolism" ng-model="newPerson.abilities.metabolism">
+                                         </div>
+                                    </div>
+                                    <div class="form-group row">
+                                         <label for="inputStamina" class="col-sm-3 col-form-label">Stamina</label>
+                                         <div class="col-sm-9">
+                                            <input type="stamina" class="form-control" id="inputStamina" placeholder="Stamina" ng-model="newPerson.abilities.stamina">
+                                         </div>
+                                    </div>
+                                    <div class="form-group row">
+                                         <label for="inputTiredness" class="col-sm-3 col-form-label">Tiredness</label>
+                                         <div class="col-sm-9">
+                                            <input type="tiredness" class="form-control" id="inputTiredness" placeholder="Tiredness" ng-model="newPerson.status.tiredness">
+                                         </div>
+                                    </div>
+                                    <div class="form-group row">
+                                         <label for="inputHunger" class="col-sm-3 col-form-label">Hunger</label>
+                                         <div class="col-sm-9">
+                                            <input type="hunger" class="form-control" id="inputHunger" placeholder="Hunger" ng-model="newPerson.status.hunger">
+                                         </div>
+                                    </div>
+                                </form>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" ng-click="createPerson()" data-dismiss="modal">Create</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
                 </div>
             </div>
 		</div>
