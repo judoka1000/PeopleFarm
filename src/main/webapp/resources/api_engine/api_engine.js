@@ -32,9 +32,9 @@ app.factory('apiEngine', function apiEngine($http){
         },
 
         personSetTwoTask: function(id1, id2, task,func){
-            var functionPath = "/person/settask/:" + task + "/+" + id1 + "/" + id2;
+            var functionPath = "/person/settask/" + task + "/" + id1 + "/" + id2;
             console.log("Requesting " + functionPath);
-            return $http.get(baseUrl + functionPath).then(func);
+            return $http.put(baseUrl + functionPath).then(func);
         },
 
         delete: function(id,func){
