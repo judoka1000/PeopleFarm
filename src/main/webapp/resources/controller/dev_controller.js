@@ -2,10 +2,11 @@ var app=angular.module('PeopleApp');
 app.controller('DevCtrl', DevCtrl);
 
 function DevCtrl($scope,$http,$document,$interval,$timeout, apiEngine){
+    var baseUrl = "http://localhost:8080/peoplefarm";
     $scope.devSettings = {};
 
     $scope.init = function(){
-        var url = "http://localhost:8080/peoplefarm/getDevSettings";
+        var url = baseUrl + "/getDevSettings";
         $http.get(url).then(function(response){
             $scope.devSettings.mortal = response.data.mortal;
 
@@ -13,18 +14,10 @@ function DevCtrl($scope,$http,$document,$interval,$timeout, apiEngine){
     }
 
     $scope.settingsChanged = function() {
-        var url = "http://localhost:8080/peoplefarm/putDevSettings";
-        $http({
-            method : "PUT",
-            url : url,
-            data : angular.toJson($scope.devSettings),
-            headers : {
-                'Content-Type' : 'application/json'
-            }
-            }).then(function (response) {
-                 console.log(response);
-            }, function error(response) {
-            });
+        var url = baseUrl + "/putDevSettings";
+        $http.put(url, $scope.devSettings).then(function(response){
+             console.log(response);
+        });
     };
 
     $scope.init();

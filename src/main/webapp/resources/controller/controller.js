@@ -28,6 +28,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         console.log("updategame");
         var persons = personsFactory.getPersons();
         //console.log(persons);
+
         for (key in persons) {
             persons[key].getStatus();
         }
@@ -131,6 +132,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
     $scope.newGameAction = function() {
         apiEngine.newGame(function(){$scope.initializePeople();});
+        $scope.updateGamestate();
     };
 
     $scope.renamePlayer = function(newName) {
