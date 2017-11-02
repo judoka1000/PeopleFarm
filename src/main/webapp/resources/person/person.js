@@ -34,6 +34,7 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             var obj = this;
             var oldCollectedCaptchas = this.status.currentCaptchas;
             apiEngine.personStatus(this.id, function(response){
+
                 obj.setFields(response.data);
                 if(obj.status.health=="DEAD"){
                     obj.die();
@@ -43,6 +44,13 @@ app.factory('personsFactory', ['apiEngine','$timeout',
                     $timeout(function(person){person.status.captchaChange="";},300,true,obj);
                     var audio = new Audio('resources/sounds/coin.mp3');
                     audio.play();
+                }
+            },
+            //on error
+            function(response){
+                if(response.status == 404){
+                    console.log(obj.id + " not found. Remove.");
+                    obj.remove();
                 }
             });
         }
@@ -55,9 +63,10 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             }
         }
 
-        eat(amount=10){
+        eat(food){
             var obj = this;
-            apiEngine.personSettask(this.id,"eating",function(response){
+            console.log("eating" + food);
+            apiEngine.personSettask(this.id,"eating" + food,function(response){
                 obj.getStatus();
             });
         }
@@ -71,6 +80,7 @@ app.factory('personsFactory', ['apiEngine','$timeout',
 
         remove(){
             this.visible = false;
+            delete persons[this.id];
         }
 
         die(){
@@ -78,7 +88,7 @@ app.factory('personsFactory', ['apiEngine','$timeout',
 
             });
             this.sprite = "Tombstone";
-            $timeout(function(obj, persons){delete persons[obj.id];},3500,true,this,persons);
+            $timeout(function(obj, persons){obj.remove();},3500,true,this,persons);
             var audio = new Audio('resources/sounds/screem.mp3');
             audio.play();
 
