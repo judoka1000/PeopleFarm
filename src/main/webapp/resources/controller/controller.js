@@ -34,6 +34,13 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         
         apiEngine.getScore(function(response){
         	$scope.score = response.data;
+        },
+        function(response){
+            if($scope.startingGame == false) {
+                console.log("No session on server. Starting new game.");
+                $scope.newGameAction();
+                $scope.startingGame = true;
+            }
         });
     }
 
@@ -62,7 +69,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
             case "test":
                 console.log("test");
-                person.status.currentCaptchas += 1;2
+                person.status.currentCaptchas += 1;
             break;
 
             case "info":
@@ -124,7 +131,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     }
 
     $scope.newGameAction = function() {
-        apiEngine.newGame(function(){$scope.initializePeople();});
+        apiEngine.newGame(function(){$scope.initializePeople();$scope.startingGame=false;});
         $scope.updateGamestate();
     };
 
