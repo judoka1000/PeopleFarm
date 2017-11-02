@@ -42,10 +42,10 @@ app.factory('apiEngine', function apiEngine($http){
             //console.log("Requesting " + functionPath + " (delete)");
             return $http.delete(baseUrl + functionPath).then(func);
         },
-        getScore: function(func){
+        getScore: function(func, errFunc=function(){}){
         	var url = baseUrl + "/score";
         	//console.log("Requesting score");
-        	return $http.get(url).then(func);
+        	return $http.get(url).then(func,errFunc);
         },
         newGame: function(func) {
             var url = baseUrl + "/newgame";
