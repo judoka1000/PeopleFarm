@@ -12,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 
 @Controller
@@ -54,6 +57,24 @@ public class GameStateController {
         gameState.getDevSettings().setMortal(!gameState.getDevSettings().isMortal());
         gameStateService.save(gameState);
         return new Response(true);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/rename/{name}", method = RequestMethod.POST)
+    public Response changePlayerName(Model model, @PathVariable String name) {
+        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+        gameState.setPlayerName(name);
+        gameStateService.save(gameState);
+        return new Response(true);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/rename", method = RequestMethod.GET)
+    public Map<String, String> getPlayerName(Model model) {
+        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+        Map<String, String> a = new HashMap<String, String>();
+        a.put("name", gameState.getPlayerName());
+        return a;
     }
 
     @ResponseBody
