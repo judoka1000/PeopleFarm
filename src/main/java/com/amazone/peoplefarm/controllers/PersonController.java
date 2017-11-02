@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.amazone.peoplefarm.model.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -28,8 +31,11 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
-    public Person getPerson(@PathVariable int id){
+    public Person getPerson(@PathVariable int id, HttpServletResponse response){
         Person person = personService.findOne(id);
+        if(person == null){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
         return person;
     }
 
@@ -107,8 +113,7 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id1}/{id2}", method = RequestMethod.PUT)
-    public Response reproduce(@PathVariable int id1, @PathVariable int id2, Model model){
-        Response response = new Response(false);
+    public Map reproduce(@PathVariable int id1, @PathVariable int id2, Model model){
         GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
         System.out.println("gameState: " + gameState);
 
@@ -118,14 +123,17 @@ public class PersonController {
 
 
         Person newPerson = gameLogicService.newChild(parent1,parent2,gameState);
+        Map<String, String> response = new HashMap<String, String>();
         if(newPerson != null){
             gameState.addPerson(newPerson);
             newPerson.setGamestate(gameState);
             personService.save(newPerson);
             System.out.println("Person " + newPerson.getId() + " is born: " + newPerson);
-            response.setSucces(true);
+
+            response.put("succes", "true");
+            response.put("id",""+newPerson.getId());
         } else {
-            response.setSucces(false);
+            response.put("succes", "false");
         }
         return response;
     }

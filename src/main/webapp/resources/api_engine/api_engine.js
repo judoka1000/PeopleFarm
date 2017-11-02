@@ -12,11 +12,10 @@ app.factory('apiEngine', function apiEngine($http){
             else return $http.get(baseUrl + functionPath).then(func);
         },
 
-        personStatus: function(id,func){
+        personStatus: function(id,func,errFunc=function(){}){
             var functionPath = "/person/" + id;
             //console.log("Requesting " + functionPath);
-            if(mock) func(getMockData("/person/status"));
-            else return $http.get(baseUrl + functionPath).then(func);
+            return $http.get(baseUrl + functionPath).then(func, errFunc);
         },
 
         personTask: function(id,func){
@@ -33,44 +32,15 @@ app.factory('apiEngine', function apiEngine($http){
         },
 
         personSetTwoTask: function(id1, id2, task,func){
-            var functionPath = "/person/settask/:" + task + "/:+" + id1 + "/:" + id2;
+            var functionPath = "/person/settask/:" + task + "/+" + id1 + "/" + id2;
             console.log("Requesting " + functionPath);
-            if(mock) func(getMockData("/person/settask2"));
-            else return $http.get(baseUrl + "status.jsp?task=getAll").then(func);
+            return $http.get(baseUrl + functionPath).then(func);
         },
 
         delete: function(id,func){
             var functionPath = "/person/" + id;
             //console.log("Requesting " + functionPath + " (delete)");
             return $http.delete(baseUrl + functionPath).then(func);
-        },
-
-        ppeople: function(func){
-            //console.log("Requesting /persons/");
-            return $http.get(baseUrl + "status.jsp?task=getAll").then(func);
-        },
-        updateStatus: function(id, func){
-            var url = baseUrl + "status.jsp?id=" + id + "&task=updatePerson";
-            //console.log("Requesting /person/status/:" + id);
-            //console.log("-> on " + url)
-            return $http.get(url).then(func);
-        },
-        task: function(id, func){
-            var url = baseUrl + "task.jsp?id=" + id;
-            //console.log("Requesting /person/task/:" + id);
-            //console.log("-> on " + url)
-            return $http.get(url).then(func);
-        },
-        reset: function(func){
-            var url = baseUrl + "status.jsp?task=reset";
-            //console.log("Requesting reset");
-            return $http.get(url).then(func);
-        },
-        setTask: function(id, task, func){
-            var url = baseUrl + "status.jsp?id=" + id + "&task=" + task;
-            //console.log("Requesting /person/settask/:" + task + "/" + id);
-            //console.log("-> on " + url)
-            return $http.get(url).then(func);
         },
         getScore: function(func){
         	var url = baseUrl + "/score";
