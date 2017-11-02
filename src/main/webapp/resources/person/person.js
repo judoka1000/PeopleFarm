@@ -7,6 +7,8 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         constructor(person){
             this.setFields(person);
             this.visible = true;
+            this.x = Math.floor(Math.random() * 8);
+            this.y = Math.floor(Math.random() * 8);
         }
 
         setFields(person){
@@ -60,6 +62,13 @@ app.factory('personsFactory', ['apiEngine','$timeout',
                 return "Adult";
             } else {
                 return "Child";
+            }
+        }
+
+        getPosition() {
+            return {
+                x: this.x,
+                y: this.y
             }
         }
 
