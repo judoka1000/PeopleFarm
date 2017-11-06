@@ -130,4 +130,22 @@ public class Person {
     public void setGamestate(GameState gamestate) {
         this.gamestate = gamestate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person)) return false;
+
+        Person person = (Person) o;
+
+        if (getId() != person.getId()) return false;
+        return getGamestate() != null ? getGamestate().equals(person.getGamestate()) : person.getGamestate() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId();
+        result = 31 * result + (getGamestate() != null ? getGamestate().hashCode() : 0);
+        return result;
+    }
 }

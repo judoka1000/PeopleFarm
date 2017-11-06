@@ -58,16 +58,19 @@ public class PersonController {
                 if (person.getStatus().getHealth() == Status.Health.DEAD) {
                     GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
                     List<Person> persons = gameState.getPersons();
-                    persons.remove(person);
-                    gameState.setPersons(persons);
-                    gameStateService.save(gameState);
+                    if (persons.remove(person)) {
+                        gameState.setPersons(persons);
+                        gameStateService.save(gameState);
 
-                    return new Response(true);
+                        return new Response(true);
+                    } else {
+                        throw new PersonNotFoundException("Persoon niet gevonden in gamestate");
+                    }
                 } else {
                     throw new PersonException("Niet dood");
                 }
             } else {
-                throw new PersonNotFoundException("Person niet gevonden");
+                throw new PersonNotFoundException("Person niet gevonden in database");
             }
         } catch (PersonNotFoundException e) {
             httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
