@@ -30,17 +30,19 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         return returnvalue;
     })();
 
-    $scope.$watchCollection('persons', function(newPersons, oldPersons) {
+    $scope.updateRoomGrid = function() {
         for(i = 0; i < 8; i++) {
             for(j = 0; j < 8; j++) {
                 $scope.tiles[i][j].type = null;
             }
         }
-        angular.forEach(newPersons, function(value, key) {
+        angular.forEach($scope.persons, function(value, key) {
             $scope.tiles[value.getPosition().x][value.getPosition().y].type = 'person';
             $scope.tiles[value.getPosition().x][value.getPosition().y].id = value.id;
         });
-    });
+    }
+
+    $scope.$watchCollection('persons', $scope.updateRoomGrid);
 
     $scope.cursor = "";
     $scope.clickAction = "";
@@ -53,6 +55,8 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         var persons = personsFactory.getPersons();
         for (key in persons) {
             persons[key].getStatus();
+            persons[key].move();
+            $scope.updateRoomGrid();
         }
         
         apiEngine.getScore(function(response){
@@ -96,7 +100,19 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                     console.log("2 persons selected, reproducing...");
                     person.reproducing = true;
                     person.reproduce($scope.person2);
-                    $scope.person2 = "";
+                    apiEngine.personSetTwoTask(person.id,$scope.person2.id,"reproducing",function(response){
+                        person.reproducing = false;
+                        $scope.person2.reproducing = false;
+                        person.childId = response.data.id;
+                        console.log("in person");
+                        console.log(person.childId);
+                        apiEngine.personStatus(person.childId,function(response){
+                            console.log(response.data);
+                            personsFactory.addPerson(response.data);
+                            $scope.updateGamestate();
+                            $scope.person2 = "";
+                        });
+                    });
                 }
                 break;
 
