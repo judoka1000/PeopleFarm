@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import com.amazone.peoplefarm.model.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@Transactional
 @Controller
 @SessionAttributes("gameState")
 public class PersonController {
@@ -46,10 +47,26 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
-    public Response deletePerson(@PathVariable int id) {
+    public Response deletePerson(Model model, @PathVariable int id) {
+        System.out.println("!!!!!!!!!!!!!");
         Person person = personService.findOne(id);
         if(person.getStatus().getHealth() == Status.Health.DEAD) {
-            personService.delete(person);
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            List<Person> persons = gameState.getPersons();
+
+            Person x = null;
+            for(Person p:persons){
+               if(p.getId() == id){
+                   x =  p;
+                   break;
+               }
+            }
+            if(x!=null)persons.remove(x);
+
+            gameState.setPersons(persons);
+            gameStateService.save(gameState);
+
+            System.out.println(persons);
             return new Response(true);
         }
         return new Response(false);

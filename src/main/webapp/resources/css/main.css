@@ -429,6 +429,16 @@ footer {
     font-size: 0.8em;
 }
 
+.roomPeople .imgContainer .reproducing{
+    background: url("../images/heart.png");
+    display: block;
+    float: left;
+    width: 80%;
+    height: 60%;
+    background-size: 30px 30px;
+    margin-top: 20px;
+}
+
 .spriteTombstone .overview{
     border-color: grey;
 }
