@@ -96,7 +96,19 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                     console.log("2 persons selected, reproducing...");
                     person.reproducing = true;
                     person.reproduce($scope.person2);
-                    $scope.person2 = "";
+                    apiEngine.personSetTwoTask(person.id,$scope.person2.id,"reproducing",function(response){
+                        person.reproducing = false;
+                        $scope.person2.reproducing = false;
+                        person.childId = response.data.id;
+                        console.log("in person");
+                        console.log(person.childId);
+                        apiEngine.personStatus(person.childId,function(response){
+                            console.log(response.data);
+                            personsFactory.addPerson(response.data);
+                            $scope.updateGamestate();
+                            $scope.person2 = "";
+                        });
+                    });
                 }
                 break;
 
