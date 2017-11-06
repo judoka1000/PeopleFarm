@@ -40,10 +40,10 @@ public class PersonController {
         try {
             Person person = personService.findOne(id);
             if (person == null) throw new PersonNotFoundException("Person " + id + " not found");
-            return new Response<Person>(true,person);
+            return new Response<>(true,person);
         } catch (PersonNotFoundException e){
             httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return new Response(false, e);
+            return new Response<>(false, e);
         }
     }
 
@@ -58,6 +58,7 @@ public class PersonController {
                 if (person.getStatus().getHealth() == Status.Health.DEAD) {
                     GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
                     List<Person> persons = gameState.getPersons();
+
                     if (persons.remove(person)) {
                         gameState.setPersons(persons);
                         gameStateService.save(gameState);
@@ -78,6 +79,9 @@ public class PersonController {
         } catch (PersonException e){
             httpResponse.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return new Response(false, e);
+        } catch (Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response(false, e);
         }
     }
     @RequestMapping(value = "/main")
@@ -92,24 +96,33 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
-    public List<Person> getPersons(Model model){
-        GameState gameState = gameStateService.findOne((Integer)model.asMap().get("gameState"));
-        return gameState.getPersons();
+    public Response<List<Person>> getPersons(Model model, HttpServletResponse httpResponse){
+        try {
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            return new Response<>(true, gameState.getPersons());
+        } catch (Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response<>(false, e);
+        }
     }
 
     @ResponseBody
     @RequestMapping(value = "/createperson", method = RequestMethod.POST)
-    public Person createPerson(Model model, @RequestBody Person person){
-        GameState gameState = gameStateService.findOne((Integer)model.asMap().get("gameState"));
-        person.setGamestate(gameState);
-        gameState.addPerson(person);
-        person.getStatus().setHealth(Status.Health.HEALTHY);
+    public Response<Person> createPerson(Model model, @RequestBody Person person, HttpServletResponse httpResponse){
+        try {
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            person.setGamestate(gameState);
+            gameState.addPerson(person);
+            person.getStatus().setHealth(Status.Health.HEALTHY);
 
-        personService.save(person);
-        return person;
+            personService.save(person);
+            return new Response<>(true, person);
+        } catch (Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response<>(false, e);
+        }
     }
 
-    //TODO: - PUT  /person/settask/:task/:id      -> set task for person with id
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
     public Response setTask(@PathVariable String task, @PathVariable int id, Model model){
@@ -187,7 +200,7 @@ public class PersonController {
 
 
         Person newPerson = gameLogicService.newChild(parent1,parent2,gameState);
-        Map<String, String> response = new HashMap<String, String>();
+        Map<String, String> response = new HashMap<>();
         if(newPerson != null){
             gameState.addPerson(newPerson);
             newPerson.setGamestate(gameState);
