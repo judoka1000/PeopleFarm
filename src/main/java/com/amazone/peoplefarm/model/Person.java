@@ -139,7 +139,7 @@ public class Person {
         Person person = (Person) o;
 
         if (getId() != person.getId()) return false;
-        return getGamestate() != null ? getGamestate().equals(person.getGamestate()) : person.getGamestate() == null;
+        return getGamestate() != null ? getGamestate().getId() == person.getGamestate().getId() : person.getGamestate() == null;
     }
 
     @Override
