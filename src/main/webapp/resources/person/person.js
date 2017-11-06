@@ -7,6 +7,9 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         constructor(person){
             this.setFields(person);
             this.visible = true;
+            this.reproducing = false;
+            this.x = Math.floor(Math.random() * 8);
+            this.y = Math.floor(Math.random() * 8);
         }
 
         setFields(person){
@@ -63,6 +66,13 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             }
         }
 
+        getPosition() {
+            return {
+                x: this.x,
+                y: this.y
+            }
+        }
+
         eat(food){
             var obj = this;
             console.log("eating" + food);
@@ -74,6 +84,13 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         sleep(amount=10){
             var obj = this;
             apiEngine.personSettask(this.id,"sleeping",function(response){
+                obj.getStatus();
+            });
+        }
+
+        reproduce(person){
+            var obj = this;
+            apiEngine.personSetTwoTask(this.id,person.id,"reproducing",function(response){
                 obj.getStatus();
             });
         }

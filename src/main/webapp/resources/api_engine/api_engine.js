@@ -32,9 +32,9 @@ app.factory('apiEngine', function apiEngine($http){
         },
 
         personSetTwoTask: function(id1, id2, task,func){
-            var functionPath = "/person/settask/:" + task + "/+" + id1 + "/" + id2;
+            var functionPath = "/person/settask/" + task + "/" + id1 + "/" + id2;
             console.log("Requesting " + functionPath);
-            return $http.get(baseUrl + functionPath).then(func);
+            return $http.put(baseUrl + functionPath).then(func);
         },
 
         delete: function(id,func){
@@ -42,10 +42,10 @@ app.factory('apiEngine', function apiEngine($http){
             //console.log("Requesting " + functionPath + " (delete)");
             return $http.delete(baseUrl + functionPath).then(func);
         },
-        getScore: function(func){
+        getScore: function(func, errFunc=function(){}){
         	var url = baseUrl + "/score";
         	//console.log("Requesting score");
-        	return $http.get(url).then(func);
+        	return $http.get(url).then(func,errFunc);
         },
         newGame: function(func) {
             var url = baseUrl + "/newgame";

@@ -9,7 +9,8 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.initializePeople = function() {
         apiEngine.people( function (response) {
             $scope.persons = personsFactory.addPersons(response.data);
-    })};
+        });
+    };
     $scope.initializePeople();
 
     (function(){
@@ -18,22 +19,51 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         });
     })();
 
+    $scope.tiles = (function(){
+        var returnvalue = new Array(8);
+        for(i = 0; i < 8; i++) {
+            returnvalue[i] = new Array(8);
+            for(j = 0; j < 8; j++) {
+                returnvalue[i][j] = {x: i, y: j, type: null};
+            }
+        }
+        return returnvalue;
+    })();
+
+    $scope.$watchCollection('persons', function(newPersons, oldPersons) {
+        for(i = 0; i < 8; i++) {
+            for(j = 0; j < 8; j++) {
+                $scope.tiles[i][j].type = null;
+            }
+        }
+        angular.forEach(newPersons, function(value, key) {
+            $scope.tiles[value.getPosition().x][value.getPosition().y].type = 'person';
+            $scope.tiles[value.getPosition().x][value.getPosition().y].id = value.id;
+        });
+    });
+
     $scope.cursor = "";
     $scope.clickAction = "";
     $scope.showPeopleId = -1;
     $scope.score = 0;
+    $scope.person2 = "";
     
     $scope.updateGamestate = function(){
         console.log("updategame");
         var persons = personsFactory.getPersons();
-        //console.log(persons);
-
         for (key in persons) {
             persons[key].getStatus();
         }
         
         apiEngine.getScore(function(response){
         	$scope.score = response.data;
+        },
+        function(response){
+            if($scope.startingGame == false) {
+                console.log("No session on server. Starting new game.");
+                $scope.newGameAction();
+                $scope.startingGame = true;
+            }
         });
     }
 
@@ -56,13 +86,27 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 person.sleep();
                 break;
 
+            case "reproduce":
+                if($scope.person2 == ""){
+                    console.log("1 person selected");
+                    person.reproducing = true;
+                    $scope.person2 = person;
+                }
+                else {
+                    console.log("2 persons selected, reproducing...");
+                    person.reproducing = true;
+                    person.reproduce($scope.person2);
+                    $scope.person2 = "";
+                }
+                break;
+
             case "kill":
                 person.die();
             break;
 
             case "test":
                 console.log("test");
-                person.status.currentCaptchas += 1;2
+                person.status.currentCaptchas += 1;
             break;
 
             case "info":
@@ -124,7 +168,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     }
 
     $scope.newGameAction = function() {
-        apiEngine.newGame(function(){$scope.initializePeople();});
+        apiEngine.newGame(function(){$scope.initializePeople();$scope.startingGame=false;});
         $scope.updateGamestate();
     };
 
