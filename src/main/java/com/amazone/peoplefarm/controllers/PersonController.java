@@ -48,40 +48,27 @@ public class PersonController {
     @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
     public Response deletePerson(Model model, @PathVariable int id, HttpServletResponse httpResponse) {
         try {
+
             Person person = personService.findOne(id);
-            if (person.getStatus().getHealth() == Status.Health.DEAD) {
-                GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-                List<Person> persons = gameState.getPersons();
+            if(person != null) {
 
-                Person x = null;
-                for (Person p : persons) {
-                    if (p.getId() == id) {
-                        x = p;
-                        break;
-                    }
+                if (person.getStatus().getHealth() == Status.Health.DEAD) {
+                    GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+                    List<Person> persons = gameState.getPersons();
+                    persons.remove(person);
+                    gameState.setPersons(persons);
+                    gameStateService.save(gameState);
+
+                    return new Response(true);
+                } else {
+                    throw new Exception("Niet dood");
                 }
-                if (x != null) {
-                    if (persons.remove(x)) {
-                        //succes
-
-                    } else {
-                        throw new PersonNotFound("Person not found");
-
-
-                    }
-                }
-
-                gameState.setPersons(persons);
-                gameStateService.save(gameState);
-
-                System.out.println(persons);
-                return new Response(true);
             } else {
-                throw new Exception("Niet dood");
+                throw new PersonNotFound("Person niet gevonden");
             }
         } catch (Exception e) {
             httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return new Response(false, "fout", e);
+            return new Response(false, e);
 
         }
     }
