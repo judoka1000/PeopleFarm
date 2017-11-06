@@ -3,6 +3,10 @@ html, body {
     height: 100%;
 }
 
+textarea {
+   resize: none;
+}
+
 .container-fluid{
 	height : 90%;
 	padding-top: 10px;

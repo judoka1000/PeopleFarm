@@ -72,6 +72,10 @@
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#personModal">Create Person</button>
                     <jsp:include page="settings/createperson.jsp" />
 
+                    <div class="form-group">
+                        <label for="sessionid">SessionID:</label>
+                        <textarea class="form-control" rows="2" id="sessionid" ng-click-copy={{cookieInfo}} readonly>{{cookieInfo}}</textarea>
+                    </div>
                 </div>
             </div>
 		</div>
