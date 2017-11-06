@@ -32,19 +32,19 @@
                             <div class="roomTile" ng-repeat="tile in tilerow">
                             </div>
                         </div>
-                        <div ng-repeat="person in persons" class="roomPeople" ng-class="'position-x-' + person.getPosition().x + ' position-y-' + person.getPosition().y" ng-show="person.visible" ng-click="personClicked(person)"">
+                        <div ng-repeat="person in persons" class="roomPeople" ng-class="'position-x-' + person.getPosition().x + ' position-y-' + person.getPosition().y + ' ' + person.getCanReproduce(personSelected,clickAction)" ng-show="person.visible" ng-click="personClicked(person)"">
                             <div class="imgContainer" ng-class="'sprite' + person.sprite + ' ' + 'sprite' + person.getAdult()"></div>
                             <div class="newCaptchaCount" ng-class="person.status.captchaChange">{{person.status.currentCaptchas}}</div>
                             <div class="thoughtBubble" ng-if="person.thought !== null">{{ person.thought }}</div>
-                            <div class="reproducing" ng-class="person.status.reproducing" ng-show="person.reproducing"></div>
+                            <div class="reproducing" ng-show="person.reproducing"></div>
                         </div>
                     </div>
                 </div>
                 <div id="PeopleGrid" class="col-md-9">
-                    <div id="people_{{person.id}}" class="people" ng-class="'sprite' + person.sprite + ' ' + 'sprite' + person.getAdult() + ' ' + person.fullGender" ng-repeat="person in persons" ng-show="person.visible" ng-click="personClicked(person)">
+                    <div id="people_{{person.id}}" class="people" ng-class="'sprite' + person.sprite + ' ' + 'sprite' + person.getAdult() + ' ' + person.fullGender + ' ' + person.getCanReproduce(personSelected,clickAction)" ng-repeat="person in persons" ng-show="person.visible" ng-click="personClicked(person)">
                         <div class="imgContainer">
                             <div class="captchaCount" ng-class="person.status.captchaChange">{{person.status.currentCaptchas}}</div>
-                            <div class="reproducing" ng-class="person.status.reproducing" ng-show="person.reproducing"></div>
+                            <div class="reproducing" ng-show="person.reproducing"></div>
                         </div>
                         <div class="overview">
                             <div class="title"><h1>Worker &num;{{("000" + person.id).slice(-4)}}</h1></div>

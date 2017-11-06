@@ -103,6 +103,15 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             }
         }
 
+        getCanReproduce(partner,clickAction) {
+            if(clickAction === "reproduce" && ((this.getAdult() != "Adult") || (partner != null && (partner.gender === this.gender)))){
+                console.log("cannotReproduce");
+                return "cannotReproduce";
+            } else {
+                return "";
+            }
+        }
+
         eat(food){
             var obj = this;
             console.log("eating" + food);

@@ -25,13 +25,6 @@ textarea {
     margin-bottom: 20px;
     border-radius: 10px;
     display: block;
-    -webkit-transition:opacity 4s;
-    transition:opacity 4s;
-}
-
-.spriteTombstone{
-    opacity:0;
-    transition: opacity 4s;
 }
 
 .people h1{
@@ -61,6 +54,11 @@ textarea {
     height: 55px;
     background: url("../images/sprites.png");
     margin-top: 3px;
+}
+
+.cannotReproduce{
+    transition:opacity 0s;
+    opacity:0.6;
 }
 
 .people .imgContainer .captchaCount{
@@ -317,8 +315,8 @@ footer {
     width: 64px;
     height: 64px;
 
-    transition:left 1s linear, top 1s linear, opacity 4s;
-    -webkit-transition: left 1s linear, top 1s linear, opacity 4s;
+    transition:left 1s linear, top 1s linear;
+    -webkit-transition: left 1s linear, top 1s linear;
 }
 
 .position-x-0 {
@@ -500,6 +498,9 @@ footer {
     background: url("../images/tombstone.png");
     background-position: 0 10px;
     background-repeat: no-repeat;
+    opacity:0;
+    transition: opacity 4s;
+    -webkit-transition:opacity 4s;
 }
 
 .sprite0.imgContainer{
@@ -555,4 +556,7 @@ footer {
     background: url("../images/tombstone.png");
     background-position: 0 10px;
     background-repeat: no-repeat;
+    opacity:0;
+    transition: opacity 4s;
+    -webkit-transition:opacity 4s;
 }

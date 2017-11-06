@@ -34,7 +34,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.clickAction = "";
     $scope.showPeopleId = -1;
     $scope.score = 0;
-    $scope.person2 = "";
+    $scope.personSelected = null;
     
     $scope.updateGamestate = function(){
         console.log("updategame");
@@ -76,18 +76,18 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 break;
 
             case "reproduce":
-                if($scope.person2 == ""){
+                if($scope.personSelected == null){
                     console.log("1 person selected");
                     person.reproducing = true;
-                    $scope.person2 = person;
+                    $scope.personSelected = person;
                 }
                 else {
                     console.log("2 persons selected, reproducing...");
                     person.reproducing = true;
-                    person.reproduce($scope.person2);
-                    apiEngine.personSetTwoTask(person.id,$scope.person2.id,"reproducing",function(response){
+                    person.reproduce($scope.personSelected);
+                    apiEngine.personSetTwoTask(person.id,$scope.personSelected.id,"reproducing",function(response){
                         person.reproducing = false;
-                        $scope.person2.reproducing = false;
+                        $scope.personSelected.reproducing = false;
                         person.childId = response.data.id;
                         console.log("in person");
                         console.log(person.childId);
@@ -95,7 +95,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                             console.log(response.data);
                             personsFactory.addPerson(response.data);
                             $scope.updateGamestate();
-                            $scope.person2 = "";
+                            $scope.personSelected = null;
                         });
                     });
                 }
