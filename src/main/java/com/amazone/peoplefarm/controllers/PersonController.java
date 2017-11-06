@@ -1,5 +1,6 @@
 package com.amazone.peoplefarm.controllers;
 
+import com.amazone.peoplefarm.exceptions.PersonException;
 import com.amazone.peoplefarm.exceptions.PersonNotFoundException;
 import com.amazone.peoplefarm.model.GameState;
 import com.amazone.peoplefarm.model.Person;
@@ -35,13 +36,14 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
-    public Person getPerson(@PathVariable int id, HttpServletResponse httpResponse){
+    public Response<Person> getPerson(@PathVariable int id, HttpServletResponse httpResponse){
         try {
             Person person = personService.findOne(id);
             if (person == null) throw new PersonNotFoundException("Person " + id + " not found");
-            return person;
+            return new Response<Person>(true,person);
         } catch (PersonNotFoundException e){
-
+            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return new Response(false, e);
         }
     }
 
@@ -62,15 +64,17 @@ public class PersonController {
 
                     return new Response(true);
                 } else {
-                    throw new Exception("Niet dood");
+                    throw new PersonException("Niet dood");
                 }
             } else {
                 throw new PersonNotFoundException("Person niet gevonden");
             }
-        } catch (Exception e) {
+        } catch (PersonNotFoundException e) {
             httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return new Response(false, e);
-
+        } catch (PersonException e){
+            httpResponse.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return new Response(false, e);
         }
     }
     @RequestMapping(value = "/main")
