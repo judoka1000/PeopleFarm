@@ -1,6 +1,6 @@
 package com.amazone.peoplefarm.controllers;
 
-import com.amazone.peoplefarm.errors.PersonNotFound;
+import com.amazone.peoplefarm.exceptions.PersonNotFoundException;
 import com.amazone.peoplefarm.model.GameState;
 import com.amazone.peoplefarm.model.Person;
 import com.amazone.peoplefarm.services.GameLogicService;
@@ -32,16 +32,17 @@ public class PersonController {
     private GameLogicService gameLogicService;
 
 
-    private PersonNotFound personNotFound;
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
-    public Person getPerson(@PathVariable int id, HttpServletResponse response){
-        Person person = personService.findOne(id);
-        if(person == null){
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    public Person getPerson(@PathVariable int id, HttpServletResponse httpResponse){
+        try {
+            Person person = personService.findOne(id);
+            if (person == null) throw new PersonNotFoundException("Person " + id + " not found");
+            return person;
+        } catch (PersonNotFoundException e){
+
         }
-        return person;
     }
 
     @ResponseBody
@@ -64,7 +65,7 @@ public class PersonController {
                     throw new Exception("Niet dood");
                 }
             } else {
-                throw new PersonNotFound("Person niet gevonden");
+                throw new PersonNotFoundException("Person niet gevonden");
             }
         } catch (Exception e) {
             httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
