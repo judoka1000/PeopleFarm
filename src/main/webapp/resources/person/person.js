@@ -10,6 +10,7 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             this.reproducing = false;
             this.x = Math.floor(Math.random() * 8);
             this.y = Math.floor(Math.random() * 8);
+            this.thought = null;
         }
 
         setFields(person){
@@ -42,6 +43,13 @@ app.factory('personsFactory', ['apiEngine','$timeout',
                 if(obj.status.health=="DEAD"){
                     obj.die();
                 }
+                if(obj.status.hunger < 34) {
+                    obj.thought = "Ik heb honger";
+                } else if(obj.status.tiredness < 34) {
+                    obj.thought = "Ik ben moe";
+                } else {
+                    obj.thought = null;
+                }
                 if(oldCollectedCaptchas != obj.status.currentCaptchas){
                     obj.status.captchaChange = "newCaptchas";
                     $timeout(function(person){person.status.captchaChange="";},300,true,obj);
@@ -63,6 +71,28 @@ app.factory('personsFactory', ['apiEngine','$timeout',
                 return "Adult";
             } else {
                 return "Child";
+            }
+        }
+
+        move() {
+            var sw = Math.floor(Math.random() * 4);
+            switch(sw) {
+                case 0:
+                    this.x = this.x - 1;
+                    if(this.x < 0) this.x = 0;
+                    break;
+                case 1:
+                    this.x = this.x + 1;
+                    if(this.x > 7) this.x = 7;
+                    break;
+                case 2:
+                    this.y = this.y - 1;
+                    if(this.y < 0) this.y = 0;
+                    break;
+                case 3:
+                    this.y = this.y + 1;
+                    if(this.y > 7) this.y = 7;
+                    break;
             }
         }
 

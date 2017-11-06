@@ -27,6 +27,7 @@ html, body {
 
 .spriteTombstone{
     opacity:0;
+    transition: opacity 4s;
 }
 
 .people h1{
@@ -273,10 +274,17 @@ footer {
 	100%{color: orange;}
 }
 
+.room {
+    position: relative;
+}
+
 .roomRow {
     display: block;
     float: left;
     clear: right;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 .roomTile {
@@ -285,6 +293,10 @@ footer {
     background-position: -128px -512px;
     width: 64px;
     height: 64px;
+    display: block;
+    float: left;
+    clear: right;
+    position: relative;
 }
 
 .roomComputer {
@@ -297,29 +309,120 @@ footer {
 }
 
 .roomPeople{
-    -webkit-transition:opacity 4s;
-    transition:opacity 4s;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+
+    transition:left 1s linear, top 1s linear, opacity 4s;
+    -webkit-transition: left 1s linear, top 1s linear, opacity 4s;
+}
+
+.position-x-0 {
+    left: 0px;
+}
+
+.position-x-1 {
+    left: 64px;
+}
+
+.position-x-2 {
+    left: 128px;
+}
+
+.position-x-3 {
+    left: 192px;
+}
+
+.position-x-4 {
+    left: 256px;
+}
+
+.position-x-5 {
+    left: 320px;
+}
+
+.position-x-6 {
+    left: 384px;
+}
+
+.position-x-7 {
+    left: 448px;
+}
+
+.position-y-0 {
+    top: 0px;
+}
+
+.position-y-1 {
+    top: 64px;
+}
+
+.position-y-2 {
+    top: 128px;
+}
+
+.position-y-3 {
+    top: 192px;
+}
+
+.position-y-4 {
+    top: 256px;
+}
+
+.position-y-5 {
+    top: 320px;
+}
+
+.position-y-6 {
+    top: 384px;
+}
+
+.position-y-7 {
+    top: 448px;
 }
 
 .roomPeople .imgContainer {
-    width: 34px;
-    height: 55px;
+    width: 30px;
+    height: 50px;
     background: url("../images/sprites.png");
-    margin: auto;
-    padding-top: 5px;
+    /* top right bottom left */
+    margin: 7px 17px 7px 17px;
+    position: absolute;
 }
 
-.roomPeople .captchaCount{
+.roomPeople .newCaptchaCount {
     background-color: yellow;
     width: 1.7em;
     height: 1.7em;
-    font-size: 0.6em;
+    position: absolute;
+    left: 0.7em;
+    top: 0.7em;
     border-radius: 0.7em;
-    border: 2px solid darkorange;
     text-align: center;
+    border: 2px solid darkorange;
+    font-size: 0.6em;
     font-weight: bold;
-    -webkit-transition:width 0.3s,height 0.3s,font-size 0.3s;
-    transition: width 0.3s,height 0.3s,font-size 0.3s;
+    line-height: 1.15em;
+}
+
+.roomPeople .thoughtBubble {
+    background: url("../images/thoughtBubble.png");
+    background-repeat: no-repeat;
+    background-size: 128px 64px;
+    display: inline-block;
+    position: absolute;
+    left: 34px;
+    top: -50px;
+    width: 128px;
+    height: 74px;
+    padding-top: 10px;
+    padding-bottom: 25px;
+    padding-left: 40px;
+    padding-right: 20px;
+    font-size: 0.8em;
+    filter: opacity(0.75);
+    -webkit-filter: opacity(0.75);
+    z-index: 10;
 }
 
 .roomPeople .imgContainer .newCaptchas{
@@ -331,7 +434,7 @@ footer {
 }
 
 .sprite0 .imgContainer{
-    background-position-x: -2px;
+    background-position-x: -7px;
 }
 
 .sprite1 .imgContainer{
@@ -371,7 +474,7 @@ footer {
 }
 
 .spriteAdult .imgContainer {
-    background-position-y: -7px;
+    background-position-y: -5px;
 }
 
 .spriteChild .imgContainer{
@@ -380,6 +483,61 @@ footer {
 }
 
 .spriteTombstone .imgContainer{
+    background: url("../images/tombstone.png");
+    background-position: 0 10px;
+    background-repeat: no-repeat;
+}
+
+.sprite0.imgContainer{
+    background-position-x: -7px;
+}
+
+.sprite1.imgContainer{
+    background-position-x: -38px;
+}
+
+.sprite2.imgContainer{
+    background-position-x: -74px;
+}
+
+.sprite3.imgContainer{
+    background-position-x: -108px;
+}
+
+.sprite4.imgContainer{
+    background-position-x: -144px;
+}
+
+.sprite5.imgContainer{
+    background-position-x: -180px;
+}
+
+.sprite6.imgContainer{
+    background-position-x: -216px;
+}
+
+.sprite7.imgContainer{
+    background-position-x: -252px;
+}
+
+.sprite8.imgContainer{
+    background-position-x: -288px;
+}
+
+.sprite9.imgContainer{
+    background-position-x: -324px;
+}
+
+.spriteAdult.imgContainer {
+    background-position-y: -5px;
+}
+
+.spriteChild.imgContainer{
+    background-position-y: -56px;
+    background-repeat: no-repeat;
+}
+
+.spriteTombstone.imgContainer{
     background: url("../images/tombstone.png");
     background-position: 0 10px;
     background-repeat: no-repeat;

@@ -29,6 +29,11 @@ public class PersonController {
     @Autowired
     private GameLogicService gameLogicService;
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String getIndex() {
+        return "index";
+    }
+
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
     public Person getPerson(@PathVariable int id, HttpServletResponse response){
