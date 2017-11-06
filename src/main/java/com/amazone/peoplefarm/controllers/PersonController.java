@@ -1,5 +1,6 @@
 package com.amazone.peoplefarm.controllers;
 
+import com.amazone.peoplefarm.errors.PersonNotFound;
 import com.amazone.peoplefarm.model.GameState;
 import com.amazone.peoplefarm.model.Person;
 import com.amazone.peoplefarm.services.GameLogicService;
@@ -30,6 +31,9 @@ public class PersonController {
     @Autowired
     private GameLogicService gameLogicService;
 
+
+    private PersonNotFound personNotFound;
+
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
     public Person getPerson(@PathVariable int id, HttpServletResponse response){
@@ -42,31 +46,45 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
-    public Response deletePerson(Model model, @PathVariable int id) {
-        System.out.println("!!!!!!!!!!!!!");
-        Person person = personService.findOne(id);
-        if(person.getStatus().getHealth() == Status.Health.DEAD) {
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-            List<Person> persons = gameState.getPersons();
+    public Response deletePerson(Model model, @PathVariable int id, HttpServletResponse httpResponse) {
+        try {
+            Person person = personService.findOne(id);
+            if (person.getStatus().getHealth() == Status.Health.DEAD) {
+                GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+                List<Person> persons = gameState.getPersons();
 
-            Person x = null;
-            for(Person p:persons){
-               if(p.getId() == id){
-                   x =  p;
-                   break;
-               }
+                Person x = null;
+                for (Person p : persons) {
+                    if (p.getId() == id) {
+                        x = p;
+                        break;
+                    }
+                }
+                if (x != null) {
+                    if (persons.remove(x)) {
+                        //succes
+
+                    } else {
+                        throw new PersonNotFound("Person not found");
+
+
+                    }
+                }
+
+                gameState.setPersons(persons);
+                gameStateService.save(gameState);
+
+                System.out.println(persons);
+                return new Response(true);
+            } else {
+                throw new Exception("Niet dood");
             }
-            if(x!=null)persons.remove(x);
+        } catch (Exception e) {
+            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return new Response(false, "fout", e);
 
-            gameState.setPersons(persons);
-            gameStateService.save(gameState);
-
-            System.out.println(persons);
-            return new Response(true);
         }
-        return new Response(false);
     }
-
     @RequestMapping(value = "/main")
     public String main(Model model) {
         if(!model.containsAttribute("gameState")){
