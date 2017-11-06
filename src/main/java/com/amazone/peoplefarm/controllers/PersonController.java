@@ -210,28 +210,43 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id1}/{id2}", method = RequestMethod.PUT)
-    public Map reproduce(@PathVariable int id1, @PathVariable int id2, Model model){
-        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-        System.out.println("gameState: " + gameState);
+    public Response<Person> reproduce(@PathVariable int id1, @PathVariable int id2, Model model, HttpServletResponse httpResponse){
+        try {
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            if(gameState == null) throw new GameStateNotFoundException("Gamestate met id " + model.asMap().get("gameState") + " niet gevonden in database.");
 
-        Person parent1 = personService.findOne(id1);
-        Person parent2 = personService.findOne(id2);
-        System.out.println("Person " + parent1.getId() + " and person " + parent2.getId() + " are reproducing ");
+            System.out.println("gameState: " + gameState);
+
+            Person parent1 = personService.findOne(id1);
+            if (parent1 == null) throw new PersonNotFoundException("Person met id " + id1 + " niet gevonden in database.");
+
+            Person parent2 = personService.findOne(id2);
+            if (parent2 == null) throw new PersonNotFoundException("Person met id " + id2 + " niet gevonden in database.");
+
+            System.out.println("Person " + parent1.getId() + " and person " + parent2.getId() + " are reproducing ");
 
 
-        Person newPerson = gameLogicService.newChild(parent1,parent2,gameState);
-        Map<String, String> response = new HashMap<String, String>();
-        if(newPerson != null){
+            Person newPerson = gameLogicService.newChild(parent1, parent2, gameState);
+            //Map<String, String> response = new HashMap<String, String>();
+            if (newPerson == null) throw new PersonException("Could not create child.");
             gameState.addPerson(newPerson);
             newPerson.setGamestate(gameState);
             personService.save(newPerson);
             System.out.println("Person " + newPerson.getId() + " is born: " + newPerson);
 
-            response.put("succes", "true");
-            response.put("id",""+newPerson.getId());
-        } else {
-            response.put("succes", "false");
+            return new Response<Person>(true,newPerson);
+        } catch(PersonNotFoundException e) {
+            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return new Response(false, e);
+        } catch (PersonException e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response(false, e);
+        } catch(GameStateNotFoundException e){
+            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return new Response(false, e);
+        } catch(Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response(false, e);
         }
-        return response;
     }
 }
