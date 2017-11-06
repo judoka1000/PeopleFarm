@@ -9,7 +9,7 @@ function DevCtrl($scope,$http,$document,$interval,$timeout, apiEngine, personsFa
     $scope.init = function(){
         var url = baseUrl + "/getDevSettings";
         $http.get(url).then(function(response){
-            $scope.devSettings.mortal = response.data.mortal;
+            $scope.devSettings.mortal = response.data.data.mortal;
 
         });
     }
@@ -26,7 +26,7 @@ function DevCtrl($scope,$http,$document,$interval,$timeout, apiEngine, personsFa
         console.log($scope.newPerson);
         $http.post(url, $scope.newPerson).then(function(response){
             console.log(response);
-            personsFactory.addPerson(response.data);
+            personsFactory.addPerson(response.data.data);
         });
     };
     $scope.init();

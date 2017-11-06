@@ -38,7 +38,7 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             var oldCollectedCaptchas = this.status.currentCaptchas;
             apiEngine.personStatus(this.id, function(response){
 
-                obj.setFields(response.data);
+                obj.setFields(response.data.data);
                 if(obj.status.health=="DEAD"){
                     obj.die();
                 }

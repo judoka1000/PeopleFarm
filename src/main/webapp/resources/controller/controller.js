@@ -8,14 +8,14 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
     $scope.initializePeople = function() {
         apiEngine.people( function (response) {
-            $scope.persons = personsFactory.addPersons(response.data);
+            $scope.persons = personsFactory.addPersons(response.data.data);
         });
     };
     $scope.initializePeople();
 
     (function(){
         apiEngine.getPlayername(function(response) {
-            $scope.playername = response.data.name;
+            $scope.playername = response.data.data.name;
         });
     })();
 
@@ -56,7 +56,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         }
         
         apiEngine.getScore(function(response){
-        	$scope.score = response.data;
+        	$scope.score = response.data.data;
         },
         function(response){
             if($scope.startingGame == false) {
