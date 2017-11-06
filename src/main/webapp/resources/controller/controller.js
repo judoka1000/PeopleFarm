@@ -1,4 +1,4 @@
-var app = angular.module('PeopleApp', []);
+var app = angular.module('PeopleApp', ['ngCookies', 'ngClickCopy']);
 app.controller('PeopleCtrl', PeopleCtrl);
 
 function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsFactory){
