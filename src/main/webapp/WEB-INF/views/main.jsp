@@ -38,10 +38,6 @@
                             <div class="thoughtBubble" ng-if="person.thought !== null">{{ person.thought }}</div>
                             <div class="reproducing" ng-class="person.status.reproducing" ng-show="person.reproducing"></div>
                         </div>
-                        <div class="roomPeople position-x-0 position-y-0">
-                            <div class="imgContainer sprite0 spriteChild"></div>
-                            <div class="reproducing"></div>
-                        </div>
                     </div>
                 </div>
                 <div id="PeopleGrid" class="col-md-9">
