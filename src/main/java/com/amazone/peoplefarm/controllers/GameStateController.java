@@ -57,14 +57,20 @@ public class GameStateController {
 
     @ResponseBody
     @RequestMapping(value = "/score")
-    public String getGameState(Model model, HttpServletResponse response){
-        if(model.asMap().get("gameState") == null){
-            System.out.println("Gamestate = null");
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return "";
-        } else {
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-            return "" + gameState.getScore();
+    public Response<String> getGameState(Model model, HttpServletResponse httpResponse){
+        try {
+            if (model.asMap().get("gameState") == null) {
+                throw new GameStateNotFoundException("Gamestate is: null");
+            } else {
+                GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+                return new Response<>(true, ((Integer)gameState.getScore()).toString());
+            }
+        } catch(GameStateNotFoundException e){
+            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return new Response<>(false, e);
+        } catch(Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response<>(false, e);
         }
 
     }
@@ -85,36 +91,56 @@ public class GameStateController {
 
     @ResponseBody
     @RequestMapping(value = "/rename/{name}", method = RequestMethod.POST)
-    public Response changePlayerName(Model model, @PathVariable String name) {
-        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-        gameState.setPlayerName(name);
-        gameStateService.save(gameState);
-        return new Response(true);
+    public Response changePlayerName(Model model, @PathVariable String name, HttpServletResponse httpResponse) {
+        try {
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            gameState.setPlayerName(name);
+            gameStateService.save(gameState);
+            return new Response(true);
+        } catch (Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response(false, e);
+        }
     }
 
     @ResponseBody
     @RequestMapping(value = "/rename", method = RequestMethod.GET)
-    public Map<String, String> getPlayerName(Model model) {
-        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-        Map<String, String> a = new HashMap<String, String>();
-        a.put("name", gameState.getPlayerName());
-        return a;
+    public Response<Map<String, String>> getPlayerName(Model model, HttpServletResponse httpResponse) {
+        try{
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            Map<String, String> a = new HashMap<>();
+            a.put("name", gameState.getPlayerName());
+            return new Response<>(true, a);
+    } catch (Exception e){
+        httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        return new Response<>(false, e);
+    }
     }
 
     @ResponseBody
     @RequestMapping(value = "/getDevSettings")
-    public DevSettings getDevsettings(Model model){
-        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-        return gameState.getDevSettings();
+    public Response<DevSettings> getDevsettings(Model model, HttpServletResponse httpResponse){
+        try {
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            return new Response<>(true, gameState.getDevSettings());
+        } catch(Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response<>(false, e);
+        }
     }
 
     @ResponseBody
     @RequestMapping(value = "/putDevSettings", method = RequestMethod.PUT)
-    public Response putDevsettings(Model model, @RequestBody DevSettings devSettings){
-        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-        gameState.setDevSettings(devSettings);
-        gameStateService.save(gameState);
-        return new Response(true);
+    public Response putDevsettings(Model model, @RequestBody DevSettings devSettings, HttpServletResponse httpResponse){
+        try {
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            gameState.setDevSettings(devSettings);
+            gameStateService.save(gameState);
+            return new Response(true);
+        } catch (Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response(false, e);
+        }
     }
 
 }

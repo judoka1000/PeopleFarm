@@ -42,10 +42,10 @@ public class PersonController {
         try {
             Person person = personService.findOne(id);
             if (person == null) throw new PersonNotFoundException("Person " + id + " not found");
-            return new Response<Person>(true,person);
+            return new Response<>(true,person);
         } catch (PersonNotFoundException e){
             httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return new Response(false, e);
+            return new Response<>(false, e);
         }
     }
 
@@ -78,6 +78,9 @@ public class PersonController {
         } catch (PersonException e){
             httpResponse.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             return new Response(false, e);
+        } catch (Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response(false, e);
         }
     }
     @RequestMapping(value = "/main")
@@ -93,9 +96,14 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
-    public List<Person> getPersons(Model model){
-        GameState gameState = gameStateService.findOne((Integer)model.asMap().get("gameState"));
-        return gameState.getPersons();
+    public Response<List<Person>> getPersons(Model model, HttpServletResponse httpResponse){
+        try {
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            return new Response<>(true, gameState.getPersons());
+        } catch (Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response<>(false, e);
+        }
     }
 
     @ResponseBody
@@ -115,7 +123,6 @@ public class PersonController {
         return new Response<Person>(true,person);
     }
 
-    //TODO: - PUT  /person/settask/:task/:id      -> set task for person with id
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
     public Response setTask(@PathVariable String task, @PathVariable int id, Model model, HttpServletResponse httpResponse){
