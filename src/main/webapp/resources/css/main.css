@@ -429,14 +429,14 @@ footer {
     font-size: 0.8em;
 }
 
-.roomPeople .imgContainer .reproducing{
+.roomPeople .reproducing{
+    position: absolute;
+    width: 30px;
+    height: 50px;
     background: url("../images/heart.png");
-    display: block;
-    float: left;
-    width: 80%;
-    height: 60%;
     background-size: 30px 30px;
-    margin-top: 20px;
+    background-repeat: no-repeat;
+    margin-top: 30px;
 }
 
 .spriteTombstone .overview{

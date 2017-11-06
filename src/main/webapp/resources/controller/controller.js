@@ -30,20 +30,6 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         return returnvalue;
     })();
 
-    $scope.updateRoomGrid = function() {
-        for(i = 0; i < 8; i++) {
-            for(j = 0; j < 8; j++) {
-                $scope.tiles[i][j].type = null;
-            }
-        }
-        angular.forEach($scope.persons, function(value, key) {
-            $scope.tiles[value.getPosition().x][value.getPosition().y].type = 'person';
-            $scope.tiles[value.getPosition().x][value.getPosition().y].id = value.id;
-        });
-    }
-
-    $scope.$watchCollection('persons', $scope.updateRoomGrid);
-
     $scope.cursor = "";
     $scope.clickAction = "";
     $scope.showPeopleId = -1;
@@ -56,7 +42,6 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         for (key in persons) {
             persons[key].getStatus();
             persons[key].move();
-            $scope.updateRoomGrid();
         }
         
         apiEngine.getScore(function(response){
