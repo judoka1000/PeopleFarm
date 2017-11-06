@@ -1,10 +1,11 @@
 package com.amazone.peoplefarm.model;
 
-public class Response {
+public class Response<T> {
 
     boolean succes;
     private String exceptionName;
     private Exception exception;
+    private T data;
 
 
     public Response() {
@@ -12,6 +13,11 @@ public class Response {
 
     public Response(boolean succes) {
         this.succes = succes;
+    }
+
+    public Response(boolean succes, T object) {
+        this(succes);
+        this.data = object;
     }
 
     public Response(boolean succes, Exception exception) {
@@ -42,5 +48,13 @@ public class Response {
 
     public void setExceptionName(String exceptionName) {
         this.exceptionName = exceptionName;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }

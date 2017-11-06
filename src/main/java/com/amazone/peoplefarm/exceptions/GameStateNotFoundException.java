@@ -1,4 +1,12 @@
 package com.amazone.peoplefarm.exceptions;
 
-public class GameStateNotFoundException {
+import com.amazone.peoplefarm.services.GameStateService;
+
+public class GameStateNotFoundException extends GameStateException {
+    public GameStateNotFoundException() {
+    }
+
+    public GameStateNotFoundException(String message) {
+        super(message);
+    }
 }

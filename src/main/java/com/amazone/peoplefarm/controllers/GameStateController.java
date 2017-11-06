@@ -1,5 +1,6 @@
 package com.amazone.peoplefarm.controllers;
 
+import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
 import com.amazone.peoplefarm.model.DevSettings;
 import com.amazone.peoplefarm.model.GameState;
 import com.amazone.peoplefarm.model.Person;
@@ -34,14 +35,24 @@ public class GameStateController {
 
     @ResponseBody
     @RequestMapping(value = "/newgame", method = RequestMethod.POST)
-    public Response newGame(Model model) {
-        if(model.containsAttribute("gameState")){
-            gameStateService.delete((Integer)model.asMap().get("gameState"));
+    public Response newGame(Model model, HttpServletResponse httpResponse) {
+        try {
+            if (!model.containsAttribute("gameState")) {
+                throw new GameStateNotFoundException("GameState niet gevonden");
+            } else {
+                gameStateService.delete((Integer) model.asMap().get("gameState"));
+            }
+            GameState gameState = gameLogicService.newGame();
+            gameStateService.save(gameState);
+            model.addAttribute("gameState", gameState.getId());
+            return new Response(true);
+        } catch(GameStateNotFoundException e) {
+            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return new Response(false, e);
+        }catch(Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response(false, e);
         }
-        GameState gameState = gameLogicService.newGame();
-        gameStateService.save(gameState);
-        model.addAttribute("gameState", gameState.getId());
-        return new Response(true);
     }
 
     @ResponseBody
@@ -60,11 +71,16 @@ public class GameStateController {
 
     @ResponseBody
     @RequestMapping(value = "/mortal", method = RequestMethod.PUT)
-    public Response flipMortality(Model model){
-        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-        gameState.getDevSettings().setMortal(!gameState.getDevSettings().isMortal());
-        gameStateService.save(gameState);
-        return new Response(true);
+    public Response flipMortality(Model model, HttpServletResponse httpResponse){
+        try {
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            gameState.getDevSettings().setMortal(!gameState.getDevSettings().isMortal());
+            gameStateService.save(gameState);
+            return new Response(true);
+        } catch (Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response(false, e);
+        }
     }
 
     @ResponseBody
