@@ -104,11 +104,26 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         }
 
         getCanReproduce(partner,clickAction) {
-            if(clickAction === "reproduce" && ((this.getAdult() != "Adult") || (partner != null && (partner.gender === this.gender)))){
-                console.log("cannotReproduce");
+            if(!this.canReproduce(partner,clickAction)){
                 return "cannotReproduce";
             } else {
                 return "";
+            }
+        }
+
+        canReproduce(partner,clickAction){
+            var actionIsReproduce = clickAction === "reproduce";
+            var isChild = this.getAdult() != "Adult";
+            var partnerHasSameGender = partner != null && partner.gender === this.gender;
+
+            if(actionIsReproduce){
+                if(isChild || partnerHasSameGender){
+                    return false
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
             }
         }
 

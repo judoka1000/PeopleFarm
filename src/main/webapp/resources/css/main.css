@@ -59,6 +59,7 @@ textarea {
 .cannotReproduce{
     transition:opacity 0s;
     opacity:0.6;
+    pointer-events: none;
 }
 
 .people .imgContainer .captchaCount{
