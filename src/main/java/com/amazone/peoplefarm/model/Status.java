@@ -15,6 +15,7 @@ public class Status {
     int hunger;
     int tiredness;
     int age;
+    int ageOfDeath;
     int currentCaptchas;
 
     @Enumerated(EnumType.STRING)
@@ -57,6 +58,17 @@ public class Status {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public int getAgeOfDeath() {
+        return ageOfDeath;
+    }
+
+    public void setAgeOfDeath(int ageOfDeath) {
+        if(ageOfDeath <= age) {
+            throw new IllegalArgumentException("Age of death cannot be lower than the current age");
+        }
+        this.ageOfDeath = ageOfDeath;
     }
 
     public Health getHealth() {

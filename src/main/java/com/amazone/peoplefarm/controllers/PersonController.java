@@ -4,6 +4,7 @@ import com.amazone.peoplefarm.model.GameState;
 import com.amazone.peoplefarm.model.Person;
 import com.amazone.peoplefarm.services.GameLogicService;
 import com.amazone.peoplefarm.services.GameStateService;
+import com.amazone.peoplefarm.services.PersonLogicService;
 import com.amazone.peoplefarm.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,13 +23,14 @@ import java.util.Map;
 @Controller
 @SessionAttributes("gameState")
 public class PersonController {
-
     @Autowired
     private PersonService personService;
     @Autowired
     private GameStateService gameStateService;
     @Autowired
     private GameLogicService gameLogicService;
+    @Autowired
+    private PersonLogicService personLogicService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getIndex() {
@@ -85,6 +87,7 @@ public class PersonController {
     @ResponseBody
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
     public List<Person> getPersons(Model model){
+//        GameState gameState = gameStateService.getAlive((Integer)model.asMap().get("gameState"));
         GameState gameState = gameStateService.findOne((Integer)model.asMap().get("gameState"));
         return gameState.getPersons();
     }
@@ -178,7 +181,7 @@ public class PersonController {
         System.out.println("Person " + parent1.getId() + " and person " + parent2.getId() + " are reproducing ");
 
 
-        Person newPerson = gameLogicService.newChild(parent1,parent2,gameState);
+        Person newPerson = personLogicService.newChild(parent1,parent2);
         Map<String, String> response = new HashMap<String, String>();
         if(newPerson != null){
             gameState.addPerson(newPerson);
