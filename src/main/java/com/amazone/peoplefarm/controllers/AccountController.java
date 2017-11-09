@@ -1,6 +1,6 @@
 package com.amazone.peoplefarm.controllers;
 
-import com.amazone.peoplefarm.model.Account;
+import com.amazone.peoplefarm.models.Account;
 import com.amazone.peoplefarm.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

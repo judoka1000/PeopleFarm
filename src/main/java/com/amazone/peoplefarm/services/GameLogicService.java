@@ -1,14 +1,10 @@
 package com.amazone.peoplefarm.services;
 
 import com.amazone.peoplefarm.interfaces.GameLogicInterface;
-import com.amazone.peoplefarm.model.Abilities;
-import com.amazone.peoplefarm.model.GameState;
-import com.amazone.peoplefarm.model.Person;
-import com.amazone.peoplefarm.model.Status;
+import com.amazone.peoplefarm.models.GameState;
+import com.amazone.peoplefarm.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Random;
 
 @Service
 public class GameLogicService implements GameLogicInterface {

@@ -1,9 +1,9 @@
 package com.amazone.peoplefarm.services;
 
 import com.amazone.peoplefarm.interfaces.PersonLogicInterface;
-import com.amazone.peoplefarm.model.Abilities;
-import com.amazone.peoplefarm.model.Person;
-import com.amazone.peoplefarm.model.Status;
+import com.amazone.peoplefarm.models.Abilities;
+import com.amazone.peoplefarm.models.Person;
+import com.amazone.peoplefarm.models.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
