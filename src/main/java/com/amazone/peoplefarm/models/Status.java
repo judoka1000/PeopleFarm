@@ -1,7 +1,4 @@
-package com.amazone.peoplefarm.model;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+package com.amazone.peoplefarm.models;
 
 import javax.persistence.*;
 

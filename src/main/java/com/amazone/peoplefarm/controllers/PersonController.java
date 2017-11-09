@@ -1,7 +1,7 @@
 package com.amazone.peoplefarm.controllers;
 
-import com.amazone.peoplefarm.model.GameState;
-import com.amazone.peoplefarm.model.Person;
+import com.amazone.peoplefarm.models.GameState;
+import com.amazone.peoplefarm.models.Person;
 import com.amazone.peoplefarm.services.GameLogicService;
 import com.amazone.peoplefarm.services.GameStateService;
 import com.amazone.peoplefarm.services.PersonLogicService;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.amazone.peoplefarm.model.*;
+import com.amazone.peoplefarm.models.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -87,7 +87,7 @@ public class PersonController {
     @ResponseBody
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
     public List<Person> getPersons(Model model){
-//        GameState gameState = gameStateService.getAlive((Integer)model.asMap().get("gameState"));
+//        GameState gameState = gameStateService.getAlive((Integer)models.asMap().get("gameState"));
         GameState gameState = gameStateService.findOne((Integer)model.asMap().get("gameState"));
         return gameState.getPersons();
     }
