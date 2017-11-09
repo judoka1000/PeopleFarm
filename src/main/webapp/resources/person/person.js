@@ -7,7 +7,10 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         constructor(person){
             this.setFields(person);
             this.visible = true;
-            this.reproducing = false;
+            this.selectedToReproduce = false; // when true, sprite has heart icon
+            this.heartAnimation = false;
+            this.destinationX = null;
+            this.destinationY = null;
             this.x = Math.floor(Math.random() * 8);
             this.y = Math.floor(Math.random() * 8);
             this.thought = null;
@@ -75,24 +78,43 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         }
 
         move() {
-            var sw = Math.floor(Math.random() * 4);
-            switch(sw) {
-                case 0:
-                    this.x = this.x - 1;
-                    if(this.x < 0) this.x = 0;
-                    break;
-                case 1:
-                    this.x = this.x + 1;
-                    if(this.x > 7) this.x = 7;
-                    break;
-                case 2:
-                    this.y = this.y - 1;
-                    if(this.y < 0) this.y = 0;
-                    break;
-                case 3:
-                    this.y = this.y + 1;
-                    if(this.y > 7) this.y = 7;
-                    break;
+            // Moving to partner
+            if(this.destinationX != null && this.destinationY != null){
+                // Not yet arrived
+                if(this.x != this.destinationX || this.y != this.destinationY){
+                    this.x = this.destinationX;
+                    this.y = this.destinationY;
+                // Arrived
+                } else {
+                    if  (!this.heartAnimation){
+                        this.heartAnimation = "heartAnimation";
+                    } else {
+                        this.selectedToReproduce = false;
+                        this.heartAnimation = false;
+                        this.destinationX = null;
+                        this.destinationY = null;
+                    }
+                }
+            } else {
+                var sw = Math.floor(Math.random() * 4);
+                switch(sw) {
+                    case 0:
+                        this.x = this.x - 1;
+                        if(this.x < 0) this.x = 0;
+                        break;
+                    case 1:
+                        this.x = this.x + 1;
+                        if(this.x > 7) this.x = 7;
+                        break;
+                    case 2:
+                        this.y = this.y - 1;
+                        if(this.y < 0) this.y = 0;
+                        break;
+                    case 3:
+                        this.y = this.y + 1;
+                        if(this.y > 7) this.y = 7;
+                        break;
+                }
             }
         }
 
@@ -140,11 +162,6 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             apiEngine.personSettask(this.id,"sleeping",function(response){
                 obj.getStatus();
             });
-        }
-
-        reproduce(person){
-            var obj = this;
-
         }
 
         remove(){
