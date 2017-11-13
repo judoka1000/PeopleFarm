@@ -1,7 +1,6 @@
-package com.amazone.peoplefarm.model;
+package com.amazone.peoplefarm.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 
@@ -31,46 +30,6 @@ public class Person {
     @JoinColumn(nullable = false)
     @JsonBackReference
     GameState gamestate;
-
-    public Person() {
-    }
-
-    public Person(String kind) {
-        Status newStatus = new Status();
-        Abilities newAbilities = new Abilities();
-        switch(kind) {
-            default:
-            case "adult":
-                newStatus.setAge(20);
-                newStatus.setTiredness(75);
-                newStatus.setHunger(75);
-                newStatus.setHealth(Status.Health.HEALTHY);
-                newAbilities.setStamina(5);
-                newAbilities.setSpeed(5);
-                newAbilities.setMetabolism(5);
-                newAbilities.setIq(5);
-                this.setGender(Gender.FEMALE);
-                break;
-            case "child":
-                newStatus.setAge(0);
-                newStatus.setTiredness(50);
-                newStatus.setHunger(50);
-                newStatus.setHealth(Status.Health.HEALTHY);
-                newAbilities.setStamina(3);
-                newAbilities.setSpeed(3);
-                newAbilities.setMetabolism(3);
-                newAbilities.setIq(3);
-                this.setGender(Gender.MALE);
-                break;
-        }
-        this.setStatus(newStatus);
-        this.setAbilities(newAbilities);
-    }
-
-    public Person(String kind, int age){
-        this(kind);
-        this.getStatus().setAge(age);
-    }
 
     @Override
     public String toString() {

@@ -1,7 +1,7 @@
 package com.amazone.peoplefarm.services;
 
-import com.amazone.peoplefarm.model.Person;
-import com.amazone.peoplefarm.model.Status;
+import com.amazone.peoplefarm.models.Person;
+import com.amazone.peoplefarm.models.Status;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -28,10 +28,10 @@ public class PersonServiceTest {
         mockedPersonService = mock(PersonService.class);
 
         List<Person> personList = new ArrayList<>();
-        personList.add(person1 = new Person("child", 5));
-        personList.add(person2 = new Person("child", 10));
-        personList.add(person3 = new Person("adult", 45));
-        personList.add(person4 = new Person("adult", 65));
+        personList.add(person1 = new Person());
+        personList.add(person1 = new Person());
+        personList.add(person1 = new Person());
+        personList.add(person1 = new Person());
 
         when(mockedPersonService.findAll()).thenReturn(personList);
         when(mockedPersonService.findOne(anyInt())).thenReturn(person1);

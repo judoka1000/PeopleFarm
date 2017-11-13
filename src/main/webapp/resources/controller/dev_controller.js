@@ -1,10 +1,11 @@
 var app=angular.module('PeopleApp');
 app.controller('DevCtrl', DevCtrl);
 
-function DevCtrl($scope,$http,$document,$interval,$timeout, apiEngine, personsFactory){
+function DevCtrl($scope, $http,$document,$interval,$timeout, $cookies, apiEngine, personsFactory){
     var baseUrl = "http://localhost:8080/peoplefarm";
     $scope.devSettings = {};
     $scope.newPerson = {};
+    $scope.cookieInfo = "JSESSIONID=" + $cookies.get('JSESSIONID');
 
     $scope.init = function(){
         var url = baseUrl + "/getDevSettings";

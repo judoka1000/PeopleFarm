@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-cookies.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/JustMaier/6ef7788709d675bd8230/raw/3d39d50e66d8d77e05656ed7dd09298be7e86f1f/ngClickCopy.js"></script>
+
 
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -23,23 +26,25 @@
 	<div class="row">
 	    <div class="col-md-9">
 	        <div class="row">
-                <div id="Room" class="col-md-12">
-                    <div class="roomRow" ng-repeat="tilerow in tiles">
-                        <div class="roomTile" ng-repeat="tile in tilerow">
-                            <div ng-if="tile.type === 'person'">
-                                <div class="roomPeople" ng-class="'sprite' + persons[tile.id].sprite + ' ' + 'sprite' + persons[tile.id].getAdult() + ' ' + persons[tile.id].fullGender" ng-show="persons[tile.id].visible" ng-click="personClicked(persons[tile.id])">
-                                    <div class="imgContainer">
-                                        <div class="captchaCount" ng-class="persons[tile.id].status.captchaChange">{{persons[tile.id].status.currentCaptchas}}</div>
-                                    </div>
-                                </div>
+	            <div class="col-md-12">
+                    <div class="room">
+                        <div class="roomRow" ng-repeat="tilerow in tiles">
+                            <div class="roomTile" ng-repeat="tile in tilerow">
                             </div>
+                        </div>
+                        <div ng-repeat="person in persons" class="roomPeople" ng-class="'position-x-' + person.getPosition().x + ' position-y-' + person.getPosition().y + ' ' + person.getCanReproduce(personSelected,clickAction)" ng-show="person.visible" ng-click="personClicked(person)"">
+                            <div class="imgContainer" ng-class="'sprite' + person.sprite + ' ' + 'sprite' + person.getAdult()"></div>
+                            <div class="newCaptchaCount" ng-class="person.status.captchaChange">{{person.status.currentCaptchas}}</div>
+                            <div class="thoughtBubble" ng-if="person.thought !== null">{{ person.thought }}</div>
+                            <div class="reproducing" ng-show="person.selectedToReproduce" ng-class="person.heartAnimation"></div>
                         </div>
                     </div>
                 </div>
                 <div id="PeopleGrid" class="col-md-9">
-                    <div id="people_{{person.id}}" class="people" ng-class="'sprite' + person.sprite + ' ' + 'sprite' + person.getAdult() + ' ' + person.fullGender" ng-repeat="person in persons" ng-show="person.visible" ng-click="personClicked(person)">
+                    <div id="people_{{person.id}}" class="people" ng-class="'sprite' + person.sprite + ' ' + 'sprite' + person.getAdult() + ' ' + person.fullGender + ' ' + person.getCanReproduce(personSelected,clickAction)" ng-repeat="person in persons" ng-show="person.visible" ng-click="personClicked(person)">
                         <div class="imgContainer">
                             <div class="captchaCount" ng-class="person.status.captchaChange">{{person.status.currentCaptchas}}</div>
+                            <div class="reproducing" ng-show="person.selectedToReproduce"></div>
                         </div>
                         <div class="overview">
                             <div class="title"><h1>Worker &num;{{("000" + person.id).slice(-4)}}</h1></div>

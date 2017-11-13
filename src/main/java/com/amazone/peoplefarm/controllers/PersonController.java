@@ -1,20 +1,23 @@
 package com.amazone.peoplefarm.controllers;
 
+import com.amazone.peoplefarm.models.GameState;
+import com.amazone.peoplefarm.models.Person;
 import com.amazone.peoplefarm.exceptions.GameStateException;
 import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
 import com.amazone.peoplefarm.exceptions.PersonException;
 import com.amazone.peoplefarm.exceptions.PersonNotFoundException;
-import com.amazone.peoplefarm.model.GameState;
-import com.amazone.peoplefarm.model.Person;
+import com.amazone.peoplefarm.models.GameState;
+import com.amazone.peoplefarm.models.Person;
 import com.amazone.peoplefarm.services.GameLogicService;
 import com.amazone.peoplefarm.services.GameStateService;
+import com.amazone.peoplefarm.services.PersonLogicService;
 import com.amazone.peoplefarm.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.amazone.peoplefarm.model.*;
+import com.amazone.peoplefarm.models.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -33,8 +36,13 @@ public class PersonController {
     private GameStateService gameStateService;
     @Autowired
     private GameLogicService gameLogicService;
+    @Autowired
+    private PersonLogicService personLogicService;
 
-
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String getIndex() {
+        return "index";
+    }
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
@@ -83,6 +91,7 @@ public class PersonController {
             return new Response(false, e);
         }
     }
+
     @RequestMapping(value = "/main")
     public String main(Model model) {
         if(!model.containsAttribute("gameState")){
@@ -214,7 +223,6 @@ public class PersonController {
         }
     }
 
-
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id1}/{id2}", method = RequestMethod.PUT)
     public Response<Person> reproduce(@PathVariable int id1, @PathVariable int id2, Model model, HttpServletResponse httpResponse){
@@ -233,7 +241,7 @@ public class PersonController {
             System.out.println("Person " + parent1.getId() + " and person " + parent2.getId() + " are reproducing ");
 
 
-            Person newPerson = gameLogicService.newChild(parent1, parent2, gameState);
+            Person newPerson = personLogicService.newChild(parent1, parent2);
             //Map<String, String> response = new HashMap<String, String>();
             if (newPerson == null) throw new PersonException("Could not create child.");
             gameState.addPerson(newPerson);

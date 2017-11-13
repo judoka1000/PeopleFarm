@@ -1,4 +1,4 @@
-var app = angular.module('PeopleApp', []);
+var app = angular.module('PeopleApp', ['ngCookies', 'ngClickCopy']);
 app.controller('PeopleCtrl', PeopleCtrl);
 
 function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsFactory){
@@ -30,29 +30,24 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
         return returnvalue;
     })();
 
-    $scope.$watchCollection('persons', function(newPersons, oldPersons) {
-        for(i = 0; i < 8; i++) {
-            for(j = 0; j < 8; j++) {
-                $scope.tiles[i][j].type = null;
-            }
-        }
-        angular.forEach(newPersons, function(value, key) {
-            $scope.tiles[value.getPosition().x][value.getPosition().y].type = 'person';
-            $scope.tiles[value.getPosition().x][value.getPosition().y].id = value.id;
-        });
-    });
-
     $scope.cursor = "";
     $scope.clickAction = "";
     $scope.showPeopleId = -1;
     $scope.score = 0;
-    $scope.person2 = "";
+    $scope.personSelected = null;
+    $scope.newPerson = null;
     
     $scope.updateGamestate = function(){
         console.log("updategame");
+        if ($scope.newPerson != null) {
+            personsFactory.addPerson($scope.newPerson);
+            $scope.newPerson = null;
+        }
+
         var persons = personsFactory.getPersons();
         for (key in persons) {
             persons[key].getStatus();
+            persons[key].move();
         }
         
         apiEngine.getScore(function(response){
@@ -87,16 +82,26 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 break;
 
             case "reproduce":
-                if($scope.person2 == ""){
+                // Select first person
+                if($scope.personSelected == null){
                     console.log("1 person selected");
-                    person.reproducing = true;
-                    $scope.person2 = person;
+                    person.selectedToReproduce = true;
+                    $scope.personSelected = person;
                 }
-                else {
+                // Select second person
+                else if ($scope.newPerson == null){
                     console.log("2 persons selected, reproducing...");
-                    person.reproducing = true;
-                    person.reproduce($scope.person2);
-                    $scope.person2 = "";
+                    person.selectedToReproduce = true;
+                    // Do put
+                    apiEngine.personSetTwoTask(person.id,$scope.personSelected.id,"reproducing",function(response){
+                        person.childId = response.data.id;
+                        // Get new person
+                        apiEngine.personStatus(person.childId,function(response){
+                            $scope.movePeople($scope.personSelected,person);
+                            $scope.newPerson = response.data; // store the new person so that he/she can be added to the view in update()
+                            $scope.personSelected = null;
+                        });
+                    });
                 }
                 break;
 
@@ -122,6 +127,17 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
             default:
         }
+    }
+
+    $scope.movePeople = function(person1,person2){
+        // Move persons towards each other
+        var desX = Math.round((person1.x + person2.x)/2);
+        var desY = Math.round((person1.y + person2.y)/2);
+        person1.destinationX = desX;
+        person1.destinationY = desY;
+        person2.destinationX = desX;
+        person2.destinationY = desY;
+        $scope.updateGamestate();
     }
 
     $scope.removePeople = function(person){

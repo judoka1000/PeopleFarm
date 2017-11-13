@@ -1,4 +1,4 @@
-package com.amazone.peoplefarm.model;
+package com.amazone.peoplefarm.models;
 
 public class Response<T> {
 

@@ -1,11 +1,7 @@
-package com.amazone.peoplefarm.model;
+package com.amazone.peoplefarm.models;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.web.context.annotation.ApplicationScope;
 
 import static org.junit.Assert.assertEquals;
 

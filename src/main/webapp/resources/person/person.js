@@ -7,9 +7,13 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         constructor(person){
             this.setFields(person);
             this.visible = true;
-            this.reproducing = false;
+            this.selectedToReproduce = false; // when true, sprite has heart icon
+            this.heartAnimation = false;
+            this.destinationX = null;
+            this.destinationY = null;
             this.x = Math.floor(Math.random() * 8);
             this.y = Math.floor(Math.random() * 8);
+            this.thought = null;
         }
 
         setFields(person){
@@ -42,6 +46,13 @@ app.factory('personsFactory', ['apiEngine','$timeout',
                 if(obj.status.health=="DEAD"){
                     obj.die();
                 }
+                if(obj.status.hunger < 34) {
+                    obj.thought = "Ik heb honger";
+                } else if(obj.status.tiredness < 34) {
+                    obj.thought = "Ik ben moe";
+                } else {
+                    obj.thought = null;
+                }
                 if(oldCollectedCaptchas != obj.status.currentCaptchas){
                     obj.status.captchaChange = "newCaptchas";
                     $timeout(function(person){person.status.captchaChange="";},300,true,obj);
@@ -66,10 +77,75 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             }
         }
 
+        move() {
+            // Moving to partner
+            if(this.destinationX != null && this.destinationY != null){
+                // Not yet arrived
+                if(this.x != this.destinationX || this.y != this.destinationY){
+                    this.x = this.destinationX;
+                    this.y = this.destinationY;
+                // Arrived
+                } else {
+                    if  (!this.heartAnimation){
+                        this.heartAnimation = "heartAnimation";
+                    } else {
+                        this.selectedToReproduce = false;
+                        this.heartAnimation = false;
+                        this.destinationX = null;
+                        this.destinationY = null;
+                    }
+                }
+            } else {
+                var sw = Math.floor(Math.random() * 4);
+                switch(sw) {
+                    case 0:
+                        this.x = this.x - 1;
+                        if(this.x < 0) this.x = 0;
+                        break;
+                    case 1:
+                        this.x = this.x + 1;
+                        if(this.x > 7) this.x = 7;
+                        break;
+                    case 2:
+                        this.y = this.y - 1;
+                        if(this.y < 0) this.y = 0;
+                        break;
+                    case 3:
+                        this.y = this.y + 1;
+                        if(this.y > 7) this.y = 7;
+                        break;
+                }
+            }
+        }
+
         getPosition() {
             return {
                 x: this.x,
                 y: this.y
+            }
+        }
+
+        getCanReproduce(partner,clickAction) {
+            if(!this.canReproduce(partner,clickAction)){
+                return "cannotReproduce";
+            } else {
+                return "";
+            }
+        }
+
+        canReproduce(partner,clickAction){
+            var actionIsReproduce = clickAction === "reproduce";
+            var isChild = this.getAdult() != "Adult";
+            var partnerHasSameGender = partner != null && partner.gender === this.gender;
+
+            if(actionIsReproduce){
+                if(isChild || partnerHasSameGender){
+                    return false
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
             }
         }
 
@@ -84,13 +160,6 @@ app.factory('personsFactory', ['apiEngine','$timeout',
         sleep(amount=10){
             var obj = this;
             apiEngine.personSettask(this.id,"sleeping",function(response){
-                obj.getStatus();
-            });
-        }
-
-        reproduce(person){
-            var obj = this;
-            apiEngine.personSetTwoTask(this.id,person.id,"reproducing",function(response){
                 obj.getStatus();
             });
         }

@@ -1,10 +1,9 @@
 package com.amazone.peoplefarm.controllers;
 
 import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
-import com.amazone.peoplefarm.model.DevSettings;
-import com.amazone.peoplefarm.model.GameState;
-import com.amazone.peoplefarm.model.Person;
-import com.amazone.peoplefarm.model.Response;
+import com.amazone.peoplefarm.models.DevSettings;
+import com.amazone.peoplefarm.models.GameState;
+import com.amazone.peoplefarm.models.Response;
 import com.amazone.peoplefarm.services.GameLogicService;
 import com.amazone.peoplefarm.services.GameStateService;
 import com.amazone.peoplefarm.services.PersonService;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 
 @Controller
