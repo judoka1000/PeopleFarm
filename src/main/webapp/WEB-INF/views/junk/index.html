@@ -20,7 +20,7 @@
     app.controller("myCtrl", function($scope, $http) {
         var mybody = angular.element(document).find('body');
         $http.get("test.json").then(function (response) {
-            var myData = response.data.people;
+            var myData = response.data.data.people;
             for(var i=0; i < myData.length; i++) {
                 myData[i].getGender = function(){
                   alert(this.gender);
