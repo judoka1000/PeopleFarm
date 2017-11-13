@@ -1,6 +1,6 @@
 package com.amazone.peoplefarm.interfaces;
 
-import com.amazone.peoplefarm.model.Person;
+import com.amazone.peoplefarm.models.Person;
 
 public interface PersonLogicInterface {
     public Person newPerson();

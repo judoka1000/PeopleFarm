@@ -1,4 +1,4 @@
-package com.amazone.peoplefarm.model;
+package com.amazone.peoplefarm.models;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
