@@ -35,9 +35,15 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     $scope.showPeopleId = -1;
     $scope.score = 0;
     $scope.personSelected = null;
+    $scope.newPerson = null;
     
     $scope.updateGamestate = function(){
         console.log("updategame");
+        if ($scope.newPerson != null) {
+            personsFactory.addPerson($scope.newPerson);
+            $scope.newPerson = null;
+        }
+
         var persons = personsFactory.getPersons();
         for (key in persons) {
             persons[key].getStatus();
@@ -76,25 +82,23 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                 break;
 
             case "reproduce":
+                // Select first person
                 if($scope.personSelected == null){
                     console.log("1 person selected");
-                    person.reproducing = true;
+                    person.selectedToReproduce = true;
                     $scope.personSelected = person;
                 }
-                else {
+                // Select second person
+                else if ($scope.newPerson == null){
                     console.log("2 persons selected, reproducing...");
-                    person.reproducing = true;
-                    person.reproduce($scope.personSelected);
+                    person.selectedToReproduce = true;
+                    // Do put
                     apiEngine.personSetTwoTask(person.id,$scope.personSelected.id,"reproducing",function(response){
-                        person.reproducing = false;
-                        $scope.personSelected.reproducing = false;
                         person.childId = response.data.id;
-                        console.log("in person");
-                        console.log(person.childId);
+                        // Get new person
                         apiEngine.personStatus(person.childId,function(response){
-                            console.log(response.data);
-                            personsFactory.addPerson(response.data);
-                            $scope.updateGamestate();
+                            $scope.movePeople($scope.personSelected,person);
+                            $scope.newPerson = response.data; // store the new person so that he/she can be added to the view in update()
                             $scope.personSelected = null;
                         });
                     });
@@ -123,6 +127,17 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
 
             default:
         }
+    }
+
+    $scope.movePeople = function(person1,person2){
+        // Move persons towards each other
+        var desX = Math.round((person1.x + person2.x)/2);
+        var desY = Math.round((person1.y + person2.y)/2);
+        person1.destinationX = desX;
+        person1.destinationY = desY;
+        person2.destinationX = desX;
+        person2.destinationY = desY;
+        $scope.updateGamestate();
     }
 
     $scope.removePeople = function(person){

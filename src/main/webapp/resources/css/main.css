@@ -75,14 +75,36 @@ textarea {
     transition: width 0.3s,height 0.3s,font-size 0.3s;
 }
 
-.people .imgContainer .reproducing{
+
+.people .imgContainer .reproducing {
+    position: absolute;
+    width: 30px;
+    height: 50px;
     background: url("../images/heart.png");
-    display: block;
-    float: left;
-    width: 80%;
-    height: 60%;
     background-size: 30px 30px;
-    margin-top: 20px;
+    background-repeat: no-repeat;
+}
+
+
+.roomPeople .reproducing{
+    background: url("../images/heart.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    z-index:999;
+    margin: auto;
+    width: 30%;
+    height: 30%;
+    position: absolute;
+    left: 50%;
+    top: 65%;
+    transform: translate(-50%, -50%);
+    -webkit-transition:width 5s, height 5s;
+    transition: width 5s, height 5s;
+}
+
+.roomPeople .reproducing.heartAnimation {
+    width: 100%;
+    height: 100%;
 }
 
 .people .imgContainer .newCaptchas{
@@ -430,16 +452,6 @@ footer {
 
 .roomPeople .imgContainer .newCaptchas{
     font-size: 0.8em;
-}
-
-.roomPeople .reproducing{
-    position: absolute;
-    width: 30px;
-    height: 50px;
-    background: url("../images/heart.png");
-    background-size: 30px 30px;
-    background-repeat: no-repeat;
-    margin-top: 30px;
 }
 
 .spriteTombstone .overview{
