@@ -71,7 +71,7 @@
                 </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" ng-click="createPerson()" data-dismiss="modal" ng-disabled="personForm.$invalid">Create</button>
+                    <button id="submitButton" type="button" class="btn btn-primary" ng-click="createPerson()" data-dismiss="modal" ng-disabled="personForm.$invalid">Create</button>
                 </div>
              </div>
         </div>
