@@ -94,13 +94,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
                     person.selectedToReproduce = true;
                     // Do put
                     apiEngine.personSetTwoTask(person.id,$scope.personSelected.id,"reproducing",function(response){
-                        person.childId = response.data.id;
                         // Get new person
-                        apiEngine.personStatus(person.childId,function(response){
-                            $scope.movePeople($scope.personSelected,person);
-                            $scope.newPerson = response.data; // store the new person so that he/she can be added to the view in update()
-                            $scope.personSelected = null;
-                        });
+                        $scope.movePeople($scope.personSelected,person);
+                        $scope.newPerson = response.data.data; // store the new person so that he/she can be added to the view in update()
+                        $scope.personSelected = null;
                     });
                 }
                 break;
