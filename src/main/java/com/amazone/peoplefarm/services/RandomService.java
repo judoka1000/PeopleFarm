@@ -6,6 +6,7 @@ import java.util.Random;
 
 @Service
 public class RandomService {
+    /* Make a decision based on probability */
     public boolean getProbability(double probability) {
         Random r = new Random();
         return (r.nextDouble() < probability);
@@ -23,16 +24,18 @@ public class RandomService {
         return r.nextInt(max);
     }
 
+    /* Draw normally distributed floating number */
     public double getNormal(double mean, double deviation) {
         Random r = new Random();
         return mean + (deviation*r.nextGaussian());
     }
 
+    /* Draw normally distibuted number and make it integer */
     public int getNormalInt(int mean, int deviation) {
-        Random r = new Random();
-        return (int)(mean + (deviation*r.nextGaussian()));
+        return (int)getNormal(mean, deviation);
     }
 
+    /* Draw normally distributed number bounded between min and max */
     public int getBoundedNormalInt(int mean, int deviation, int min, int max) {
         int value;
         do {

@@ -1,20 +1,11 @@
 package com.amazone.peoplefarm.services;
 
-import com.amazone.peoplefarm.services.PersonLogicService;
-import com.amazone.peoplefarm.services.RandomService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,30 +16,49 @@ public class RandomServiceTest {
     @Autowired
     private RandomService randomService;
 
-    class ProbabilityEvent {
-        public ProbabilityEvent(double probability) {
+    private class ProbabilityEvent<T> {
+        public ProbabilityEvent(double probability, T value) {
             this.probability = probability;
+            this.value = value;
         }
 
         double probability;
         int count;
+        T value;
     }
 
-    private boolean pTest(List<ProbabilityEvent> events)
-    {
-        double pValues[] = {3.84, 5.99, 7.81, 9.49, 11.07, 12.53, 14.07, 15.51, 16.92, 18.31};
+    private interface PExperiment<T> {
+        T doExperiment();
+    }
 
-        int totalEvents = 0;
-        for(ProbabilityEvent event : events) {
-            totalEvents += event.count;
-        }
-        double chiSquare = 0.0;
-        for(ProbabilityEvent event : events) {
-            double t = event.count - (event.probability * totalEvents);
-            chiSquare += t*t/(event.probability * totalEvents);
+    private class PTest<T> {
+        private ProbabilityEvent<T>[] events;
+
+        private PTest(ProbabilityEvent... events) {
+            this.events = events;
         }
 
-        return (chiSquare <= pValues[events.size()-1]);
+        private boolean pTest(int repetitions, PExperiment<T> experiment)
+        {
+            for(int i = 0; i < repetitions; i++) {
+                T tempVal = experiment.doExperiment();
+                for(ProbabilityEvent<T> event: events) {
+                    if(event.value.equals(tempVal)) {
+                        event.count++;
+                    }
+                }
+            }
+
+            double pValues[] = {3.84, 5.99, 7.81, 9.49, 11.07, 12.53, 14.07, 15.51, 16.92, 18.31};
+
+            double chiSquare = 0.0;
+            for(ProbabilityEvent<T> event : events) {
+                double t = event.count - (event.probability * repetitions);
+                chiSquare += t*t/(event.probability * repetitions);
+            }
+
+            return (chiSquare <= pValues[events.length-1]);
+        }
     }
 
     @Test
@@ -56,17 +66,14 @@ public class RandomServiceTest {
         assertEquals(false, randomService.getProbability(0.0));
         assertEquals(true, randomService.getProbability(1.0));
 
-        List<ProbabilityEvent> events = new ArrayList<>();
-        events.add(new ProbabilityEvent(0.25));
-        events.add(new ProbabilityEvent(0.75));
-        for(int i = 0; i < 100000; i++) {
-            if(randomService.getProbability(0.25)) {
-                events.get(0).count++;
-            } else {
-                events.get(1).count++;
-            }
-        }
+        assertEquals(true, new PTest<Boolean>(
+                new ProbabilityEvent<>(0.25,true),
+                new ProbabilityEvent<>(0.75,false)
+        ).pTest(100000, () -> {return randomService.getProbability(0.25);} ));
+    }
 
-        assertEquals(true, pTest(events));
+    @Test
+    public void testGetFactor() {
+
     }
 }
