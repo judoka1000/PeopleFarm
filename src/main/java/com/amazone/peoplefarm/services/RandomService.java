@@ -1,33 +1,33 @@
 package com.amazone.peoplefarm.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
 @Service
 public class RandomService {
+    @Autowired
+    Random random;
+
     /* Make a decision based on probability */
     public boolean getProbability(double probability) {
-        Random r = new Random();
-        return (r.nextDouble() < probability);
+        return (random.nextDouble() < probability);
     }
 
     public double getFactor(double max){
-        Random r = new Random();
         // Return random number between -max and max
-        double polarity = r.nextBoolean() ? -1 : 1;
-        return polarity * r.nextDouble() * max / 10;
+        double polarity = random.nextBoolean() ? -1 : 1;
+        return polarity * random.nextDouble() * max / 10;
     }
 
     public int nextInt(int max) {
-        Random r = new Random();
-        return r.nextInt(max);
+        return random.nextInt(max);
     }
 
     /* Draw normally distributed floating number */
     public double getNormal(double mean, double deviation) {
-        Random r = new Random();
-        return mean + (deviation*r.nextGaussian());
+        return mean + (deviation*random.nextGaussian());
     }
 
     /* Draw normally distibuted number and make it integer */
