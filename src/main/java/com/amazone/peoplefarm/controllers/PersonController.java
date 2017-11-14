@@ -94,6 +94,7 @@ public class PersonController {
 
     @RequestMapping(value = "/main")
     public String main(Model model) {
+        //TODO change attributename to account?!
         if(!model.containsAttribute("gameState")){
             GameState gameState = gameLogicService.newGame();
             gameStateService.save(gameState);
