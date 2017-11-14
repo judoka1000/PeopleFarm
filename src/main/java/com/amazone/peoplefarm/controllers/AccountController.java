@@ -1,11 +1,15 @@
 package com.amazone.peoplefarm.controllers;
 
 import com.amazone.peoplefarm.models.Account;
+import com.amazone.peoplefarm.exceptions.*;
+import com.amazone.peoplefarm.models.Response;
 import com.amazone.peoplefarm.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@SessionAttributes("account")
 @Controller
 public class AccountController {
     @Autowired
@@ -24,29 +28,41 @@ public class AccountController {
 
     @ResponseBody
     @RequestMapping(value = "/logincheck", method = RequestMethod.POST)
-    public boolean checkCredentials(@RequestBody Account account) {
+    public Response<Boolean> checkCredentials(Model model, @RequestBody Account account) {
         try {
             Account user = accountService.findByUsername(account.getUsername());
             if (user.getPassword().equals(account.getPassword())){
                 System.out.println("password correct!");
-                return true;
+                model.addAttribute("account", account);
+                return new Response<>(true, true);
             }
             else{
-                System.out.println("password incorrect :(");
-                return false;
+                System.out.println("password incorrect!");
+                throw new AccountException("Password incorrect");
             }
         }
         catch (Exception e){
-            return false;
+            return new Response<>(false, e);
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/createaccount", method = RequestMethod.POST)
-    public int create(@RequestBody Account account) {
-
-        accountService.save(account);
-        return account.getId();
+    public Response<Integer> create(Model model, @RequestBody Account account) {
+        try {
+            if(accountService.findByUsername(account.getUsername())!=null){
+                throw new AccountException("Username already in use");
+            }
+            accountService.save(account);
+            return new Response<>(true, account.getId());
+        } catch(AccountException e) {
+            System.out.println(e.getMessage());
+            return new Response<>(false, e);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e = new AccountException("Could not save the account");
+            return new Response<>(false, e);
+        }
     }
 
 }

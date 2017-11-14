@@ -8,7 +8,8 @@ function LoginCtrl($scope, $http, $location) {
         $http.post('logincheck', angular.toJson($scope.account)).then(function(response) {
             console.log('succes from logincheck');
             console.log(response.data);
-            if (response.data == true) {
+            if (response.data.succes == true) {
+
                 window.location = 'main';
             }
             else{
@@ -20,9 +21,15 @@ function LoginCtrl($scope, $http, $location) {
 
     $scope.save = function(){
 
-        $http.post('createaccount', angular.toJson($scope.account)).then(function(success) {
-            console.log('succes');
-            window.location = 'main';
+        $http.post('createaccount', angular.toJson($scope.account)).then(function(response) {
+            console.log('before succes check');
+            if(response.data.succes) {
+                console.log(response.data.data);
+                console.log('succes -old');
+                window.location = 'main';
+            } else {
+                window.alert(response.data.exception.message);
+            }
             });
   }};
 

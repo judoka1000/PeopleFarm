@@ -1,9 +1,6 @@
 package com.amazone.peoplefarm.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Account {
@@ -13,6 +10,10 @@ public class Account {
     private int id;
     private String username;
     private String password;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="game_id")
+    private GameState gameState;
 
     public int getId() {
         return id;

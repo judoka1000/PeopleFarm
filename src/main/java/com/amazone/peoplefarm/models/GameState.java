@@ -8,10 +8,13 @@ import java.util.List;
 
 @Entity
 public class GameState {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    int id;
-    int score;
+    @Column(name = "game_id")
+    private int id;
+
+    private int score;
 
     String playerName;
 
