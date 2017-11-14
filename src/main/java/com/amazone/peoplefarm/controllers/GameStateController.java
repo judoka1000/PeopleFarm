@@ -1,9 +1,11 @@
 package com.amazone.peoplefarm.controllers;
 
 import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
+import com.amazone.peoplefarm.models.Account;
 import com.amazone.peoplefarm.models.DevSettings;
 import com.amazone.peoplefarm.models.GameState;
 import com.amazone.peoplefarm.models.Response;
+import com.amazone.peoplefarm.services.AccountService;
 import com.amazone.peoplefarm.services.GameLogicService;
 import com.amazone.peoplefarm.services.GameStateService;
 import com.amazone.peoplefarm.services.PersonService;
@@ -18,7 +20,7 @@ import java.util.Map;
 
 
 @Controller
-@SessionAttributes("gameState")
+@SessionAttributes({"gameState", "account"})
 public class GameStateController {
 
     @Autowired
@@ -30,10 +32,14 @@ public class GameStateController {
     @Autowired
     private GameLogicService gameLogicService;
 
+    @Autowired
+    private AccountService accountService;
+
     @ResponseBody
     @RequestMapping(value = "/newgame", method = RequestMethod.POST)
     public Response newGame(Model model, HttpServletResponse httpResponse) {
         try {
+            Account account = accountService.findOne((Integer) model.asMap().get("account"));
             if (!model.containsAttribute("gameState")) {
                 throw new GameStateNotFoundException("GameState niet gevonden");
             } else {
@@ -41,6 +47,9 @@ public class GameStateController {
             }
             GameState gameState = gameLogicService.newGame();
             gameStateService.save(gameState);
+
+                account.setGameState(gameState);
+                accountService.save(account);
             model.addAttribute("gameState", gameState.getId());
             return new Response(true);
         } catch(GameStateNotFoundException e) {

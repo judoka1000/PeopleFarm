@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@SessionAttributes("account")
+@SessionAttributes({"gameState", "account"})
 @Controller
 public class AccountController {
     @Autowired
@@ -33,7 +33,7 @@ public class AccountController {
             Account user = accountService.findByUsername(account.getUsername());
             if (user.getPassword().equals(account.getPassword())){
                 System.out.println("password correct!");
-                model.addAttribute("account", account);
+                model.addAttribute("account", user.getId());
                 return new Response<>(true, true);
             }
             else{

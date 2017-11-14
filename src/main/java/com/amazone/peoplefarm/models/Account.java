@@ -39,14 +39,21 @@ public class Account {
         this.password = password;
     }
 
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", gameState=" + gameState +
                 '}';
     }
-
-
 }

@@ -72,4 +72,13 @@ public class GameState {
     public void setDevSettings(DevSettings devSettings) {
         this.devSettings = devSettings;
     }
+
+    @Override
+    public String toString() {
+        return "GameState{" +
+                "id=" + id +
+                ", score=" + score +
+                ", playerName='" + playerName + '\'' +
+                '}';
+    }
 }

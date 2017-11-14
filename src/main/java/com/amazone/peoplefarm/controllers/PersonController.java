@@ -8,10 +8,7 @@ import com.amazone.peoplefarm.exceptions.PersonException;
 import com.amazone.peoplefarm.exceptions.PersonNotFoundException;
 import com.amazone.peoplefarm.models.GameState;
 import com.amazone.peoplefarm.models.Person;
-import com.amazone.peoplefarm.services.GameLogicService;
-import com.amazone.peoplefarm.services.GameStateService;
-import com.amazone.peoplefarm.services.PersonLogicService;
-import com.amazone.peoplefarm.services.PersonService;
+import com.amazone.peoplefarm.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +24,7 @@ import java.util.Map;
 
 @Transactional
 @Controller
-@SessionAttributes("gameState")
+@SessionAttributes({"gameState", "account"})
 public class PersonController {
 
     @Autowired
@@ -38,6 +35,8 @@ public class PersonController {
     private GameLogicService gameLogicService;
     @Autowired
     private PersonLogicService personLogicService;
+    @Autowired
+    private AccountService accountService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getIndex() {
@@ -94,13 +93,36 @@ public class PersonController {
 
     @RequestMapping(value = "/main")
     public String main(Model model) {
-        //TODO change attributename to account?!
-        if(!model.containsAttribute("gameState")){
-            GameState gameState = gameLogicService.newGame();
-            gameStateService.save(gameState);
-            model.addAttribute("gameState", gameState.getId());
-            System.out.println("New game gestart met id " + gameState.getId());
-        }
+        if(!model.containsAttribute("account")){
+            return "login";
+        } else {
+            Account account = accountService.findOne((Integer) model.asMap().get("account"));
+            System.out.println("Current account = " + account);
+//            if(account.getGameState()==null) model.addAttribute("gameState", account.getGameState().getId());
+            if (!model.containsAttribute("gameState")) {
+                GameState gameState = gameLogicService.newGame();
+                gameStateService.save(gameState);
+                account.setGameState(gameState);
+                accountService.save(account);
+                model.addAttribute("gameState", gameState.getId());
+                System.out.println("New game gestart met id " + gameState.getId());
+            } else {
+                    if (account.getGameState()==null){
+                        GameState gameState = gameLogicService.newGame();
+                        gameStateService.save(gameState);
+                        account.setGameState(gameState);
+                        accountService.save(account);
+                        model.addAttribute("gameState", gameState.getId());
+                        System.out.println("New game gestart met id " + gameState.getId());
+
+                    } else if ((Integer) model.asMap().get("gameState") != account.getGameState().getId()){
+                        System.out.println("Reloaded account = " + (Integer) model.asMap().get("account"));
+                        GameState gameState = gameStateService.findOne(account.getGameState().getId());
+                        System.out.println("Reloaded gamestate = " + gameState);
+                        model.addAttribute("gameState", gameState.getId());
+                    }
+                }
+            }
         return "main";
     }
 
