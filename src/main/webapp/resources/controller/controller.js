@@ -2,6 +2,16 @@ app.controller('PeopleCtrl', PeopleCtrl);
 
 function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,personsFactory){
     $scope.init = function(){
+        apiEngine.getButtons(function(response){
+            $scope.buttons = response.data.data;
+            //console.log(buttons.data);
+            }
+        );
+
+        apiEngine.getShopButtons(function(response){
+            $scope.storeButtons = response.data.data;
+        });
+
         $interval($scope.updateGamestate, 2000);
     }
 
@@ -121,6 +131,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
                 });
             break;
 
+            case "none":
+                console.log("actionNone");
+            break;
+
             default:
         }
     }
@@ -159,10 +173,23 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         return result;
     }
 
-    $scope.setClickAction = function(action){
-        $scope.cursor = action + "Cur";
-        $scope.clickAction = action;
-        console.log("ready to " + action);
+    $scope.setClickAction = function(button){
+        if(button.clickAction == "none") {
+            $scope.cursor = {'cursor': "auto"};
+        } else {
+            $scope.cursor = {'cursor': "url('resources/images/" + button.image + "'), auto"};
+        }
+        $scope.clickAction = button.clickAction;
+        console.log("ready to " + button.clickAction);
+    }
+
+    $scope.buyItem = function(button){
+        apiEngine.buy(button.id,function(response){
+            apiEngine.getButtons(function(response2){
+                $scope.buttons = response2.data.data;
+            });
+        });
+        console.log("Buy " + button.name);
     }
 
     $scope.actionUpdate = function(person){
@@ -189,6 +216,55 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
     $scope.renamePlayer = function(newName) {
         apiEngine.renamePlayer(newName, function(){});
     }
-
     $scope.init();
 }
+
+app.directive("actionbutton", function() {
+    return {
+        scope: {
+            name: '=',
+            src: '=',
+            action: '&'
+        },
+        template : "<div id=\"action{{name}}\" class=\"actionButton\"></div>",
+        replace: true,
+        link: function(scope, element, attr) {
+            element.css({
+                'background-image': 'url(resources/images/' + scope.src +')'
+            }),
+            element.class;
+        }
+    };
+});
+
+app.directive("shopbutton", function() {
+    return {
+        scope: {
+            name: '=',
+            src: '=',
+            action: '&'
+        },
+        template : "<div id=\"shopButton{{name}}\" class=\"shopButton\"></div>",
+        replace: true,
+        link: function(scope, element, attr) {
+            element.css({
+                'background-image': 'url(resources/images/' + scope.src +')'
+            }),
+                element.class;
+        }
+    };
+});
+
+app.filter('shopFilter', function() {
+    return function(buttons,scope) {
+        var output = [];
+        angular.forEach(buttons, function(shopButton) {
+            var match = false;
+            angular.forEach(scope.buttons, function(button){
+                if(shopButton.id == button.id) match = true;
+            });
+            if(!match) output.push(shopButton);
+        });
+        return output;
+    };
+});

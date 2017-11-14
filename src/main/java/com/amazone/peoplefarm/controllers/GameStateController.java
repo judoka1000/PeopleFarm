@@ -1,6 +1,7 @@
 package com.amazone.peoplefarm.controllers;
 
 import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
+import com.amazone.peoplefarm.models.Button;
 import com.amazone.peoplefarm.models.DevSettings;
 import com.amazone.peoplefarm.models.GameState;
 import com.amazone.peoplefarm.models.Response;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -147,4 +149,15 @@ public class GameStateController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/buttons", method = RequestMethod.GET)
+    public Response<List<Button>> getButtons(Model model, HttpServletResponse httpResponse) {
+        try{
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            return new Response<>(true, gameState.getButtons());
+        } catch (Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response<>(false, e);
+        }
+    }
 }

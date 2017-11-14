@@ -195,30 +195,28 @@ p.percLabel{
 	padding-left: 15px;
 }
 
+.shopButton,
 .actionButton{
     width: 32px;
     height: 32px;
     float: left;
     margin-right: 10px;
-}
-
-#actionEating{
-    background: url("../images/hamburger.png");
+    margin-top: 10px;
+    background-position-x: center;
+    background-repeat: no-repeat;
+    display: block;
 }
 
 #actionDogfood{
-    background: url("../images/dogfood.jpg");
-    background-position-x: center;
-    background-repeat: no-repeat;
+    background-image: url("../images/dogfood.jpg");
+
 }
 
 #actionSleeping{
     background: url("../images/sleep.png");
 }
 
-#actionReproducing{
-    background: url("../images/heart.png");
-}
+
 
 #actionKill{
     background-color: red;
@@ -228,17 +226,7 @@ p.percLabel{
     background-color: green;
 }
 
-#actionNone{
-    background: url("../images/pointercursor.png");
-}
 
-#actionInfo{
-	background-color : yellow;
-}
-
-#actionCollect{
-    background-color: lightgreen;
-}
 
 .eatHamburgerCur {
     cursor: url('../images/hamburger.png'), auto;
@@ -572,4 +560,16 @@ footer {
     opacity:0;
     transition: opacity 4s;
     -webkit-transition:opacity 4s;
+}
+
+.shopRow {
+    clear: both;
+    margin-top: 10px;
+    height: 32px;
+}
+
+.shopRow p{
+    margin-top: 10px;
+    float: left;
+    display: block;
 }

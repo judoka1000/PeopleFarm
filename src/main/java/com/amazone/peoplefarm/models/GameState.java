@@ -1,6 +1,8 @@
 package com.amazone.peoplefarm.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,6 +26,17 @@ public class GameState {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gamestate", orphanRemoval = true)
     @JsonManagedReference
     List<Person> persons = new ArrayList<Person>();
+
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gamestate", orphanRemoval = true)
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    @JsonManagedReference
+
+
+    @OneToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    private List<Button> buttons = new ArrayList<Button>();
+
 
     public GameState() {
     }
@@ -71,5 +84,20 @@ public class GameState {
 
     public void setDevSettings(DevSettings devSettings) {
         this.devSettings = devSettings;
+    }
+
+    public List<Button> getButtons() {
+        System.out.println(buttons);
+        return buttons;
+    }
+
+    public void setButtons(List<Button> buttons) {
+        this.buttons = buttons;
+    }
+
+    public Button addButton(Button button){
+        //button.setGamestate(this);
+        this.buttons.add(button);
+        return(button);
     }
 }

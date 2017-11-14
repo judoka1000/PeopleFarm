@@ -109,7 +109,12 @@ public class PersonController {
     public Response<List<Person>> getPersons(Model model, HttpServletResponse httpResponse){
         try {
             GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            if(gameState == null) throw new GameStateNotFoundException("Gamestate met id " + model.asMap().get("gameState") + " niet gevonden in database.");
+
             return new Response<>(true, gameState.getPersons());
+        } catch (GameStateNotFoundException e){
+            httpResponse.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+            return new Response(false, e);
         } catch (Exception e){
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new Response<>(false, e);

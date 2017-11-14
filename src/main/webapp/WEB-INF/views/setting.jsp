@@ -3,8 +3,11 @@
 <div id="settingScreenArea" class="col-md-3">
 	<div class="settingScreen">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
+			<li class="nav-item">
+				<a class="nav-link active" id="game-tab" data-toggle="tab" href="#game" role="tab" aria-controls="game" aria-selected="true">Game</a>
+			</li>
   			<li class="nav-item">
-    			<a class="nav-link active" id="game-tab" data-toggle="tab" href="#game" role="tab" aria-controls="game" aria-selected="true">Game</a>
+    			<a class="nav-link" id="shop-tab" data-toggle="tab" href="#shop" role="tab" aria-controls="shop" aria-selected="true">Shop</a>
   			</li>
   			<li class="nav-item">
     			<a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
@@ -26,16 +29,8 @@
 		 				<div id="playerScore">$ {{score}}</div>
 		 			</div>
 		 			<div class="row">
-		 				<div id="actionButtons">
-							   <div id="actionEating" class="actionButton" ng-click="setClickAction('eatHamburger')"></div>
-							   <div id="actionDogfood" class="actionButton" ng-click="setClickAction('eatDogfood')"></div>
-							   <div id="actionSleeping" class="actionButton" ng-click="setClickAction('sleep')"></div>
-							   <div id="actionReproducing" class="actionButton" ng-click="setClickAction('reproduce')"></div>
-							   <div id="actionNone" class="actionButton" ng-click="actionNone()"></div>
-							   <div id="actionKill" class="actionButton" ng-click="setClickAction('kill')"></div>
-							   <div id="actionTest" class="actionButton" ng-click="setClickAction('test')">test</div>
-							   <div id="actionInfo" class="actionButton" ng-click="setClickAction('info')">info</div>
-							   <div id="actionCollect" class="actionButton" ng-click="setClickAction('collect')">collect</div>
+		 				<div id="actionButtons" ng-if="buttons[0]" >
+							<actionbutton ng-repeat="button in buttons" name="button.name" ng-click="setClickAction(button)" src="button.image"></actionbutton>
 						</div>
 					</div>
 				</div>
@@ -52,6 +47,13 @@
 					<div>Metabolism : {{persons[showPeopleId].abilities.metabolism}}</div>
 				</div>
  			</div>
+
+			<div class="tab-pane fade" id="shop" role="tabpanel" aria-labelledby="shop-tab">
+				<div class="shopRow" ng-repeat="button in storeButtons | shopFilter:this" ng-click="buyItem(button)" >
+					<shopbutton name="button.name" src="button.image"></shopbutton>
+					<p>{{button.name}} &#36;{{button.buyCost}}</p>
+				</div>
+			</div>
 
  			<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
  				<h1>Settings</h1>
