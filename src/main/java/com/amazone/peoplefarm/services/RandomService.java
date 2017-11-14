@@ -5,10 +5,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
+import static java.lang.Math.sqrt;
+import static org.apache.commons.math3.special.Erf.erfc;
+import static org.apache.commons.math3.util.FastMath.log;
+
 @Service
 public class RandomService {
     @Autowired
-    Random random;
+    private Random random;
 
     /* Make a decision based on probability */
     public boolean getProbability(double probability) {
@@ -42,5 +46,19 @@ public class RandomService {
             value = getNormalInt(mean, deviation);
         } while(value <= min || value >= max);
         return value;
+    }
+
+    public boolean getDiffNormalProbability(double mean, double deviation, double lowerValue, double higherValue) {
+        double probability = erfc((lowerValue - mean)/(deviation*sqrt(2)));
+        probability /= erfc((higherValue - mean)/(deviation * sqrt(2)));
+        probability = log(probability);
+
+        if(probability < 0.0) {
+            return false;
+        } else if(probability > 1.0) {
+            return true;
+        }
+
+        return getProbability(probability);
     }
 }

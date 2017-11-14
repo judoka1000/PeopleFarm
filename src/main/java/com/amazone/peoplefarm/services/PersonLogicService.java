@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PersonLogicService implements PersonLogicInterface {
     @Autowired
-    RandomService randomService;
+    private RandomService randomService;
 
     public Person newPerson() {
         int[] sprites_male = {0, 1, 2, 3, 5, 7};
@@ -30,7 +30,6 @@ public class PersonLogicService implements PersonLogicInterface {
         person.getStatus().setAge(0);
         person.getStatus().setHealth(Status.Health.HEALTHY);
         person.getStatus().setCurrentCaptchas(0);
-        person.getStatus().setAgeOfDeath(randomService.getBoundedNormalInt(70,20, 0, 120));
 
         person.setAbilities(new Abilities());
         person.getAbilities().setIq(randomService.getBoundedNormalInt(80, 40,60,120));
@@ -80,8 +79,8 @@ public class PersonLogicService implements PersonLogicInterface {
         personStatus.setAge(personStatus.getAge() + 1);
 
         if(person.getGamestate().getDevSettings().isMortal()) {
-            // Person dies of old age
-            if(personStatus.getAgeOfDeath() < personStatus.getAge()) {
+            // Person dies of old age with increasing probability
+            if(randomService.getDiffNormalProbability(70,10, personStatus.getAge(), personStatus.getAge() + 1)) {
                 personStatus.setHealth(Status.Health.DEAD);
             }
 
