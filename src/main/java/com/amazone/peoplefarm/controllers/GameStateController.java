@@ -8,6 +8,7 @@ import com.amazone.peoplefarm.services.GameLogicService;
 import com.amazone.peoplefarm.services.GameStateService;
 import com.amazone.peoplefarm.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,19 +35,18 @@ public class GameStateController {
     @RequestMapping(value = "/newgame", method = RequestMethod.POST)
     public Response newGame(Model model, HttpServletResponse httpResponse) {
         try {
-            if (!model.containsAttribute("gameState")) {
-                throw new GameStateNotFoundException("GameState niet gevonden");
-            } else {
-                gameStateService.delete((Integer) model.asMap().get("gameState"));
+            if (model.containsAttribute("gameState")) {
+                try {
+                    gameStateService.delete((Integer) model.asMap().get("gameState"));
+                } catch(EmptyResultDataAccessException e) {
+                    System.out.println("Could not delete gamestate");
+                }
             }
             GameState gameState = gameLogicService.newGame();
             gameStateService.save(gameState);
             model.addAttribute("gameState", gameState.getId());
             return new Response(true);
-        } catch(GameStateNotFoundException e) {
-            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return new Response(false, e);
-        }catch(Exception e){
+        } catch(Exception e){
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new Response(false, e);
         }
@@ -56,20 +56,22 @@ public class GameStateController {
     @RequestMapping(value = "/score")
     public Response<String> getGameState(Model model, HttpServletResponse httpResponse){
         try {
-            if (model.asMap().get("gameState") == null) {
+            if (!model.containsAttribute("gameState")) {
                 throw new GameStateNotFoundException("Gamestate is: null");
             } else {
                 GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+                if(gameState == null) {
+                    throw new GameStateNotFoundException("Gamestate does not exist in database");
+                }
                 return new Response<>(true, ((Integer)gameState.getScore()).toString());
             }
-        } catch(GameStateNotFoundException e){
+        } catch(GameStateNotFoundException e) {
             httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return new Response<>(false, e);
         } catch(Exception e){
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new Response<>(false, e);
         }
-
     }
 
     @ResponseBody
