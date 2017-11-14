@@ -1,7 +1,6 @@
-var app = angular.module('PeopleApp', ['ngCookies', 'ngClickCopy']);
 app.controller('PeopleCtrl', PeopleCtrl);
 
-function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsFactory){
+function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,personsFactory){
     $scope.init = function(){
         $interval($scope.updateGamestate, 2000);
     }
@@ -171,7 +170,6 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     }
 
     $scope.actionTest = function(person){
-
     }
 
     $scope.actionNone = function(){
@@ -181,7 +179,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,apiEngine,personsF
     }
 
     $scope.newGameAction = function() {
-        apiEngine.newGame(function(){$scope.initializePeople();$scope.startingGame=false;});
+        apiEngine.newGame(function(){
+            $scope.initializePeople();
+            $scope.startingGame=false;
+        });
         $scope.updateGamestate();
     };
 

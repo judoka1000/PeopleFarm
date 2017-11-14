@@ -35,17 +35,22 @@ public class GameStateController {
     @RequestMapping(value = "/newgame", method = RequestMethod.POST)
     public Response newGame(Model model, HttpServletResponse httpResponse) {
         try {
-            if (model.containsAttribute("gameState")) {
+            if (!model.containsAttribute("gameState")) {
+                throw new GameStateNotFoundException("Gamestate not in session");
+            } else {
                 try {
                     gameStateService.delete((Integer) model.asMap().get("gameState"));
-                } catch(EmptyResultDataAccessException e) {
-                    System.out.println("Could not delete gamestate");
+                } catch (EmptyResultDataAccessException e) {
+                    throw new GameStateNotFoundException("Gamestate not in database");
                 }
             }
             GameState gameState = gameLogicService.newGame();
             gameStateService.save(gameState);
             model.addAttribute("gameState", gameState.getId());
             return new Response(true);
+        } catch(GameStateNotFoundException e) {
+            httpResponse.setStatus(498);
+            return new Response(false, e);
         } catch(Exception e){
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new Response(false, e);
@@ -66,8 +71,8 @@ public class GameStateController {
                 return new Response<>(true, ((Integer)gameState.getScore()).toString());
             }
         } catch(GameStateNotFoundException e) {
-            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return new Response<>(false, e);
+            httpResponse.setStatus(498);
+            return new Response(false, e);
         } catch(Exception e){
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new Response<>(false, e);
