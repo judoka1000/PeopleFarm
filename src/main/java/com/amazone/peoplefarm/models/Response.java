@@ -1,8 +1,10 @@
 package com.amazone.peoplefarm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Response<T> {
 
-    boolean succes;
+    private boolean succes;
     private String exceptionName;
     private Exception exception;
     private T data;

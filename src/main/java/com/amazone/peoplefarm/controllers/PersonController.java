@@ -188,10 +188,7 @@ public class PersonController {
                    break;
            }
            return new Response(true);
-       } catch(PersonNotFoundException e) {
-           httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
-           return new Response(false, e);
-       } catch(GameStateNotFoundException e){
+       } catch(PersonNotFoundException | GameStateNotFoundException e) {
            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
            return new Response(false, e);
        } catch(GameStateException e){

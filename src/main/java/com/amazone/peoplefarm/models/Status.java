@@ -9,14 +9,13 @@ public class Status {
         DEAD
     }
 
-    int hunger;
-    int tiredness;
-    int age;
-    int ageOfDeath;
-    int currentCaptchas;
+    private int hunger;
+    private int tiredness;
+    private int age;
+    private int currentCaptchas;
 
     @Enumerated(EnumType.STRING)
-    Health health;
+    private Health health;
 
     @Override
     public String toString() {
@@ -55,17 +54,6 @@ public class Status {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public int getAgeOfDeath() {
-        return ageOfDeath;
-    }
-
-    public void setAgeOfDeath(int ageOfDeath) {
-        if(ageOfDeath <= age) {
-            throw new IllegalArgumentException("Age of death cannot be lower than the current age");
-        }
-        this.ageOfDeath = ageOfDeath;
     }
 
     public Health getHealth() {
