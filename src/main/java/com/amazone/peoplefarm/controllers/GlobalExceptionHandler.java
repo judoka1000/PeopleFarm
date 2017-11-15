@@ -1,6 +1,8 @@
 package com.amazone.peoplefarm.controllers;
 
 import com.amazone.peoplefarm.exceptions.AccountException;
+import com.amazone.peoplefarm.exceptions.AccountNotFoundException;
+import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
 import com.amazone.peoplefarm.models.Response;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
@@ -16,21 +18,31 @@ import javax.servlet.http.HttpServletResponse;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-//    @ExceptionHandler(AccountException.class)
-//    public void handleAccountExc() {
-//    }
-
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Response defaultErrorHandler(HttpServletResponse httpServletResponse, Exception e) throws Exception {
-        httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+        httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return new Response<>(false, e);
     }
 
     @ResponseBody
     @ExceptionHandler(AccountException.class)
     public Response accountExceptionHandler(HttpServletResponse httpServletResponse, Exception e) throws Exception {
-        httpServletResponse.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+        httpServletResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return new Response<>(false, e);
     }
+
+    @ResponseBody
+    @ExceptionHandler(GameStateNotFoundException.class)
+    public Response GameStateNotFoundExceptionHandler(HttpServletResponse httpServletResponse, Exception e) throws Exception {
+        httpServletResponse.setStatus(498);
+        return new Response<>(false, e);
+    }
+    @ResponseBody
+    @ExceptionHandler(AccountNotFoundException.class)
+    public Response AccountNotFoundExceptionHandler(HttpServletResponse httpServletResponse, Exception e) throws Exception {
+        httpServletResponse.setStatus(498);
+        return new Response<>(false, e);
+    }
+
 }
