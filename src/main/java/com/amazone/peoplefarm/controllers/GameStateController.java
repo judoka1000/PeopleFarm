@@ -59,7 +59,7 @@ public class GameStateController {
             model.addAttribute("gameState", gameState.getId());
             return new Response(true);
         } catch(GameStateNotFoundException e) {
-//            httpResponse.setStatus(498);
+            httpResponse.setStatus(498);
             return new Response(false, e);
         } catch(Exception e){
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -81,7 +81,7 @@ public class GameStateController {
                 return new Response<>(true, ((Integer)gameState.getScore()).toString());
             }
         } catch(GameStateNotFoundException e) {
-//            httpResponse.setStatus(498);
+            httpResponse.setStatus(498);
             return new Response(false, e);
         } catch(Exception e){
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
