@@ -257,7 +257,11 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
     }
 
     $scope.selectCol = function(col) {
-        $scope.selectedCol = col;
+        if ($scope.selectedCol !== col){
+            $scope.selectedCol = col;
+        } else {
+            $scope.selectedCol = -1;
+        }
     }
 
     $scope.getColor = function(param,column){
