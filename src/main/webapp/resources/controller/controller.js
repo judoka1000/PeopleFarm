@@ -256,7 +256,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
     }
 
     $scope.getColor = function(param,column){
-        if($scope.cp1 >= 0 && $scope.cp2 >= 0) {
+        if($scope.persons[$scope.cp1] && $scope.persons[$scope.cp2]) {
             var col1 = $scope.persons[$scope.cp1];
             var col2 = $scope.persons[$scope.cp2];
             if (column !== 1) {
@@ -267,14 +267,6 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
                 case 'age':
                     if (col1.status.age === col2.status.age) return '';
                     else if (col1.status.age <= col2.status.age) return 'green';
-                    else return 'red';
-                case 'hunger':
-                    if (col1.status.hunger === col2.status.hunger) return '';
-                    else if (col1.status.hunger <= col2.status.hunger) return 'green';
-                    else return 'red';
-                case 'tiredness':
-                    if (col1.status.tiredness === col2.status.tiredness) return '';
-                    else if (col1.status.tiredness <= col2.status.tiredness) return 'green';
                     else return 'red';
                 case 'iq':
                     if (col1.abilities.iq === col2.abilities.iq) return '';
@@ -287,6 +279,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
                 case 'metabolism':
                     if (col1.abilities.metabolism === col2.abilities.metabolism) return '';
                     else if (col1.abilities.metabolism <= col2.abilities.metabolism) return 'green';
+                    else return 'red';
+                case 'total':
+                    if (col1.getTotalFields() === col2.getTotalFields()) return '';
+                    else if (col1.getTotalFields() >= col2.getTotalFields()) return 'green';
                     else return 'red';
             }
         }
