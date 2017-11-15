@@ -46,6 +46,8 @@ public class GameStateController {
             } else {
                 try {
                     gameStateService.delete((Integer) model.asMap().get("gameState"));
+                    account.setGameState(null);
+                    accountService.save(account);
                 } catch (EmptyResultDataAccessException e) {
                     throw new GameStateNotFoundException("Gamestate not in database");
                 }
