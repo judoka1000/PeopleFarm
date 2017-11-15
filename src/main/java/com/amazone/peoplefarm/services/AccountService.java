@@ -11,7 +11,4 @@ import javax.transaction.Transactional;
 public interface AccountService extends CrudRepository<Account, Integer> {
 
     public Account findByUsername(String username);
-
-    @Transactional
-    public Account findById(int id);
 }

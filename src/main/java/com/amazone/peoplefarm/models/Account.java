@@ -11,7 +11,7 @@ public class Account {
     private String username;
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="game_id")
     private GameState gameState;
 
