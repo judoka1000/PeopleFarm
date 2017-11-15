@@ -1,23 +1,25 @@
 
-
-app.factory('apiEngine', function apiEngine($http){
-    var mock = false;
-    var baseUrl = "http://localhost:8080/peoplefarm";
+app.factory('gameEngine', function gameEngine() {
     var sessionFlag = true;
 
     return {
         enableAPI: function() {
             sessionFlag = true;
         },
-
         disableAPI: function() {
             sessionFlag = false;
         },
-
         getAPI: function() {
             return sessionFlag;
-        },
+        }
+    };
+});
 
+app.factory('apiEngine', function apiEngine($http){
+    var mock = false;
+    var baseUrl = "http://localhost:8080/peoplefarm";
+
+    return {
         people: function(func){
             var functionPath = "/persons";
             //console.log("Requesting " + functionPath + mock ? " (mock)" : "");
