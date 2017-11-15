@@ -104,7 +104,7 @@ public class GameStateController {
     @RequestMapping(value = "/rename", method = RequestMethod.GET)
     public Response<Map<String, String>> getPlayerName(Model model, HttpServletResponse httpResponse) {
         try{
-            GameState gameState = accountService.findOne((Integer) model.asMap().get("acount")).getGameState();
+            GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
             Map<String, String> a = new HashMap<>();
             a.put("name", gameState.getPlayerName());
             return new Response<>(true, a);
