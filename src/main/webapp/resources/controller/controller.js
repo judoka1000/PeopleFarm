@@ -15,6 +15,18 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         $interval($scope.updateGamestate, 2000);
     }
 
+    $scope.keypressed = function (event) {
+        console.log("Keycode: " + event.keyCode);
+        switch(event.keyCode){
+
+            case 27:
+                console.log("Escape pressed");
+                $scope.actionNone();
+                break;
+
+        }
+    };
+
     $scope.initializePeople = function() {
         apiEngine.people( function (response) {
             $scope.persons = personsFactory.addPersons(response.data.data);
@@ -81,29 +93,30 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
 
     $scope.personClicked = function(person){
         console.log("Person " + person.id + " clicked");
-        switch($scope.clickAction) {
+        switch($scope.buttonUsed.clickAction) {
 
-            case "eatingHamburger":
-                console.log("Starting to eat, njam njam njam");
-                person.eat("hamburger");
-            break;
+            // case "eatingHamburger":
+            //     console.log("Starting to eat, njam njam njam");
+            //     person.eat("hamburger");
+            // break;
+            //
+            // case "eatingDogfood":
+            //     console.log("Starting to eat dogfood, woef");
+            //     person.eat("dogfood");
+            //     break;
+            //
+            // case "eatingRedbull":
+            //     console.log("Starting to drink Red Bull");
+            //     person.eat("redbull");
+            //     break;
 
-            case "eatingDogfood":
-                console.log("Starting to eat dogfood, woef");
-                person.eat("dogfood");
-                break;
-
-            case "eatingRedbull":
-                console.log("Starting to drink Red Bull");
-                person.eat("redbull");
-                break;
-
-            case "sleep":
-                console.log("zzz zzz zzz");
-                person.sleep();
-                break;
+            // case "sleep":
+            //     console.log("zzz zzz zzz");
+            //     person.sleep();
+            //     break;
 
             case "reproduce":
+
                 // Select first person
                 if($scope.personSelected == null){
                     console.log("1 person selected");
@@ -117,6 +130,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
                     // Do put
                     apiEngine.personSetTwoTask(person.id,$scope.personSelected.id,"reproducing",function(response){
                         // Get new person
+                        var audio;
+                        if(Math.random()>0.5) audio = new Audio('resources/sounds/reproduce.mp3');
+                        else audio = new Audio('resources/sounds/sexy.mp3');
+                        audio.play();
                         $scope.movePeople($scope.personSelected,person);
                         $scope.newPerson = response.data.data; // store the new person so that he/she can be added to the view in update()
                         $scope.personSelected = null;
@@ -124,14 +141,14 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
                 }
                 break;
 
-            case "kill":
-                person.die();
-            break;
-
-            case "test":
-                console.log("test");
-                person.status.currentCaptchas += 1;
-            break;
+            // case "kill":
+            //     person.die();
+            // break;
+            //
+            // case "test":
+            //     console.log("test");
+            //     person.status.currentCaptchas += 1;
+            // break;
 
             case "info":
                 console.log("Requesting Info");
@@ -175,6 +192,15 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
             break;
 
             default:
+                var button = $scope.buttonUsed;
+                if(button.sound) {
+                    var audio = new Audio('resources/sounds/' + button.sound);
+                    audio.play();
+                }
+                apiEngine.personSettask(person.id,button.clickAction,function(response){
+                    person.getStatus();
+                });
+                console.log("Action: " + button.clickAction);
         }
     }
 
@@ -212,12 +238,13 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         return result;
     }
 
+    $scope.setButtonUsed = function(button){
+        $scope.buttonUsed = button;
+        $scope.cursor = {'cursor': button.clickAction!="none" ? "url('resources/images/" + button.image + "'), auto" : "auto"};
+    }
+
     $scope.setClickAction = function(button){
-        if(button.clickAction == "none") {
-            $scope.cursor = {'cursor': "auto"};
-        } else {
-            $scope.cursor = {'cursor': "url('resources/images/" + button.image + "'), auto"};
-        }
+        $scope.cursor = {'cursor': button.clickAction!="none" ? "url('resources/images/" + button.image + "'), auto" : "auto"};
         $scope.clickAction = button.clickAction;
         console.log("ready to " + button.clickAction);
     }
@@ -239,9 +266,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
     }
 
     $scope.actionNone = function(){
-        console.log("actionNone");
-        $scope.cursor = "";
-        $scope.clickAction = "none";
+        $scope.cursor = {'cursor': "auto"};
     }
 
     $scope.newGameAction = function() {
@@ -348,3 +373,4 @@ app.filter('shopFilter', function() {
         return output;
     };
 });
+

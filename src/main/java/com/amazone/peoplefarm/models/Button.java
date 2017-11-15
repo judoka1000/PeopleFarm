@@ -16,6 +16,16 @@ public class Button {
     private String clickAction;
     private String image;
 
+    public String getSound() {
+        return sound;
+    }
+
+    public void setSound(String sound) {
+        this.sound = sound;
+    }
+
+    private String sound="";
+
     public int getBuyCost() {
         return buyCost;
     }

@@ -30,7 +30,7 @@
 		 			</div>
 		 			<div class="row">
 		 				<div id="actionButtons" ng-if="buttons[0]" >
-							<actionbutton ng-repeat="button in buttons" name="button.name" ng-click="setClickAction(button)" src="button.image"></actionbutton>
+							<actionbutton ng-repeat="button in buttons" name="button.name" ng-click="setButtonUsed(button)" src="button.image"></actionbutton>
 						</div>
 					</div>
 				</div>
