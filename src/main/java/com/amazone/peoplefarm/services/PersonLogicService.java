@@ -40,6 +40,15 @@ public class PersonLogicService implements PersonLogicInterface {
         return person;
     }
 
+    public Person newPersonFrom(Person other) {
+        Person p = newPerson();
+        p.setAbilities(other.getAbilities());
+        p.setStatus(other.getStatus());
+        p.getStatus().setHealth(Status.Health.HEALTHY);
+        p.setGender(other.getGender());
+        return p;
+    }
+
     public Person newChild(Person parent1, Person parent2) {
         double maxVariance = 0.3;
         if (parent1.getGender() == parent2.getGender()) {

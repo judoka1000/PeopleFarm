@@ -1,5 +1,7 @@
 package com.amazone.peoplefarm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +13,8 @@ public class Account {
     private String username;
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="game_id")
     private GameState gameState;
 
@@ -39,14 +42,21 @@ public class Account {
         this.password = password;
     }
 
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", gameState=" + gameState +
                 '}';
     }
-
-
 }

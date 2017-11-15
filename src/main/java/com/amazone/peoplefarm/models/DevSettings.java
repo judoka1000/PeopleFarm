@@ -28,4 +28,9 @@ public class DevSettings {
     public void setMortal(boolean mortal) {
         this.mortal = mortal;
     }
+
+    @Override
+    public String toString() {
+        return "AddScore: " + addScore + " Mortal: " + mortal;
+    }
 }

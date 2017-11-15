@@ -26,7 +26,7 @@ function LoginCtrl($scope, $http, $location) {
             if(response.data.succes) {
                 console.log(response.data.data);
                 console.log('succes -old');
-                window.location = 'main';
+                window.location = 'login';
             } else {
                 window.alert(response.data.exception.message);
             }

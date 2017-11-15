@@ -1,10 +1,9 @@
 package com.amazone.peoplefarm.controllers;
 
+import com.amazone.peoplefarm.exceptions.AccountNotFoundException;
 import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
-import com.amazone.peoplefarm.models.Button;
-import com.amazone.peoplefarm.models.DevSettings;
-import com.amazone.peoplefarm.models.GameState;
-import com.amazone.peoplefarm.models.Response;
+import com.amazone.peoplefarm.models.*;
+import com.amazone.peoplefarm.services.AccountService;
 import com.amazone.peoplefarm.services.GameLogicService;
 import com.amazone.peoplefarm.services.GameStateService;
 import com.amazone.peoplefarm.services.PersonService;
@@ -21,7 +20,7 @@ import java.util.Map;
 
 
 @Controller
-@SessionAttributes("gameState")
+@SessionAttributes({"account"})
 public class GameStateController {
 
     @Autowired
@@ -33,132 +32,94 @@ public class GameStateController {
     @Autowired
     private GameLogicService gameLogicService;
 
+    @Autowired
+    private AccountService accountService;
+
     @ResponseBody
     @RequestMapping(value = "/newgame", method = RequestMethod.POST)
-    public Response newGame(Model model, HttpServletResponse httpResponse) {
-        try {
-            if (!model.containsAttribute("gameState")) {
-                throw new GameStateNotFoundException("Gamestate not in session");
-            } else {
-                try {
-                    gameStateService.delete((Integer) model.asMap().get("gameState"));
-                } catch (EmptyResultDataAccessException e) {
-                    throw new GameStateNotFoundException("Gamestate not in database");
-                }
-            }
-            GameState gameState = gameLogicService.newGame();
-            gameStateService.save(gameState);
-            model.addAttribute("gameState", gameState.getId());
-            return new Response(true);
-        } catch(GameStateNotFoundException e) {
-            httpResponse.setStatus(498);
-            return new Response(false, e);
-        } catch(Exception e){
-            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new Response(false, e);
-        }
+    public Response newGame(Model model, HttpServletResponse httpResponse) throws Exception {
+        Account account = accountService.findOne((Integer) model.asMap().get("account"));
+        account.setGameState(gameLogicService.newGame());
+        accountService.save(account);
+        return new Response(true);
     }
 
     @ResponseBody
     @RequestMapping(value = "/score")
-    public Response<String> getGameState(Model model, HttpServletResponse httpResponse){
-        try {
-            if (!model.containsAttribute("gameState")) {
-                throw new GameStateNotFoundException("Gamestate is: null");
-            } else {
-                GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-                if(gameState == null) {
-                    throw new GameStateNotFoundException("Gamestate does not exist in database");
-                }
-                return new Response<>(true, ((Integer)gameState.getScore()).toString());
+    public Response<String> getGameState(Model model, HttpServletResponse httpResponse) throws GameStateNotFoundException, AccountNotFoundException {
+        if (!model.containsAttribute("account")) {
+            throw new AccountNotFoundException("Current session does not have account");
+        } else {
+            GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
+            if (gameState == null) {
+                throw new GameStateNotFoundException("Gamestate does not exist in account");
             }
-        } catch(GameStateNotFoundException e) {
-            httpResponse.setStatus(498);
-            return new Response(false, e);
-        } catch(Exception e){
-            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new Response<>(false, e);
+            return new Response<>(true, ((Integer) gameState.getScore()).toString());
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/mortal", method = RequestMethod.PUT)
-    public Response flipMortality(Model model, HttpServletResponse httpResponse){
-        try {
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-            gameState.getDevSettings().setMortal(!gameState.getDevSettings().isMortal());
-            gameStateService.save(gameState);
-            return new Response(true);
-        } catch (Exception e){
-            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new Response(false, e);
-        }
+    public Response flipMortality(Model model, HttpServletResponse httpResponse) {
+        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+        gameState.getDevSettings().setMortal(!gameState.getDevSettings().isMortal());
+        gameStateService.save(gameState);
+        return new Response(true);
     }
 
     @ResponseBody
     @RequestMapping(value = "/rename/{name}", method = RequestMethod.POST)
     public Response changePlayerName(Model model, @PathVariable String name, HttpServletResponse httpResponse) {
-        try {
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-            gameState.setPlayerName(name);
-            gameStateService.save(gameState);
-            return new Response(true);
-        } catch (Exception e){
-            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new Response(false, e);
-        }
+        GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
+        gameState.setPlayerName(name);
+        gameStateService.save(gameState);
+        return new Response(true);
     }
 
     @ResponseBody
     @RequestMapping(value = "/rename", method = RequestMethod.GET)
     public Response<Map<String, String>> getPlayerName(Model model, HttpServletResponse httpResponse) {
-        try{
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-            Map<String, String> a = new HashMap<>();
-            a.put("name", gameState.getPlayerName());
-            return new Response<>(true, a);
-    } catch (Exception e){
-        httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        return new Response<>(false, e);
-    }
+        GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
+        Map<String, String> a = new HashMap<>();
+        a.put("name", gameState.getPlayerName());
+        return new Response<>(true, a);
     }
 
     @ResponseBody
     @RequestMapping(value = "/getDevSettings")
-    public Response<DevSettings> getDevsettings(Model model, HttpServletResponse httpResponse){
-        try {
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-            return new Response<>(true, gameState.getDevSettings());
-        } catch(Exception e){
-            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new Response<>(false, e);
-        }
+    public Response<DevSettings> getDevsettings(Model model, HttpServletResponse httpResponse) {
+        GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
+        return new Response<>(true, gameState.getDevSettings());
     }
 
     @ResponseBody
     @RequestMapping(value = "/putDevSettings", method = RequestMethod.PUT)
-    public Response putDevsettings(Model model, @RequestBody DevSettings devSettings, HttpServletResponse httpResponse){
-        try {
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-            gameState.setDevSettings(devSettings);
-            gameState.setScore(gameState.getScore() + devSettings.getAddScore());
-            gameStateService.save(gameState);
-            return new Response(true);
-        } catch (Exception e){
-            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new Response(false, e);
-        }
+    public Response putDevsettings(Model model, @RequestBody DevSettings devSettings) throws GameStateNotFoundException, AccountNotFoundException {
+        if(!model.containsAttribute("account"))
+            throw new AccountNotFoundException("Not logged in");
+
+        Account account = accountService.findOne((Integer)model.asMap().get("account"));
+        if(account == null)
+            throw new AccountNotFoundException("Account not in database");
+
+        GameState gameState = account.getGameState();
+        if (gameState == null)
+            throw new GameStateNotFoundException("Gamestate met id " + model.asMap().get("gameState") + " niet gevonden in database.");
+
+        gameState.getDevSettings().setMortal(devSettings.isMortal());
+        gameState.getDevSettings().setAddScore(devSettings.getAddScore());
+        gameState.setScore(gameState.getScore() + devSettings.getAddScore());
+        account.setGameState(gameState);
+        accountService.save(account);
+        System.out.println(devSettings);
+
+        return new Response(true);
     }
 
     @ResponseBody
     @RequestMapping(value = "/buttons", method = RequestMethod.GET)
     public Response<List<Button>> getButtons(Model model, HttpServletResponse httpResponse) {
-        try{
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-            return new Response<>(true, gameState.getButtons());
-        } catch (Exception e){
-            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new Response<>(false, e);
-        }
+        GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
+        return new Response<>(true, gameState.getButtons());
     }
 }

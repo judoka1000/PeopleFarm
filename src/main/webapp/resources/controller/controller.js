@@ -1,6 +1,6 @@
 app.controller('PeopleCtrl', PeopleCtrl);
 
-function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,personsFactory){
+function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,personsFactory,gameEngine){
     $scope.init = function(){
         apiEngine.getButtons(function(response){
             $scope.buttons = response.data.data;
@@ -50,6 +50,11 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
     $scope.selectedCol = 0;
 
     $scope.updateGamestate = function(){
+        if(!gameEngine.getAPI()) {
+            console.log("API disabled");
+            return;
+        }
+
         console.log("updategame");
         if ($scope.newPerson != null) {
             personsFactory.addPerson($scope.newPerson);
