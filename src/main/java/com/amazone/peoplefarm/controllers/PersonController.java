@@ -42,54 +42,57 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.GET)
-    public Response<Person> getPerson(@PathVariable int id, HttpServletResponse httpResponse) throws PersonNotFoundException {
+    public Response<Person> getPerson(@PathVariable int id) throws PersonNotFoundException {
         Person person = personService.findOne(id);
-        if (person == null) throw new PersonNotFoundException("Person " + id + " not found");
-        return new Response<>(true,person);
+        if (person == null)
+            throw new PersonNotFoundException("Person " + id + " not found");
+
+        return new Response<>(true, person);
     }
 
     @ResponseBody
     @RequestMapping(value = "/person/{id}", method = RequestMethod.DELETE)
-    public Response deletePerson(Model model, @PathVariable int id, HttpServletResponse httpResponse) throws PersonException, PersonNotFoundException, AccountNotFoundException {
+    public Response deletePerson(Model model, @PathVariable int id) throws PersonException, PersonNotFoundException, AccountNotFoundException, GameStateNotFoundException {
         Person person = personService.findOne(id);
-        if(person == null) {
+        if (person == null)
             throw new PersonNotFoundException("Person niet gevonden in database");
-        }
-        if (person.getStatus().getHealth() != Status.Health.DEAD) {
-            throw new PersonException("Niet dood");
-        } else {
-            if (!model.containsAttribute("account")) {
-                throw new AccountNotFoundException("Not logged in");
-            }
-            GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
-            List<Person> persons = gameState.getPersons();
-            if (persons.remove(person)) {
-                gameState.setPersons(persons);
-                gameStateService.save(gameState);
 
-                return new Response(true);
-            } else {
-                throw new PersonNotFoundException("Persoon niet gevonden in gamestate");
-            }
-        }
+        if (person.getStatus().getHealth() != Status.Health.DEAD)
+            throw new PersonException("Person is not dead");
+
+        if (!model.containsAttribute("account"))
+            throw new AccountNotFoundException("No account in session");
+
+        Account account = accountService.findOne((Integer)model.asMap().get("account"));
+        if(account == null)
+            throw new AccountNotFoundException("No account in database");
+
+        GameState gameState = account.getGameState();
+        if(gameState == null)
+            throw new GameStateNotFoundException("No gamestate in current account");
+
+        if(!gameState.removePerson(person))
+            throw new PersonNotFoundException("Person not found in gamestate");
+
+        gameStateService.save(gameState);
+        return new Response<>(true);
     }
 
     @RequestMapping(value = "/main")
-    public String main(Model model) {
-        if(!model.containsAttribute("account")){
+    public String main(Model model) throws AccountNotFoundException, GameStateNotFoundException {
+        if (!model.containsAttribute("account")) {
             return "login";
         } else {
             Account account = accountService.findOne((Integer) model.asMap().get("account"));
+            if(account == null)
+                return "login";
+
             System.out.println("Current account = " + account);
             if (account.getGameState() == null) {
                 GameState gameState = gameLogicService.newGame();
-                gameStateService.save(gameState);
                 account.setGameState(gameState);
                 accountService.save(account);
                 System.out.println("New game gestart met id " + gameState.getId());
-            } else {
-                GameState gameState = gameStateService.findOne(account.getGameState().getId());
-                System.out.println("Reloaded gamestate = " + gameState);
             }
         }
         return "main";
@@ -97,49 +100,71 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
-    public Response<List<Person>> getPersons(Model model, HttpServletResponse httpResponse){
-        GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
-        return new Response<>(true, gameState.getPersons());
+    public Response<List<Person>> getPersons(Model model) throws AccountNotFoundException, GameStateNotFoundException {
+        if(!model.containsAttribute("account"))
+            throw new AccountNotFoundException("Not logged in");
+
+        Account account = accountService.findOne((Integer)model.asMap().get("account"));
+        if(account == null)
+            throw new AccountNotFoundException("Account not in database");
+
+        if(account.getGameState() == null)
+            throw new GameStateNotFoundException("No gamestate found in account");
+
+        return new Response<>(true, account.getGameState().getPersons());
     }
 
     @ResponseBody
     @RequestMapping(value = "/createperson", method = RequestMethod.POST)
-    public Response<Person> createPerson(Model model, @RequestBody Person person, HttpServletResponse httpResponse) throws AccountNotFoundException {
-        GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
-        if(gameState == null) throw new AccountNotFoundException("Gamestate met id " + model.asMap().get("account") + " niet gevonden in database.");
-        person.setGamestate(gameState);
-        gameState.addPerson(person);
-        person.getStatus().setHealth(Status.Health.HEALTHY);
-        personService.save(person);
-        return new Response<Person>(true,person);
+    public Response<Person> createPerson(Model model, @RequestBody Person person) throws AccountNotFoundException, GameStateNotFoundException {
+        if(!model.containsAttribute("account"))
+            throw new AccountNotFoundException("Not logged in");
+
+        Account account = accountService.findOne((Integer)model.asMap().get("account"));
+        if(account == null)
+            throw  new AccountNotFoundException("Account not in database");
+
+        if (account.getGameState() == null)
+            throw new GameStateNotFoundException("Gamestate not in account");
+
+        account.getGameState().addPerson(personLogicService.newPersonFrom(person));
+        accountService.save(account);
+
+        return new Response<Person>(true, person);
     }
 
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id}", method = RequestMethod.PUT)
-    public Response setTask(@PathVariable String task, @PathVariable int id, Model model, HttpServletResponse httpResponse) throws PersonNotFoundException, GameStateNotFoundException, GameStateException {
-        Person person = personService.findOne(id);
-        if (person == null) throw new PersonNotFoundException("Person met id " + id + " niet gevonden in database.");
+    public Response setTask(@PathVariable String task, @PathVariable int id, Model model) throws PersonNotFoundException, GameStateNotFoundException, GameStateException, AccountNotFoundException {
+        if (!model.containsAttribute("account"))
+            throw new AccountNotFoundException("Not logged in");
+
+        Account account = accountService.findOne((Integer)model.asMap().get("account"));
+        if(account == null)
+            throw new AccountNotFoundException("No account in database");
+
+        GameState gameState = account.getGameState();
+        if (gameState == null)
+            throw new GameStateNotFoundException("Gamestate niet gevonden in account.");
+
+        Person person = gameState.getPerson(id);
+        if (person == null)
+            throw new PersonNotFoundException("Person met id " + id + " niet gevonden in database.");
+
         Status state = person.getStatus();
         switch (task) {
             case "sleeping":
                 int sleepTime = 100;
                 state.setTiredness(state.getTiredness() + sleepTime);
-                person.setStatus(state);
                 personService.save(person);
                 break;
             case "collecting":
-                if (!model.containsAttribute("gameState")) throw new GameStateException("Geen gamestate in sessie.");
-                GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-                if (gameState == null) throw new GameStateNotFoundException("Gamestate niet gevonden in database.");
                 gameState.setScore(gameState.getScore() + (int) (state.getCurrentCaptchas() * GameLogicService.CAPTCHA_VALUE));
-                state.setCurrentCaptchas(0);
-                gameStateService.save(gameState);
-                person.setStatus(state);
-                personService.save(person);
+                person.getStatus().setCurrentCaptchas(0);
+                accountService.save(account);
                 break;
             case "dying":
                 state.setHealth(Status.Health.DEAD);
-                person.setStatus(state);
                 personService.save(person);
                 break;
             default:
@@ -150,9 +175,11 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(value = "/person/settask/eating{food}/{id}", method = RequestMethod.PUT)
-    public Response setTaskEating(@PathVariable String food, @PathVariable int id, Model model, HttpServletResponse httpResponse) throws PersonNotFoundException, GameStateNotFoundException {
+    public Response setTaskEating(@PathVariable String food, @PathVariable int id, Model model) throws PersonNotFoundException, GameStateNotFoundException, AccountNotFoundException {
         Person person = personService.findOne(id);
-        if (person == null) throw new PersonNotFoundException("Person met id " + id + " niet gevonden in database.");
+        if (person == null)
+            throw new PersonNotFoundException("Person met id " + id + " niet gevonden in database.");
+
         Status state = person.getStatus();
         int nutrients = 0;
         int cost = 0;
@@ -167,40 +194,60 @@ public class PersonController {
             default:
                 break;
         }
+
         state.setHunger(state.getHunger() + nutrients);
-        person.setStatus(state);
         personService.save(person);
-        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-        if (gameState == null) throw new GameStateNotFoundException("Gamestate niet gevonden in database.");
+
+        if(!model.containsAttribute("account"))
+            throw new AccountNotFoundException("Not logged in");
+
+        Account account = accountService.findOne((Integer)model.asMap().get("account"));
+        if(account == null)
+            throw new AccountNotFoundException("Account not in database");
+
+        GameState gameState = account.getGameState();
+        if (gameState == null)
+            throw new GameStateNotFoundException("Gamestate niet gevonden in account.");
+
         gameState.setScore(gameState.getScore() - cost);
-        gameStateService.save(gameState);
+        accountService.save(account);
+
         return new Response(true);
     }
 
     @ResponseBody
     @RequestMapping(value = "/person/settask/{task}/{id1}/{id2}", method = RequestMethod.PUT)
-    public Response<Person> reproduce(@PathVariable int id1, @PathVariable int id2, Model model, HttpServletResponse httpResponse) throws PersonException, GameStateNotFoundException {
-        GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+    public Response<Person> reproduce(@PathVariable int id1, @PathVariable int id2, Model model) throws PersonException, GameStateNotFoundException, AccountNotFoundException {
+        if(!model.containsAttribute("account"))
+            throw new AccountNotFoundException("Not logged in");
+
+        Account account = accountService.findOne((Integer)model.asMap().get("account"));
+        if(account == null)
+            throw new AccountNotFoundException("Account not in database");
+
+        GameState gameState = account.getGameState();
         if (gameState == null)
             throw new GameStateNotFoundException("Gamestate met id " + model.asMap().get("gameState") + " niet gevonden in database.");
 
         System.out.println("gameState: " + gameState);
 
         Person parent1 = personService.findOne(id1);
-        if (parent1 == null) throw new PersonNotFoundException("Person met id " + id1 + " niet gevonden in database.");
+        if (parent1 == null)
+            throw new PersonNotFoundException("Person met id " + id1 + " niet gevonden in database.");
 
         Person parent2 = personService.findOne(id2);
-        if (parent2 == null) throw new PersonNotFoundException("Person met id " + id2 + " niet gevonden in database.");
+        if (parent2 == null)
+            throw new PersonNotFoundException("Person met id " + id2 + " niet gevonden in database.");
 
         System.out.println("Person " + parent1.getId() + " and person " + parent2.getId() + " are reproducing ");
 
-
         Person newPerson = personLogicService.newChild(parent1, parent2);
-        //Map<String, String> response = new HashMap<String, String>();
-        if (newPerson == null) throw new PersonException("Could not create child.");
+        if (newPerson == null)
+            throw new PersonException("Could not create child.");
+
         gameState.addPerson(newPerson);
-        newPerson.setGamestate(gameState);
-        personService.save(newPerson);
+        accountService.save(account);
+
         System.out.println("Person " + newPerson.getId() + " is born: " + newPerson);
 
         return new Response<Person>(true, newPerson);

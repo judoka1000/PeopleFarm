@@ -60,9 +60,22 @@ public class GameState {
         this.persons = persons;
     }
 
+    public Person getPerson(int id) {
+        for(Person p : getPersons()) {
+            if(p.getId() == id) {
+                return p;
+            }
+        }
+        return null;
+    }
+
     public void addPerson(Person person) {
         person.setGamestate(this);
         this.persons.add(person);
+    }
+
+    public boolean removePerson(Person person) {
+        return this.persons.remove(person);
     }
 
     public DevSettings getDevSettings() {
