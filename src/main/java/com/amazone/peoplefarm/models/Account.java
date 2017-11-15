@@ -1,5 +1,7 @@
 package com.amazone.peoplefarm.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +13,7 @@ public class Account {
     private String username;
     private String password;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name="game_id")
     private GameState gameState;

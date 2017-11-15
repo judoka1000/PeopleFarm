@@ -1,11 +1,9 @@
 package com.amazone.peoplefarm.controllers;
 
+import com.amazone.peoplefarm.exceptions.AccountNotFoundException;
 import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
 import com.amazone.peoplefarm.models.*;
-import com.amazone.peoplefarm.services.ButtonService;
-import com.amazone.peoplefarm.services.GameLogicService;
-import com.amazone.peoplefarm.services.GameStateService;
-import com.amazone.peoplefarm.services.PersonService;
+import com.amazone.peoplefarm.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,34 +17,34 @@ import java.util.Map;
 
 
 @Controller
-@SessionAttributes("gameState")
+@SessionAttributes("account")
 public class ShopController {
 
     @Autowired
     private ButtonService buttonService;
 
     @Autowired
-    private GameStateService gameStateService;
+    private AccountService accountService;
 
     @ResponseBody
     @RequestMapping(value = "/shop/buy/{id}", method = RequestMethod.GET)
-    public Response<Button> buy(Model model, @PathVariable int id, HttpServletResponse httpResponse) {
-        try {
-            if (!model.containsAttribute("gameState")) throw new GameStateNotFoundException("Gamestate is: null");
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-            //if(gameState == null) throw new GameStateNotFoundException("Gamestate is: null");
-            Button button = buttonService.findOne(id);
-            gameState.setScore(gameState.getScore() - button.getBuyCost());
-            gameState.addButton(button);
-            gameStateService.save(gameState);
-            return new Response<Button>(true, button);
-        } catch (GameStateNotFoundException e) {
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return new Response<>(false, e);
-        } catch (Exception e){
-            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new Response<>(false, e);
-        }
+    public Response<Button> buy(Model model, @PathVariable int id) throws AccountNotFoundException, GameStateNotFoundException {
+        if(!model.containsAttribute("account"))
+            throw new AccountNotFoundException("Not logged in");
+
+        Account account = accountService.findOne((Integer)model.asMap().get("account"));
+        if(account == null)
+            throw new AccountNotFoundException("Account not in database");
+
+        GameState gameState = account.getGameState();
+        if (gameState == null)
+            throw new GameStateNotFoundException("Gamestate met id " + model.asMap().get("gameState") + " niet gevonden in database.");
+
+        Button button = buttonService.findOne(id);
+        gameState.setScore(gameState.getScore() - button.getBuyCost());
+        gameState.addButton(button);
+        accountService.save(account);
+        return new Response<Button>(true, button);
     }
 
     @ResponseBody

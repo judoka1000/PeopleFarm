@@ -46,12 +46,7 @@ public class AccountController {
             throw new AccountException("Username already in use");
         }
 
-        try {
-            accountService.save(account);
-            return new Response<>(true, account.getId());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new AccountException("Could not save the account");
-        }
+        accountService.save(account);
+        return new Response<>(true, account.getId());
     }
 }

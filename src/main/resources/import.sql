@@ -13,3 +13,5 @@ INSERT INTO `Button` (`buttonID`,`bonusIQ`,`bonusIQDuration`,`bonusMetabolism`,`
 INSERT INTO `Button` (`buttonID`,`bonusIQ`,`bonusIQDuration`,`bonusMetabolism`,`bonusMetabolismDuration`,`bonusSpeed`,`bonusSpeedDuration`,`bonusStamina`,`bonusStaminaDuration`,`buyCost`,`clickAction`,`hunger`,`image`,`name`,`tiredness`,`useCost`) VALUES (7,0,0,0,0,0,0,0,0,0,'compare',0,'compare.png','Compare',0,0);
 INSERT INTO `Button` (`buttonID`,`bonusIQ`,`bonusIQDuration`,`bonusMetabolism`,`bonusMetabolismDuration`,`bonusSpeed`,`bonusSpeedDuration`,`bonusStamina`,`bonusStaminaDuration`,`buyCost`,`clickAction`,`hunger`,`image`,`name`,`tiredness`,`useCost`) VALUES (8,0,0,0,0,0,0,0,0,0,'none',0,'pointercursor.png','None',0,0);
 INSERT INTO `Button` (`buttonID`,`bonusIQ`,`bonusIQDuration`,`bonusMetabolism`,`bonusMetabolismDuration`,`bonusSpeed`,`bonusSpeedDuration`,`bonusStamina`,`bonusStaminaDuration`,`buyCost`,`clickAction`,`hunger`,`image`,`name`,`tiredness`,`useCost`) VALUES (9,0,0,0,0,10,3,10,3,80,'eatingRedbull',0,'redbull.png','Redbull',0,10);
+
+INSERT INTO `account` (`id`, `password`, `username`) VALUES (1, '1', '1');

@@ -68,7 +68,6 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         }
         
         apiEngine.getScore(function(response){
-            if(this.sess)
         	$scope.score = response.data.data;
         },
         function(response){

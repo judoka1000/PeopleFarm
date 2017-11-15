@@ -160,11 +160,6 @@ public class PersonController {
         Abilities abilities = person.getAbilities();
         Button button = buttonService.findByClickAction(task);
         switch (task) {
-            case "sleeping":
-                int sleepTime = 100;
-                state.setTiredness(state.getTiredness() + sleepTime);
-                personService.save(person);
-                break;
             case "collecting":
                 gameState.setScore(gameState.getScore() + (int) (state.getCurrentCaptchas() * GameLogicService.CAPTCHA_VALUE));
                 person.getStatus().setCurrentCaptchas(0);
@@ -187,61 +182,14 @@ public class PersonController {
                     if(button.getBonusIQDuration()!=0) abilities.setBonusIqDuration(button.getBonusIQDuration());
                     if(button.getBonusMetabolismDuration()!=0) abilities.setBonusMetabolismDuration(button.getBonusMetabolismDuration());
                     if(button.getBonusStaminaDuration()!=0) abilities.setBonusStaminaDuration(button.getBonusStaminaDuration());
-                    person.setStatus(state);
-                    person.setAbilities(abilities);
-                    personService.save(person);
 
-                    gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-                    if(gameState == null) throw new GameStateNotFoundException("Gamestate niet gevonden in database.");
                     gameState.setScore(gameState.getScore()-button.getUseCost());
-                    gameStateService.save(gameState);
+                    accountService.save(account);
                 } else {
                     System.out.println("Button null");
                 }
                 break;
         }
-        return new Response(true);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/person/settask/eating{food}/{id}", method = RequestMethod.PUT)
-    public Response setTaskEating(@PathVariable String food, @PathVariable int id, Model model) throws PersonNotFoundException, GameStateNotFoundException, AccountNotFoundException {
-        Person person = personService.findOne(id);
-        if (person == null)
-            throw new PersonNotFoundException("Person met id " + id + " niet gevonden in database.");
-
-        Status state = person.getStatus();
-        int nutrients = 0;
-        int cost = 0;
-        switch (food) {
-            case "hamburger":
-                nutrients = 100;
-                cost = 3;
-                break;
-            case "dogfood":
-                nutrients = 50;
-                cost = 1;
-            default:
-                break;
-        }
-
-        state.setHunger(state.getHunger() + nutrients);
-        personService.save(person);
-
-        if(!model.containsAttribute("account"))
-            throw new AccountNotFoundException("Not logged in");
-
-        Account account = accountService.findOne((Integer)model.asMap().get("account"));
-        if(account == null)
-            throw new AccountNotFoundException("Account not in database");
-
-        GameState gameState = account.getGameState();
-        if (gameState == null)
-            throw new GameStateNotFoundException("Gamestate niet gevonden in account.");
-
-        gameState.setScore(gameState.getScore() - cost);
-        accountService.save(account);
-
         return new Response(true);
     }
 
@@ -277,6 +225,7 @@ public class PersonController {
 
         gameState.addPerson(newPerson);
         accountService.save(account);
+        personService.save(newPerson);
 
         System.out.println("Person " + newPerson.getId() + " is born: " + newPerson);
 
