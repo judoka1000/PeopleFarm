@@ -33,7 +33,37 @@ public class Button {
     }
 
     private int buyCost;
+
+    public int getButtonID() {
+        return buttonID;
+    }
+
+    public void setButtonID(int buttonID) {
+        this.buttonID = buttonID;
+    }
+
+    public int getBonusSpeed() {
+        return bonusSpeed;
+    }
+
+    public void setBonusSpeed(int bonusSpeed) {
+        this.bonusSpeed = bonusSpeed;
+    }
+
     private int useCost;
+
+    private int bonusSpeed;
+    private int bonusIQ;
+    private int bonusMetabolism;
+    private int bonusStamina;
+
+    private int bonusSpeedDuration;
+    private int bonusIQDuration;
+    private int bonusMetabolismDuration;
+    private int bonusStaminaDuration;
+
+    private int hunger;
+    private int tiredness;
 
 //    @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(nullable = false)
@@ -89,14 +119,97 @@ public class Button {
 //        this.gamestate = gamestate;
 //    }
 
+    public int getBonusIQ() {
+        return bonusIQ;
+    }
+
+    public void setBonusIQ(int bonusIQ) {
+        this.bonusIQ = bonusIQ;
+    }
+
+    public int getBonusMetabolism() {
+        return bonusMetabolism;
+    }
+
+    public void setBonusMetabolism(int bonusMetabolism) {
+        this.bonusMetabolism = bonusMetabolism;
+    }
+
+    public int getBonusStamina() {
+        return bonusStamina;
+    }
+
+    public void setBonusStamina(int bonusStamina) {
+        this.bonusStamina = bonusStamina;
+    }
+
+    public int getBonusSpeedDuration() {
+        return bonusSpeedDuration;
+    }
+
+    public void setBonusSpeedDuration(int bonusSpeedDuration) {
+        this.bonusSpeedDuration = bonusSpeedDuration;
+    }
+
+    public int getBonusIQDuration() {
+        return bonusIQDuration;
+    }
+
+    public void setBonusIQDuration(int bonusIQDuration) {
+        this.bonusIQDuration = bonusIQDuration;
+    }
+
+    public int getBonusMetabolismDuration() {
+        return bonusMetabolismDuration;
+    }
+
+    public void setBonusMetabolismDuration(int bonusMetabolismDuration) {
+        this.bonusMetabolismDuration = bonusMetabolismDuration;
+    }
+
+    public int getBonusStaminaDuration() {
+        return bonusStaminaDuration;
+    }
+
+    public void setBonusStaminaDuration(int bonusStaminaDuration) {
+        this.bonusStaminaDuration = bonusStaminaDuration;
+    }
+
+    public int getHunger() {
+        return hunger;
+    }
+
+    public void setHunger(int hunger) {
+        this.hunger = hunger;
+    }
+
+    public int getTiredness() {
+        return tiredness;
+    }
+
+    public void setTiredness(int tiredness) {
+        this.tiredness = tiredness;
+    }
+
     @Override
     public String toString() {
         return "Button{" +
-                "id=" + buttonID +
+                "buttonID=" + buttonID +
                 ", name='" + name + '\'' +
                 ", clickAction='" + clickAction + '\'' +
                 ", image='" + image + '\'' +
-//                ", gamestate=" + gamestate +
+                ", buyCost=" + buyCost +
+                ", useCost=" + useCost +
+                ", bonusSpeed=" + bonusSpeed +
+                ", bonusIQ=" + bonusIQ +
+                ", bonusMetabolism=" + bonusMetabolism +
+                ", bonusStamina=" + bonusStamina +
+                ", bonusSpeedDuration=" + bonusSpeedDuration +
+                ", bonusIQDuration=" + bonusIQDuration +
+                ", bonusMetabolismDuration=" + bonusMetabolismDuration +
+                ", bonusStaminaDuration=" + bonusStaminaDuration +
+                ", hunger=" + hunger +
+                ", tiredness=" + tiredness +
                 '}';
     }
 }

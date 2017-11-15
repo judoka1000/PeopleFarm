@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ButtonService extends CrudRepository<Button, Integer> {
     public Button findByName(String name);
+    public Button findByClickAction(String clickAction);
 }

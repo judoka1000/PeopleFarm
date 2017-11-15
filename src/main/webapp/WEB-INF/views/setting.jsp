@@ -26,7 +26,7 @@
                 		</div>
  				    </div>
  					<div class="row">
-		 				<div id="playerScore">$ {{score}}</div>
+		 				<div id="playerScore">Score: $ {{score}}</div>
 		 			</div>
 		 			<div class="row">
 		 				<div id="actionButtons" ng-if="buttons[0]" >
@@ -40,9 +40,10 @@
 					<div>Age : {{persons[showPeopleId].status.age}}</div>
 					<div>Hunger : {{persons[showPeopleId].status.hunger}}</div>
 					<div>Tiredness : {{persons[showPeopleId].status.tiredness}}</div>
-					<div>IQ : {{persons[showPeopleId].abilities.iq}}</div>
-					<div>Speed : {{persons[showPeopleId].abilities.speed}}</div>
-					<div>Metabolism : {{persons[showPeopleId].abilities.metabolism}}</div>
+					<div>IQ : {{persons[showPeopleId].abilities.iq}} (<span ng-if="persons[showPeopleId].abilities.bonusIq>=0">+</span> {{persons[showPeopleId].abilities.bonusIq}})</div>
+					<div>Speed : {{persons[showPeopleId].abilities.speed}} (<span ng-if="persons[showPeopleId].abilities.bonusSpeed>=0">+</span> {{persons[showPeopleId].abilities.bonusSpeed}})</div>
+					<div>Metabolism : {{persons[showPeopleId].abilities.metabolism}} (<span ng-if="persons[showPeopleId].abilities.bonusMetabolism>=0">+</span> {{persons[showPeopleId].abilities.bonusMetabolism}})</div>
+					<div>Stamina : {{persons[showPeopleId].abilities.stamina}} (<span ng-if="persons[showPeopleId].abilities.bonusStamina>=0">+</span> {{persons[showPeopleId].abilities.bonusStamina}})</div>
 				</div>
                 <div id="comparePeople" ng-if="cp1 >= 0 || cp2 >= 0">
                     <table style="width:100%">
@@ -66,6 +67,9 @@
  			</div>
 
 			<div class="tab-pane fade" id="shop" role="tabpanel" aria-labelledby="shop-tab">
+				<div class="row">
+					<div id="playerScore">Score: $ {{score}}</div>
+				</div>
 				<div class="shopRow" ng-repeat="button in storeButtons | shopFilter:this" ng-click="button.buyCost<=score && buyItem(button)" ng-class="{disabled: button.buyCost>score}">
 					<shopbutton name="button.name" src="button.image"></shopbutton>
 					<p>{{button.name}} &#36;{{button.buyCost}}</p>
@@ -80,18 +84,33 @@
  			<div class="tab-pane fade" id="dev-settings" role="tabpanel" aria-labelledby="dev-settings-tab">
  			    <div ng-app="PeopleApp" ng-controller="DevCtrl" ng-class="cursor">
                     <h1>Dev Settings</h1>
-                    <div class="form-check">
-                      <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" ng-model="devSettings.mortal" ng-change="settingsChanged()">
-                        Mortal
-                      </label>
-                    </div>
-                    </br>
+					<hr class="separator">
 
+					<div class="form-group row">
+						<label for="setmortal" class="col-5 col-form-label">Mortal</label>
+						<div class="col-6">
+							<input id="setmortal" class="form-check-input" type="checkbox" ng-model="devSettings.mortal">
+						</div>
+						<div class="col-1"></div>
+					</div>
+					<div class="form-group row">
+						<label for="setscore" class="col-5 col-form-label">Add score</label>
+						<div class="col-6">
+							<input class="form-control" type="text" id="setscore" ng-model="devSettings.addScore">
+						</div>
+						<div class="col-1"></div>
+					</div>
+					<div class="form-group row">
+						<div class="col-12">
+								<button type="button" class="btn btn-primary" ng-click="settingsChanged()">Devsettings opslaan</button>
+						</div>
+					</div>
+					<hr class="separator">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#personModal">Create Person</button>
                     <jsp:include page="settings/createperson.jsp" />
+					<hr class="separator">
 
-                    <div class="form-group">
+					<div class="form-group">
                         <label for="sessionid">SessionID:</label>
                         <textarea class="form-control" rows="2" id="sessionid" ng-click-copy={{cookieInfo}} readonly>{{cookieInfo}}</textarea>
                     </div>

@@ -78,14 +78,19 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         console.log("Person " + person.id + " clicked");
         switch($scope.clickAction) {
 
-            case "eatHamburger":
+            case "eatingHamburger":
                 console.log("Starting to eat, njam njam njam");
                 person.eat("hamburger");
             break;
 
-            case "eatDogfood":
+            case "eatingDogfood":
                 console.log("Starting to eat dogfood, woef");
                 person.eat("dogfood");
+                break;
+
+            case "eatingRedbull":
+                console.log("Starting to drink Red Bull");
+                person.eat("redbull");
                 break;
 
             case "sleep":

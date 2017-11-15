@@ -6,12 +6,7 @@ import com.amazone.peoplefarm.exceptions.GameStateException;
 import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
 import com.amazone.peoplefarm.exceptions.PersonException;
 import com.amazone.peoplefarm.exceptions.PersonNotFoundException;
-import com.amazone.peoplefarm.models.GameState;
-import com.amazone.peoplefarm.models.Person;
-import com.amazone.peoplefarm.services.GameLogicService;
-import com.amazone.peoplefarm.services.GameStateService;
-import com.amazone.peoplefarm.services.PersonLogicService;
-import com.amazone.peoplefarm.services.PersonService;
+import com.amazone.peoplefarm.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +16,7 @@ import com.amazone.peoplefarm.models.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Transactional
 @Controller
@@ -38,6 +31,9 @@ public class PersonController {
     private GameLogicService gameLogicService;
     @Autowired
     private PersonLogicService personLogicService;
+    @Autowired
+    private ButtonService buttonService;
+
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getIndex() {
@@ -145,13 +141,10 @@ public class PersonController {
            Person person = personService.findOne(id);
            if (person == null) throw new PersonNotFoundException("Person met id " + id + " niet gevonden in database.");
            Status state = person.getStatus();
+           Abilities abilities = person.getAbilities();
+           Button button = buttonService.findByClickAction(task);
+           System.out.println("Task: " + task);
            switch (task) {
-               case "sleeping":
-                   int sleepTime = 100;
-                   state.setTiredness(state.getTiredness() + sleepTime);
-                   person.setStatus(state);
-                   personService.save(person);
-                   break;
                case "collecting":
                    if (!model.containsAttribute("gameState")) throw new GameStateException("Geen gamestate in sessie.");
                    GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
@@ -168,7 +161,30 @@ public class PersonController {
                    personService.save(person);
                    break;
                default:
-                   break;
+                   if(button != null) {
+                       System.out.println(button);
+                       state.setTiredness(state.getTiredness() + button.getTiredness());
+                       state.setHunger(state.getHunger() + button.getHunger());
+                       if(button.getBonusSpeed()!=0) abilities.setBonusSpeed(button.getBonusSpeed());
+                       if(button.getBonusIQ()!=0) abilities.setBonusIq(button.getBonusIQ());
+                       if(button.getBonusMetabolism()!=0) abilities.setBonusMetabolism(button.getBonusMetabolism());
+                       if(button.getBonusStamina()!=0) abilities.setBonusStamina(button.getBonusStamina());
+                       if(button.getBonusSpeedDuration()!=0) abilities.setBonusSpeedDuration(button.getBonusSpeedDuration());
+                       if(button.getBonusIQDuration()!=0) abilities.setBonusIqDuration(button.getBonusIQDuration());
+                       if(button.getBonusMetabolismDuration()!=0) abilities.setBonusMetabolismDuration(button.getBonusMetabolismDuration());
+                       if(button.getBonusStaminaDuration()!=0) abilities.setBonusStaminaDuration(button.getBonusStaminaDuration());
+                       person.setStatus(state);
+                       person.setAbilities(abilities);
+                       personService.save(person);
+
+                       gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+                       if(gameState == null) throw new GameStateNotFoundException("Gamestate niet gevonden in database.");
+                       gameState.setScore(gameState.getScore()-button.getUseCost());
+                       gameStateService.save(gameState);
+                   } else {
+                       System.out.println("Button null");
+                   }
+
            }
            return new Response(true);
        } catch(PersonNotFoundException | GameStateNotFoundException e) {
@@ -181,49 +197,6 @@ public class PersonController {
            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
            return new Response(false, e);
        }
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/person/settask/eating{food}/{id}", method = RequestMethod.PUT)
-    public Response setTaskEating(@PathVariable String food, @PathVariable int id, Model model, HttpServletResponse httpResponse){
-        try{
-            Person person = personService.findOne(id);
-            if (person == null) throw new PersonNotFoundException("Person met id " + id + " niet gevonden in database.");
-            Status state = person.getStatus();
-            int nutrients = 0;
-            int cost = 0;
-            switch (food){
-                case "hamburger":
-                    nutrients = 100;
-                    cost = 3;
-                    break;
-                case "dogfood":
-                    nutrients = 50;
-                    cost = 1;
-                default:
-                    break;
-            }
-            state.setHunger(state.getHunger()+ nutrients);
-            person.setStatus(state);
-            personService.save(person);
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
-            if(gameState == null) throw new GameStateNotFoundException("Gamestate niet gevonden in database.");
-            gameState.setScore(gameState.getScore()-cost);
-            gameStateService.save(gameState);
-            return new Response(true);
-        } catch(PersonNotFoundException e) {
-            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return new Response(false, e);
-        } catch(GameStateNotFoundException e){
-            httpResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return new Response(false, e);
-        } catch(GameStateException e){
-            httpResponse.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
-            return new Response(false, e);
-        } catch(Exception e){
-            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            return new Response(false, e);
-        }
     }
 
     @ResponseBody

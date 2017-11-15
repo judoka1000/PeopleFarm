@@ -141,6 +141,7 @@ public class GameStateController {
         try {
             GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
             gameState.setDevSettings(devSettings);
+            gameState.setScore(gameState.getScore() + devSettings.getAddScore());
             gameStateService.save(gameState);
             return new Response(true);
         } catch (Exception e){
