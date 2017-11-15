@@ -189,6 +189,7 @@ p.percLabel{
 	border-width : 1px 1px;
 	border-color : gray;
 	border-style : solid;
+    overflow : auto;
 }
 
 .tab-content{

@@ -34,8 +34,6 @@
 						</div>
 					</div>
 				</div>
-				</br>
-				</br>
 				<div id="peopleStat" ng-if="showPeopleId >= 0">
 					<h6>People Statistics:</h6>
 					<div>ID : {{persons[showPeopleId].id}}</div>
@@ -53,15 +51,14 @@
                         <col ng-class="{active : selectedCol == 2}" />
                         <tr>
                             <th></th>
-                            <th ng-click="selectCol(1)" ng-class="'sprite' + persons[showPeopleId1].sprite + ' ' + 'sprite' + persons[showPeopleId1].getAdult()"></th>
-                            <th ng-click="selectCol(2)" ng-class="'sprite' + persons[showPeopleId1].sprite + ' ' + 'sprite' + persons[showPeopleId1].getAdult()"></th>
+                            <th ng-click="selectCol(1)"><div class="people"><div class="imgContainer" ng-if="showPeopleId1 >= 0" ng-class="'sprite' + persons[showPeopleId1].sprite + ' ' + 'sprite' + persons[showPeopleId1].getAdult()"></div></div></th>
+                            <th ng-click="selectCol(2)"><div class="people"><div class="imgContainer" ng-if="showPeopleId2 >= 0" ng-class="'sprite' + persons[showPeopleId2].sprite + ' ' + 'sprite' + persons[showPeopleId2].getAdult()"></div></div></th>
                         </tr>
                         <tr>
                             <th>Worker #	</th>
                             <th ng-click="selectCol(1)">{{persons[showPeopleId1].id}}					</th>
                             <th ng-click="selectCol(2)">{{persons[showPeopleId2].id}}					</th>
                         </tr>
-                        <tr><td>Gender: 	</td><td>{{persons[showPeopleId1].gender}}				</td><td>{{persons[showPeopleId2].gender}}				</td></tr>
                         <tr><td>Age : 		</td><td>{{persons[showPeopleId1].status.age}}			</td><td>{{persons[showPeopleId2].status.age}}			</td></tr>
                         <tr><td>Hunger : 	</td><td>{{persons[showPeopleId1].status.hunger}}		</td><td>{{persons[showPeopleId2].status.hunger}}		</td></tr>
                         <tr><td>Tiredness : </td><td>{{persons[showPeopleId1].status.tiredness}}	</td><td>{{persons[showPeopleId2].status.tiredness}}	</td></tr>
