@@ -88,7 +88,7 @@
 					<div class="form-group row">
 						<label for="setmortal" class="col-5 col-form-label">Mortal</label>
 						<div class="col-6">
-							<input id="setmortal" class="form-check-input" type="checkbox" ng-model="devSettings.mortal">
+							<input id="setmortal" class="form-check-input" type="checkbox" ng-model="devSettings.mortal" ng-click="settingsChanged()">
 						</div>
 						<div class="col-1"></div>
 					</div>
