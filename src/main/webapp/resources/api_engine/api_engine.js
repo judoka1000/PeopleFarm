@@ -3,8 +3,21 @@
 app.factory('apiEngine', function apiEngine($http){
     var mock = false;
     var baseUrl = "http://localhost:8080/peoplefarm";
+    var sessionFlag = true;
 
     return {
+        enableAPI: function() {
+            sessionFlag = true;
+        },
+
+        disableAPI: function() {
+            sessionFlag = false;
+        },
+
+        getAPI: function() {
+            return sessionFlag;
+        },
+
         people: function(func){
             var functionPath = "/persons";
             //console.log("Requesting " + functionPath + mock ? " (mock)" : "");
@@ -43,9 +56,9 @@ app.factory('apiEngine', function apiEngine($http){
             return $http.delete(baseUrl + functionPath).then(func);
         },
         getScore: function(func, errFunc=function(){}){
-        	var url = baseUrl + "/score";
-        	//console.log("Requesting score");
-        	return $http.get(url).then(func,errFunc);
+            var url = baseUrl + "/score";
+            //console.log("Requesting score");
+            return $http.get(url).then(func, errFunc);
         },
         newGame: function(func) {
             var url = baseUrl + "/newgame";

@@ -37,6 +37,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
     $scope.newPerson = null;
     
     $scope.updateGamestate = function(){
+        if(!apiEngine.getAPI()) {
+            return;
+        }
+
         console.log("updategame");
         if ($scope.newPerson != null) {
             personsFactory.addPerson($scope.newPerson);
@@ -50,6 +54,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         }
         
         apiEngine.getScore(function(response){
+            if(this.sess)
         	$scope.score = response.data.data;
         },
         function(response){
