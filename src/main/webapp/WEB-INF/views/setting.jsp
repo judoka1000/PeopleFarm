@@ -49,7 +49,7 @@
  			</div>
 
 			<div class="tab-pane fade" id="shop" role="tabpanel" aria-labelledby="shop-tab">
-				<div class="shopRow" ng-repeat="button in storeButtons | shopFilter:this" ng-click="buyItem(button)" >
+				<div class="shopRow" ng-repeat="button in storeButtons | shopFilter:this" ng-click="button.buyCost<=score && buyItem(button)" ng-class="{disabled: button.buyCost>score}">
 					<shopbutton name="button.name" src="button.image"></shopbutton>
 					<p>{{button.name}} &#36;{{button.buyCost}}</p>
 				</div>

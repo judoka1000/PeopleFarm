@@ -249,8 +249,7 @@ app.directive("shopbutton", function() {
         link: function(scope, element, attr) {
             element.css({
                 'background-image': 'url(resources/images/' + scope.src +')'
-            }),
-                element.class;
+            })
         }
     };
 });
@@ -263,7 +262,7 @@ app.filter('shopFilter', function() {
             angular.forEach(scope.buttons, function(button){
                 if(shopButton.id == button.id) match = true;
             });
-            if(!match) output.push(shopButton);
+            if(!match ) output.push(shopButton);
         });
         return output;
     };
