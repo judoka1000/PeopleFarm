@@ -107,7 +107,7 @@ public class GameStateController {
     @RequestMapping(value = "/rename/{name}", method = RequestMethod.POST)
     public Response changePlayerName(Model model, @PathVariable String name, HttpServletResponse httpResponse) {
         try {
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
             gameState.setPlayerName(name);
             gameStateService.save(gameState);
             return new Response(true);
@@ -121,7 +121,7 @@ public class GameStateController {
     @RequestMapping(value = "/rename", method = RequestMethod.GET)
     public Response<Map<String, String>> getPlayerName(Model model, HttpServletResponse httpResponse) {
         try{
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            GameState gameState = accountService.findOne((Integer) model.asMap().get("acount")).getGameState();
             Map<String, String> a = new HashMap<>();
             a.put("name", gameState.getPlayerName());
             return new Response<>(true, a);
@@ -135,7 +135,7 @@ public class GameStateController {
     @RequestMapping(value = "/getDevSettings")
     public Response<DevSettings> getDevsettings(Model model, HttpServletResponse httpResponse){
         try {
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
             return new Response<>(true, gameState.getDevSettings());
         } catch(Exception e){
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -147,7 +147,7 @@ public class GameStateController {
     @RequestMapping(value = "/putDevSettings", method = RequestMethod.PUT)
     public Response putDevsettings(Model model, @RequestBody DevSettings devSettings, HttpServletResponse httpResponse){
         try {
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
             gameState.setDevSettings(devSettings);
             gameStateService.save(gameState);
             return new Response(true);
