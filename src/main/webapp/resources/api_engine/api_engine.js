@@ -74,6 +74,10 @@ app.factory('apiEngine', function apiEngine($http){
         getPlayername: function(func) {
             var url = baseUrl + "/rename";
             return $http.get(url).then(func);
+        },
+        getAccounts: function(func) {
+            var url = baseUrl + "/accounts";
+            return $http.get(url).then(func);
         }
     };
 });

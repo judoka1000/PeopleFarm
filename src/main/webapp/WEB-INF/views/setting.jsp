@@ -12,6 +12,9 @@
   			<li class="nav-item">
                 <a class="nav-link" id="dev-settings-tab" data-toggle="tab" href="#dev-settings" role="tab" aria-controls="dev-settings" aria-selected="false">Dev Settings</a>
             </li>
+			<li class="nav-item">
+				<a class="nav-link" id="highscore-tab" data-toggle="tab" href="#highscore" role="tab" aria-controls="highscore" aria-selected="false">Highscore</a>
+			</li>
 		</ul>
 		<div class="tab-content" id="myTabContent">
  			<div class="tab-pane fade show active" id="game" role="tabpanel" aria-labelledby="game-tab">
@@ -78,6 +81,13 @@
                     </div>
                 </div>
             </div>
+
+			<div class="tab-pane fade" id="highscore" role="tabpanel" aria-labelledby="highscore-tab">
+				<h1>Highscore</h1>
+				<div ng-repeat="account in accounts">
+					{{account.username}} - {{account.gameState.score}}
+				</div>
+			</div>
 		</div>
 	</div>	
 </div>

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @SessionAttributes({"account"})
 @Controller
 public class AccountController {
@@ -53,5 +55,9 @@ public class AccountController {
             System.out.println(e.getMessage());
             throw new AccountException("Could not save the account");
         }
+    }@ResponseBody
+    @RequestMapping(value = "/accounts", method = RequestMethod.GET)
+    public Response<Iterable<Account>> getAccounts(Model model) throws AccountException {
+       return new Response<>(true, accountService.findAll());
     }
 }
