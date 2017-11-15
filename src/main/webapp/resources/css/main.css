@@ -208,15 +208,27 @@ p.percLabel{
 }
 
 #actionDogfood{
-    background-image: url("../images/dogfood.jpg");
-
+    background: url("../images/dogfood.jpg");
+    background-position-x: center;
+    background-repeat: no-repeat;
 }
 
 #actionSleeping{
     background: url("../images/sleep.png");
 }
 
+#actionReproducing{
+    background: url("../images/heart.png");
+}
 
+#comparePeople .active{
+    opacity: 0.4;
+    background-color: lightgrey;
+}
+
+#actionCompare{
+    background: url("../images/compare.png");
+}
 
 #actionKill{
     background-color: red;
@@ -226,7 +238,17 @@ p.percLabel{
     background-color: green;
 }
 
+#actionNone{
+    background: url("../images/pointercursor.png");
+}
 
+#actionInfo{
+	background-color : yellow;
+}
+
+#actionCollect{
+    background-color: lightgreen;
+}
 
 .eatHamburgerCur {
     cursor: url('../images/hamburger.png'), auto;
@@ -242,6 +264,10 @@ p.percLabel{
 
 .reproduceCur{
     cursor: url('../images/heart.png'), auto;
+}
+
+.compareCur{
+    cursor: url('../images/compare.png'), auto;
 }
 
 footer {

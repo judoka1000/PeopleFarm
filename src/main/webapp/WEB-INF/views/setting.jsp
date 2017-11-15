@@ -46,6 +46,30 @@
 					<div>Speed : {{persons[showPeopleId].abilities.speed}}</div>
 					<div>Metabolism : {{persons[showPeopleId].abilities.metabolism}}</div>
 				</div>
+                <div id="comparePeople" ng-if="showPeopleId1 >= 0 || showPeopleId2 >= 0">
+                    <table style="width:100%">
+                        <col />
+                        <col ng-class="{active : selectedCol == 1}" />
+                        <col ng-class="{active : selectedCol == 2}" />
+                        <tr>
+                            <th></th>
+                            <th ng-click="selectCol(1)" ng-class="'sprite' + persons[showPeopleId1].sprite + ' ' + 'sprite' + persons[showPeopleId1].getAdult()"></th>
+                            <th ng-click="selectCol(2)" ng-class="'sprite' + persons[showPeopleId1].sprite + ' ' + 'sprite' + persons[showPeopleId1].getAdult()"></th>
+                        </tr>
+                        <tr>
+                            <th>Worker #	</th>
+                            <th ng-click="selectCol(1)">{{persons[showPeopleId1].id}}					</th>
+                            <th ng-click="selectCol(2)">{{persons[showPeopleId2].id}}					</th>
+                        </tr>
+                        <tr><td>Gender: 	</td><td>{{persons[showPeopleId1].gender}}				</td><td>{{persons[showPeopleId2].gender}}				</td></tr>
+                        <tr><td>Age : 		</td><td>{{persons[showPeopleId1].status.age}}			</td><td>{{persons[showPeopleId2].status.age}}			</td></tr>
+                        <tr><td>Hunger : 	</td><td>{{persons[showPeopleId1].status.hunger}}		</td><td>{{persons[showPeopleId2].status.hunger}}		</td></tr>
+                        <tr><td>Tiredness : </td><td>{{persons[showPeopleId1].status.tiredness}}	</td><td>{{persons[showPeopleId2].status.tiredness}}	</td></tr>
+                        <tr><td>IQ : 		</td><td>{{persons[showPeopleId1].abilities.iq}}		</td><td>{{persons[showPeopleId2].abilities.iq}}		</td></tr>
+                        <tr><td>Speed : 	</td><td>{{persons[showPeopleId1].abilities.speed}}		</td><td>{{persons[showPeopleId2].abilities.speed}}		</td></tr>
+                        <tr><td>Metabolism :</td><td>{{persons[showPeopleId1].abilities.metabolism}}</td><td>{{persons[showPeopleId2].abilities.metabolism}}</td></tr>
+                    </table>
+                </div>
  			</div>
 
 			<div class="tab-pane fade" id="shop" role="tabpanel" aria-labelledby="shop-tab">

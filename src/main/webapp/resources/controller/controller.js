@@ -45,7 +45,8 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
     $scope.score = 0;
     $scope.personSelected = null;
     $scope.newPerson = null;
-    
+    $scope.selectedCol = 0;
+
     $scope.updateGamestate = function(){
         console.log("updategame");
         if ($scope.newPerson != null) {
@@ -122,8 +123,34 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
 
             case "info":
                 console.log("Requesting Info");
+                $scope.showPeopleId1 = -1;
+                $scope.showPeopleId2 = -1;
                 $scope.showPeopleId = person.id;
             break;
+
+            case "compare":
+                $scope.showPeopleId = -1; // disable info panel
+                if($scope.showPeopleId1 < 0){ // no person selected yet
+                    console.log("1 person selected, requesting info");
+                    $scope.showPeopleId1 = person.id;
+                }
+                else {
+                    console.log("2nd person selected, requesting info");
+                    if ($scope.showPeopleId2 < 0) { // second person not yet selected
+                        $scope.showPeopleId2 = person.id;
+                    } else {  // second person already selected, replace selected column
+                        if ($scope.selectedCol == 1) {
+                            $scope.showPeopleId1 = person.id;
+                        } else if ($scope.selectedCol == 2) {
+                            $scope.showPeopleId2 = person.id;
+                        } else {
+                            $scope.showPeopleId1 = $scope.showPeopleId2;
+                            $scope.showPeopleId2 = person.id;
+                        }
+
+                    }
+                }
+                break;
 
             case "collect":
                 apiEngine.personSettask(person.id,"collecting",function(response){
@@ -216,6 +243,11 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
     $scope.renamePlayer = function(newName) {
         apiEngine.renamePlayer(newName, function(){});
     }
+
+    $scope.selectCol = function(col) {
+        $scope.selectedCol = col;
+    }
+
     $scope.init();
 }
 

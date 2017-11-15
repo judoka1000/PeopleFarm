@@ -11,3 +11,4 @@ INSERT INTO `Button` (`buttonID`,`buyCost`,`clickAction`,`image`,`name`,`useCost
 INSERT INTO `Button` (`buttonID`,`buyCost`,`clickAction`,`image`,`name`,`useCost`) VALUES (6,0,'info','questionmark.png','Info',0);
 INSERT INTO `Button` (`buttonID`,`buyCost`,`clickAction`,`image`,`name`,`useCost`) VALUES (7,0,'collect','collect.png','Collect',0);
 INSERT INTO `Button` (`buttonID`,`buyCost`,`clickAction`,`image`,`name`,`useCost`) VALUES (8,10,'eatDogfood','dogfood.jpg','Dogfood',1);
+INSERT INTO `Button` (`buttonID`,`buyCost`,`clickAction`,`image`,`name`,`useCost`) VALUES (9,0,'compare','compare.png','Compare',0);

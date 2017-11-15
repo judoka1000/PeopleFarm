@@ -41,6 +41,7 @@ public class GameLogicService implements GameLogicInterface {
         //gameState.addButton(buttonService.findByName("Reproducing"));
         gameState.addButton(buttonService.findByName("None"));
         gameState.addButton(buttonService.findByName("Info"));
+        gameState.addButton(buttonService.findByName("Compare"));
         gameState.addButton(buttonService.findByName("Collect"));
         return gameState;
     }
