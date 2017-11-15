@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -99,8 +100,20 @@ public class GameStateController {
     public Response putDevsettings(Model model, @RequestBody DevSettings devSettings, HttpServletResponse httpResponse) {
         GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
         gameState.setDevSettings(devSettings);
+        gameState.setScore(gameState.getScore() + devSettings.getAddScore());
         gameStateService.save(gameState);
         return new Response(true);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/buttons", method = RequestMethod.GET)
+    public Response<List<Button>> getButtons(Model model, HttpServletResponse httpResponse) {
+        try{
+            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            return new Response<>(true, gameState.getButtons());
+        } catch (Exception e){
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return new Response<>(false, e);
+        }
+    }
 }

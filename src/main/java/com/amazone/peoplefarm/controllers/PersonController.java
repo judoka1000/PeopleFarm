@@ -6,6 +6,11 @@ import com.amazone.peoplefarm.models.Person;
 import com.amazone.peoplefarm.models.GameState;
 import com.amazone.peoplefarm.models.Person;
 import com.amazone.peoplefarm.services.*;
+import com.amazone.peoplefarm.exceptions.GameStateException;
+import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
+import com.amazone.peoplefarm.exceptions.PersonException;
+import com.amazone.peoplefarm.exceptions.PersonNotFoundException;
+import com.amazone.peoplefarm.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +20,7 @@ import com.amazone.peoplefarm.models.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Transactional
 @Controller
@@ -34,6 +37,8 @@ public class PersonController {
     private PersonLogicService personLogicService;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private ButtonService buttonService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String getIndex() {
@@ -152,6 +157,8 @@ public class PersonController {
             throw new PersonNotFoundException("Person met id " + id + " niet gevonden in database.");
 
         Status state = person.getStatus();
+        Abilities abilities = person.getAbilities();
+        Button button = buttonService.findByClickAction(task);
         switch (task) {
             case "sleeping":
                 int sleepTime = 100;
@@ -168,6 +175,29 @@ public class PersonController {
                 personService.save(person);
                 break;
             default:
+                if(button != null) {
+                    System.out.println(button);
+                    state.setTiredness(state.getTiredness() + button.getTiredness());
+                    state.setHunger(state.getHunger() + button.getHunger());
+                    if(button.getBonusSpeed()!=0) abilities.setBonusSpeed(button.getBonusSpeed());
+                    if(button.getBonusIQ()!=0) abilities.setBonusIq(button.getBonusIQ());
+                    if(button.getBonusMetabolism()!=0) abilities.setBonusMetabolism(button.getBonusMetabolism());
+                    if(button.getBonusStamina()!=0) abilities.setBonusStamina(button.getBonusStamina());
+                    if(button.getBonusSpeedDuration()!=0) abilities.setBonusSpeedDuration(button.getBonusSpeedDuration());
+                    if(button.getBonusIQDuration()!=0) abilities.setBonusIqDuration(button.getBonusIQDuration());
+                    if(button.getBonusMetabolismDuration()!=0) abilities.setBonusMetabolismDuration(button.getBonusMetabolismDuration());
+                    if(button.getBonusStaminaDuration()!=0) abilities.setBonusStaminaDuration(button.getBonusStaminaDuration());
+                    person.setStatus(state);
+                    person.setAbilities(abilities);
+                    personService.save(person);
+
+                    gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+                    if(gameState == null) throw new GameStateNotFoundException("Gamestate niet gevonden in database.");
+                    gameState.setScore(gameState.getScore()-button.getUseCost());
+                    gameStateService.save(gameState);
+                } else {
+                    System.out.println("Button null");
+                }
                 break;
         }
         return new Response(true);

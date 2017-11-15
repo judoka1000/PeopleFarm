@@ -189,21 +189,23 @@ p.percLabel{
 	border-width : 1px 1px;
 	border-color : gray;
 	border-style : solid;
+    overflow : auto;
 }
 
 .tab-content{
 	padding-left: 15px;
 }
 
+.shopButton,
 .actionButton{
     width: 32px;
     height: 32px;
     float: left;
     margin-right: 10px;
-}
-
-#actionEating{
-    background: url("../images/hamburger.png");
+    margin-top: 10px;
+    background-position-x: center;
+    background-repeat: no-repeat;
+    display: block;
 }
 
 #actionDogfood{
@@ -218,6 +220,23 @@ p.percLabel{
 
 #actionReproducing{
     background: url("../images/heart.png");
+}
+
+#comparePeople .active{
+    opacity: 0.4;
+    background-color: lightgrey;
+}
+
+#comparePeople .green {
+    color: green;
+}
+
+#comparePeople .red {
+    color: red;
+}
+
+#actionCompare{
+    background: url("../images/compare.png");
 }
 
 #actionKill{
@@ -254,6 +273,10 @@ p.percLabel{
 
 .reproduceCur{
     cursor: url('../images/heart.png'), auto;
+}
+
+.compareCur{
+    cursor: url('../images/compare.png'), auto;
 }
 
 footer {
@@ -572,4 +595,25 @@ footer {
     opacity:0;
     transition: opacity 4s;
     -webkit-transition:opacity 4s;
+}
+
+.shopRow {
+    clear: both;
+    margin-top: 10px;
+    height: 32px;
+}
+
+.shopRow p{
+    margin-top: 10px;
+    float: left;
+    display: block;
+}
+
+.disabled{
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+#setscore{
+
 }

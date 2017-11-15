@@ -11,12 +11,14 @@ function DevCtrl($scope, $http,$document,$interval,$timeout, $cookies, apiEngine
         var url = baseUrl + "/getDevSettings";
         $http.get(url).then(function(response){
             $scope.devSettings.mortal = response.data.data.mortal;
+            $scope.devSettings.addScore = 0;
 
         });
     }
 
     $scope.settingsChanged = function() {
         var url = baseUrl + "/putDevSettings";
+        console.log($scope.devSettings);
         $http.put(url, $scope.devSettings).then(function(response){
              console.log(response);
         });

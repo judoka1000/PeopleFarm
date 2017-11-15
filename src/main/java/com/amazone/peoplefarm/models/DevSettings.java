@@ -7,6 +7,17 @@ public class DevSettings {
 
     boolean mortal = true;
 
+    public int getAddScore() {
+        return addScore;
+    }
+
+    public void setAddScore(int addScore) {
+        this.addScore = addScore;
+
+    }
+
+    private int addScore;
+
     public DevSettings() {
     }
 

@@ -83,6 +83,7 @@ public class PersonLogicService implements PersonLogicInterface {
     public void updatePersonStatus(Person person) {
         Status personStatus = person.getStatus();
         Abilities personAbilities = person.getAbilities();
+        personAbilities.tickBonusCounters();
 
         // Update age
         personStatus.setAge(personStatus.getAge() + 1);
@@ -94,15 +95,15 @@ public class PersonLogicService implements PersonLogicInterface {
             }
 
             // Update hunger
-            personStatus.setHunger(personStatus.getHunger() - personAbilities.getMetabolism());
+            personStatus.setHunger(personStatus.getHunger() - personAbilities.getTotalMetabolism());
             // Minimum is 0
             if(personStatus.getHunger() == 0) {
                 personStatus.setHealth(Status.Health.DEAD);
             }
             // Update tiredness
-            personStatus.setTiredness(personStatus.getTiredness() - (100 - personAbilities.getStamina()) / 100);
+            personStatus.setTiredness(personStatus.getTiredness() - (20-personAbilities.getTotalStamina())/2);
 
-            personStatus.setCurrentCaptchas(personStatus.getCurrentCaptchas() + (int)Math.round( (personAbilities.getSpeed() * 0.1) + (personAbilities.getIq() * 0.01) * (personStatus.getTiredness() * 0.01)) );
+            personStatus.setCurrentCaptchas(personStatus.getCurrentCaptchas() + (int)Math.round( (personAbilities.getTotalSpeed() * 0.1) + (personAbilities.getTotalIq() * 0.01) * (personStatus.getTiredness() * 0.01)) );
         }
     }
 

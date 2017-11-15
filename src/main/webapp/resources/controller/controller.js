@@ -2,6 +2,16 @@ app.controller('PeopleCtrl', PeopleCtrl);
 
 function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,personsFactory,gameEngine){
     $scope.init = function(){
+        apiEngine.getButtons(function(response){
+            $scope.buttons = response.data.data;
+            //console.log(buttons.data);
+            }
+        );
+
+        apiEngine.getShopButtons(function(response){
+            $scope.storeButtons = response.data.data;
+        });
+
         $interval($scope.updateGamestate, 2000);
     }
 
@@ -32,10 +42,13 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
     $scope.cursor = "";
     $scope.clickAction = "";
     $scope.showPeopleId = -1;
+    $scope.cp1 = -1;
+    $scope.cp2 = -1;
     $scope.score = 0;
     $scope.personSelected = null;
     $scope.newPerson = null;
-    
+    $scope.selectedCol = 0;
+
     $scope.updateGamestate = function(){
         if(!gameEngine.getAPI()) {
             console.log("API disabled");
@@ -71,14 +84,19 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         console.log("Person " + person.id + " clicked");
         switch($scope.clickAction) {
 
-            case "eatHamburger":
+            case "eatingHamburger":
                 console.log("Starting to eat, njam njam njam");
                 person.eat("hamburger");
             break;
 
-            case "eatDogfood":
+            case "eatingDogfood":
                 console.log("Starting to eat dogfood, woef");
                 person.eat("dogfood");
+                break;
+
+            case "eatingRedbull":
+                console.log("Starting to drink Red Bull");
+                person.eat("redbull");
                 break;
 
             case "sleep":
@@ -118,13 +136,43 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
 
             case "info":
                 console.log("Requesting Info");
+                $scope.cp1 = -1;
+                $scope.cp2 = -1;
                 $scope.showPeopleId = person.id;
             break;
+
+            case "compare":
+                $scope.showPeopleId = -1; // disable info panel
+                if($scope.cp1 < 0){ // no person selected yet
+                    console.log("1 person selected, requesting info");
+                    $scope.cp1 = person.id;
+                }
+                else {
+                    console.log("2nd person selected, requesting info");
+                    if ($scope.cp2 < 0) { // second person not yet selected
+                        $scope.cp2 = person.id;
+                    } else {  // second person already selected, replace selected column
+                        if ($scope.selectedCol == 1) {
+                            $scope.cp1 = person.id;
+                        } else if ($scope.selectedCol == 2) {
+                            $scope.cp2 = person.id;
+                        } else {
+                            $scope.cp1 = $scope.cp2;
+                            $scope.cp2 = person.id;
+                        }
+
+                    }
+                }
+                break;
 
             case "collect":
                 apiEngine.personSettask(person.id,"collecting",function(response){
                     person.status.currentCaptchas = 0;
                 });
+            break;
+
+            case "none":
+                console.log("actionNone");
             break;
 
             default:
@@ -165,10 +213,23 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         return result;
     }
 
-    $scope.setClickAction = function(action){
-        $scope.cursor = action + "Cur";
-        $scope.clickAction = action;
-        console.log("ready to " + action);
+    $scope.setClickAction = function(button){
+        if(button.clickAction == "none") {
+            $scope.cursor = {'cursor': "auto"};
+        } else {
+            $scope.cursor = {'cursor': "url('resources/images/" + button.image + "'), auto"};
+        }
+        $scope.clickAction = button.clickAction;
+        console.log("ready to " + button.clickAction);
+    }
+
+    $scope.buyItem = function(button){
+        apiEngine.buy(button.id,function(response){
+            apiEngine.getButtons(function(response2){
+                $scope.buttons = response2.data.data;
+            });
+        });
+        console.log("Buy " + button.name);
     }
 
     $scope.actionUpdate = function(person){
@@ -196,5 +257,91 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         apiEngine.renamePlayer(newName, function(){});
     }
 
+    $scope.selectCol = function(col) {
+        $scope.selectedCol = col;
+    }
+
+    $scope.getColor = function(param,column){
+        if($scope.persons[$scope.cp1] && $scope.persons[$scope.cp2]) {
+            var col1 = $scope.persons[$scope.cp1];
+            var col2 = $scope.persons[$scope.cp2];
+            if (column !== 1) {
+                col1 = $scope.persons[$scope.cp2];
+                col2 = $scope.persons[$scope.cp1];
+            }
+            switch (param) {
+                case 'age':
+                    if (col1.status.age === col2.status.age) return '';
+                    else if (col1.status.age <= col2.status.age) return 'green';
+                    else return 'red';
+                case 'iq':
+                    if (col1.abilities.iq === col2.abilities.iq) return '';
+                    else if (col1.abilities.iq >= col2.abilities.iq) return 'green';
+                    else return 'red';
+                case 'speed':
+                    if (col1.abilities.speed === col2.abilities.speed) return '';
+                    else if (col1.abilities.speed >= col2.abilities.speed) return 'green';
+                    else return 'red';
+                case 'metabolism':
+                    if (col1.abilities.metabolism === col2.abilities.metabolism) return '';
+                    else if (col1.abilities.metabolism <= col2.abilities.metabolism) return 'green';
+                    else return 'red';
+                case 'total':
+                    if (col1.getTotalFields() === col2.getTotalFields()) return '';
+                    else if (col1.getTotalFields() >= col2.getTotalFields()) return 'green';
+                    else return 'red';
+            }
+        }
+    }
+
     $scope.init();
 }
+
+app.directive("actionbutton", function() {
+    return {
+        scope: {
+            name: '=',
+            src: '=',
+            action: '&'
+        },
+        template : "<div id=\"action{{name}}\" class=\"actionButton\"></div>",
+        replace: true,
+        link: function(scope, element, attr) {
+            element.css({
+                'background-image': 'url(resources/images/' + scope.src +')'
+            }),
+            element.class;
+        }
+    };
+});
+
+app.directive("shopbutton", function() {
+    return {
+        scope: {
+            name: '=',
+            src: '=',
+            action: '&'
+        },
+        template : "<div id=\"shopButton{{name}}\" class=\"shopButton\"></div>",
+        replace: true,
+        link: function(scope, element, attr) {
+            element.css({
+                'background-image': 'url(resources/images/' + scope.src +')'
+            })
+        }
+    };
+});
+
+app.filter('shopFilter', function() {
+    return function(buttons,scope) {
+        var output = [];
+        angular.forEach(buttons, function(shopButton) {
+            var match = false;
+            angular.forEach(scope.buttons, function(button){
+                if(shopButton.id == button.id) match = true;
+            });
+            if(!match ) output.push(shopButton);
+        });
+        return output;
+    };
+});
