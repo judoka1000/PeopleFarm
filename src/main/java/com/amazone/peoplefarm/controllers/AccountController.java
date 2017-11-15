@@ -20,12 +20,6 @@ public class AccountController {
         return "login";
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/error")
-    public void new_error() throws Exception {
-        throw new AccountException("Custom message");
-    }
-
     @RequestMapping(value = "/create")
     public String new_account(){
         return "new_account";
@@ -33,40 +27,31 @@ public class AccountController {
 
     @ResponseBody
     @RequestMapping(value = "/logincheck", method = RequestMethod.POST)
-    public Response<Boolean> checkCredentials(Model model, @RequestBody Account account) {
-        try {
-            Account user = accountService.findByUsername(account.getUsername());
-            if (user.getPassword().equals(account.getPassword())){
-                System.out.println("password correct!");
-                model.addAttribute("account", user.getId());
-                return new Response<>(true, true);
-            }
-            else{
-                System.out.println("password incorrect!");
-                throw new AccountException("Password incorrect");
-            }
-        }
-        catch (Exception e){
-            return new Response<>(false, e);
+    public Response<Boolean> checkCredentials(Model model, @RequestBody Account account) throws AccountException {
+        Account user = accountService.findByUsername(account.getUsername());
+        if (user.getPassword().equals(account.getPassword())) {
+            System.out.println("password correct!");
+            model.addAttribute("account", user.getId());
+            return new Response<>(true, true);
+        } else {
+            System.out.println("password incorrect!");
+            throw new AccountException("Password incorrect");
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/createaccount", method = RequestMethod.POST)
-    public Response<Integer> create(Model model, @RequestBody Account account) {
+    public Response<Integer> create(Model model, @RequestBody Account account) throws AccountException {
+        if (accountService.findByUsername(account.getUsername()) != null) {
+            throw new AccountException("Username already in use");
+        }
+
         try {
-            if(accountService.findByUsername(account.getUsername())!=null){
-                throw new AccountException("Username already in use");
-            }
             accountService.save(account);
             return new Response<>(true, account.getId());
-        } catch(AccountException e) {
-            System.out.println(e.getMessage());
-            return new Response<>(false, e);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            e = new AccountException("Could not save the account");
-            return new Response<>(false, e);
+            throw new AccountException("Could not save the account");
         }
     }
 }
