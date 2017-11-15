@@ -24,7 +24,7 @@ import java.util.Map;
 
 @Transactional
 @Controller
-@SessionAttributes({"gameState", "account"})
+@SessionAttributes({"account"})
 public class PersonController {
 
     @Autowired
