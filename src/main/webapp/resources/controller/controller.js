@@ -42,6 +42,8 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
     $scope.cursor = "";
     $scope.clickAction = "";
     $scope.showPeopleId = -1;
+    $scope.cp1 = -1;
+    $scope.cp2 = -1;
     $scope.score = 0;
     $scope.personSelected = null;
     $scope.newPerson = null;
@@ -123,29 +125,29 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
 
             case "info":
                 console.log("Requesting Info");
-                $scope.showPeopleId1 = -1;
-                $scope.showPeopleId2 = -1;
+                $scope.cp1 = -1;
+                $scope.cp2 = -1;
                 $scope.showPeopleId = person.id;
             break;
 
             case "compare":
                 $scope.showPeopleId = -1; // disable info panel
-                if($scope.showPeopleId1 < 0){ // no person selected yet
+                if($scope.cp1 < 0){ // no person selected yet
                     console.log("1 person selected, requesting info");
-                    $scope.showPeopleId1 = person.id;
+                    $scope.cp1 = person.id;
                 }
                 else {
                     console.log("2nd person selected, requesting info");
-                    if ($scope.showPeopleId2 < 0) { // second person not yet selected
-                        $scope.showPeopleId2 = person.id;
+                    if ($scope.cp2 < 0) { // second person not yet selected
+                        $scope.cp2 = person.id;
                     } else {  // second person already selected, replace selected column
                         if ($scope.selectedCol == 1) {
-                            $scope.showPeopleId1 = person.id;
+                            $scope.cp1 = person.id;
                         } else if ($scope.selectedCol == 2) {
-                            $scope.showPeopleId2 = person.id;
+                            $scope.cp2 = person.id;
                         } else {
-                            $scope.showPeopleId1 = $scope.showPeopleId2;
-                            $scope.showPeopleId2 = person.id;
+                            $scope.cp1 = $scope.cp2;
+                            $scope.cp2 = person.id;
                         }
 
                     }
@@ -246,6 +248,43 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
 
     $scope.selectCol = function(col) {
         $scope.selectedCol = col;
+    }
+
+    $scope.getColor = function(param,column){
+        if($scope.cp1 >= 0 && $scope.cp2 >= 0) {
+            var col1 = $scope.persons[$scope.cp1];
+            var col2 = $scope.persons[$scope.cp2];
+            if (column !== 1) {
+                col1 = $scope.persons[$scope.cp2];
+                col2 = $scope.persons[$scope.cp1];
+            }
+            switch (param) {
+                case 'age':
+                    if (col1.status.age === col2.status.age) return '';
+                    else if (col1.status.age <= col2.status.age) return 'green';
+                    else return 'red';
+                case 'hunger':
+                    if (col1.status.hunger === col2.status.hunger) return '';
+                    else if (col1.status.hunger <= col2.status.hunger) return 'green';
+                    else return 'red';
+                case 'tiredness':
+                    if (col1.status.tiredness === col2.status.tiredness) return '';
+                    else if (col1.status.tiredness <= col2.status.tiredness) return 'green';
+                    else return 'red';
+                case 'iq':
+                    if (col1.abilities.iq === col2.abilities.iq) return '';
+                    else if (col1.abilities.iq >= col2.abilities.iq) return 'green';
+                    else return 'red';
+                case 'speed':
+                    if (col1.abilities.speed === col2.abilities.speed) return '';
+                    else if (col1.abilities.speed >= col2.abilities.speed) return 'green';
+                    else return 'red';
+                case 'metabolism':
+                    if (col1.abilities.metabolism === col2.abilities.metabolism) return '';
+                    else if (col1.abilities.metabolism <= col2.abilities.metabolism) return 'green';
+                    else return 'red';
+            }
+        }
     }
 
     $scope.init();

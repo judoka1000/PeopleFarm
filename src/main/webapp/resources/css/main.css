@@ -227,6 +227,14 @@ p.percLabel{
     background-color: lightgrey;
 }
 
+#comparePeople .green {
+    color: green;
+}
+
+#comparePeople .red {
+    color: red;
+}
+
 #actionCompare{
     background: url("../images/compare.png");
 }

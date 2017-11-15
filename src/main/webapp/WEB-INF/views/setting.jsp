@@ -44,27 +44,23 @@
 					<div>Speed : {{persons[showPeopleId].abilities.speed}}</div>
 					<div>Metabolism : {{persons[showPeopleId].abilities.metabolism}}</div>
 				</div>
-                <div id="comparePeople" ng-if="showPeopleId1 >= 0 || showPeopleId2 >= 0">
+                <div id="comparePeople" ng-if="cp1 >= 0 || cp2 >= 0">
                     <table style="width:100%">
                         <col />
                         <col ng-class="{active : selectedCol == 1}" />
                         <col ng-class="{active : selectedCol == 2}" />
                         <tr>
                             <th></th>
-                            <th ng-click="selectCol(1)"><div class="people"><div class="imgContainer" ng-if="showPeopleId1 >= 0" ng-class="'sprite' + persons[showPeopleId1].sprite + ' ' + 'sprite' + persons[showPeopleId1].getAdult()"></div></div></th>
-                            <th ng-click="selectCol(2)"><div class="people"><div class="imgContainer" ng-if="showPeopleId2 >= 0" ng-class="'sprite' + persons[showPeopleId2].sprite + ' ' + 'sprite' + persons[showPeopleId2].getAdult()"></div></div></th>
+                            <th ng-click="selectCol(1)"><div class="people"><div class="imgContainer" ng-if="cp1 >= 0" ng-class="'sprite' + persons[cp1].sprite + ' ' + 'sprite' + persons[cp1].getAdult()"></div></div></th>
+                            <th ng-click="selectCol(2)"><div class="people"><div class="imgContainer" ng-if="cp2 >= 0" ng-class="'sprite' + persons[cp2].sprite + ' ' + 'sprite' + persons[cp2].getAdult()"></div></div></th>
                         </tr>
-                        <tr>
-                            <th>Worker #	</th>
-                            <th ng-click="selectCol(1)">{{persons[showPeopleId1].id}}					</th>
-                            <th ng-click="selectCol(2)">{{persons[showPeopleId2].id}}					</th>
-                        </tr>
-                        <tr><td>Age : 		</td><td>{{persons[showPeopleId1].status.age}}			</td><td>{{persons[showPeopleId2].status.age}}			</td></tr>
-                        <tr><td>Hunger : 	</td><td>{{persons[showPeopleId1].status.hunger}}		</td><td>{{persons[showPeopleId2].status.hunger}}		</td></tr>
-                        <tr><td>Tiredness : </td><td>{{persons[showPeopleId1].status.tiredness}}	</td><td>{{persons[showPeopleId2].status.tiredness}}	</td></tr>
-                        <tr><td>IQ : 		</td><td>{{persons[showPeopleId1].abilities.iq}}		</td><td>{{persons[showPeopleId2].abilities.iq}}		</td></tr>
-                        <tr><td>Speed : 	</td><td>{{persons[showPeopleId1].abilities.speed}}		</td><td>{{persons[showPeopleId2].abilities.speed}}		</td></tr>
-                        <tr><td>Metabolism :</td><td>{{persons[showPeopleId1].abilities.metabolism}}</td><td>{{persons[showPeopleId2].abilities.metabolism}}</td></tr>
+                        <tr><th>Worker #	</th><th ng-click="selectCol(1)">{{persons[cp1].id}}					    </th><th ng-click="selectCol(2)">{{persons[cp2].id}}					</th></tr>
+                        <tr><td>Age : 		</td><td ng-class="getColor('age',1)">{{persons[cp1].status.age}}			</td><td ng-class="getColor('age',2)">{{persons[cp2].status.age}}			</td></tr>
+                        <tr><td>Hunger : 	</td><td ng-class="getColor('hunger',1)">{{persons[cp1].status.hunger}}		</td><td ng-class="getColor('hunger',2)">{{persons[cp2].status.hunger}}		</td></tr>
+                        <tr><td>Tiredness : </td><td ng-class="getColor('tiredness',1)">{{persons[cp1].status.tiredness}}	    </td><td ng-class="getColor('tiredness',2)">{{persons[cp2].status.tiredness}}	</td></tr>
+                        <tr><td>IQ : 		</td><td ng-class="getColor('iq',1)">{{persons[cp1].abilities.iq}}		    </td><td ng-class="getColor('iq',2)">{{persons[cp2].abilities.iq}}		</td></tr>
+                        <tr><td>Speed : 	</td><td ng-class="getColor('speed',1)">{{persons[cp1].abilities.speed}}		</td><td ng-class="getColor('speed',2)">{{persons[cp2].abilities.speed}}		</td></tr>
+                        <tr><td>Metabolism :</td><td ng-class="getColor('metabolism',1)">{{persons[cp1].abilities.metabolism}} </td><td ng-class="getColor('metabolism',2)">{{persons[cp2].abilities.metabolism}}</td></tr>
                     </table>
                 </div>
  			</div>
