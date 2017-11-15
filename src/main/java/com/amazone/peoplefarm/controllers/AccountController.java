@@ -20,6 +20,11 @@ public class AccountController {
         return "login";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/error")
+    public void new_error() throws Exception {
+        throw new AccountException("Custom message");
+    }
 
     @RequestMapping(value = "/create")
     public String new_account(){
@@ -64,5 +69,4 @@ public class AccountController {
             return new Response<>(false, e);
         }
     }
-
 }
