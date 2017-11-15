@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@SessionAttributes({"gameState", "account"})
+@SessionAttributes({"account"})
 @Controller
 public class AccountController {
     @Autowired
