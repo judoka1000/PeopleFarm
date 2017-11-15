@@ -67,7 +67,7 @@ public class PersonController {
                 if (person.getStatus().getHealth() != Status.Health.DEAD) {
                     throw new PersonException("Niet dood");
                 } else {
-                    GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+                    GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
                     List<Person> persons = gameState.getPersons();
                     if (persons.remove(person)) {
                         gameState.setPersons(persons);
@@ -98,31 +98,17 @@ public class PersonController {
         } else {
             Account account = accountService.findOne((Integer) model.asMap().get("account"));
             System.out.println("Current account = " + account);
-//            if(account.getGameState()==null) model.addAttribute("gameState", account.getGameState().getId());
-            if (!model.containsAttribute("gameState")) {
+            if (account.getGameState() == null) {
                 GameState gameState = gameLogicService.newGame();
                 gameStateService.save(gameState);
                 account.setGameState(gameState);
                 accountService.save(account);
-                model.addAttribute("gameState", gameState.getId());
                 System.out.println("New game gestart met id " + gameState.getId());
             } else {
-                    if (account.getGameState()==null){
-                        GameState gameState = gameLogicService.newGame();
-                        gameStateService.save(gameState);
-                        account.setGameState(gameState);
-                        accountService.save(account);
-                        model.addAttribute("gameState", gameState.getId());
-                        System.out.println("New game gestart met id " + gameState.getId());
-
-                    } else if ((Integer) model.asMap().get("gameState") != account.getGameState().getId()){
-                        System.out.println("Reloaded account = " + (Integer) model.asMap().get("account"));
-                        GameState gameState = gameStateService.findOne(account.getGameState().getId());
-                        System.out.println("Reloaded gamestate = " + gameState);
-                        model.addAttribute("gameState", gameState.getId());
-                    }
-                }
+                GameState gameState = gameStateService.findOne(account.getGameState().getId());
+                System.out.println("Reloaded gamestate = " + gameState);
             }
+        }
         return "main";
     }
 
@@ -130,7 +116,7 @@ public class PersonController {
     @RequestMapping(value = "/persons", method = RequestMethod.GET)
     public Response<List<Person>> getPersons(Model model, HttpServletResponse httpResponse){
         try {
-            GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+            GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
             return new Response<>(true, gameState.getPersons());
         } catch (Exception e){
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

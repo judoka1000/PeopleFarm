@@ -41,26 +41,9 @@ public class GameStateController {
     public Response newGame(Model model, HttpServletResponse httpResponse) {
         try {
             Account account = accountService.findOne((Integer) model.asMap().get("account"));
-            if (!model.containsAttribute("gameState")) {
-                throw new GameStateNotFoundException("Gamestate not in session");
-            } else {
-                try {
-                    account.setGameState(null);
-                    accountService.save(account);
-                } catch (EmptyResultDataAccessException e) {
-                    throw new GameStateNotFoundException("Gamestate not in database");
-                }
-            }
-            GameState gameState = gameLogicService.newGame();
-            gameStateService.save(gameState);
-
-                account.setGameState(gameState);
-                accountService.save(account);
-            model.addAttribute("gameState", gameState.getId());
+            account.setGameState(gameLogicService.newGame());
+            accountService.save(account);
             return new Response(true);
-        } catch(GameStateNotFoundException e) {
-            httpResponse.setStatus(498);
-            return new Response(false, e);
         } catch(Exception e){
             httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new Response(false, e);
@@ -71,10 +54,10 @@ public class GameStateController {
     @RequestMapping(value = "/score")
     public Response<String> getGameState(Model model, HttpServletResponse httpResponse){
         try {
-            if (!model.containsAttribute("gameState")) {
+            if (!model.containsAttribute("account")) {
                 throw new GameStateNotFoundException("Gamestate is: null");
             } else {
-                GameState gameState = gameStateService.findOne((Integer) model.asMap().get("gameState"));
+                GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
                 if(gameState == null) {
                     throw new GameStateNotFoundException("Gamestate does not exist in database");
                 }
