@@ -74,6 +74,10 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         }
 
         var persons = personsFactory.getPersons();
+        apiEngine.getAccounts(function(response){
+            $scope.accounts = response.data.data;
+        });
+
         for (key in persons) {
             persons[key].getStatus();
             persons[key].move();

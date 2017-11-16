@@ -9,7 +9,6 @@ function LoginCtrl($scope, $http, $location) {
             console.log('succes from logincheck');
             console.log(response.data);
             if (response.data.succes == true) {
-
                 window.location = 'main';
             }
             else{

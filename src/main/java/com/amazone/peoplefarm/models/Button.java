@@ -76,9 +76,10 @@ public class Button {
     private int tiredness;
 
 //    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(nullable = false)
+//    @JoinColumn(nullable = true)
 //    @JsonBackReference
 //    private GameState gamestate;
+
     public Button(){
 
     }
@@ -121,13 +122,13 @@ public class Button {
         this.image = image;
     }
 
-//    public GameState getGamestate() {
-//        return gamestate;
-//    }
-//
-//    public void setGamestate(GameState gamestate) {
-//        this.gamestate = gamestate;
-//    }
+/*    public GameState getGamestate() {
+        return gamestate;
+    }
+
+    public void setGamestate(GameState gamestate) {
+        this.gamestate = gamestate;
+    }*/
 
     public int getBonusIQ() {
         return bonusIQ;
