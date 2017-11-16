@@ -93,7 +93,6 @@ public class GameState {
     }
 
     public List<Button> getButtons() {
-        System.out.println(buttons);
         return buttons;
     }
 
