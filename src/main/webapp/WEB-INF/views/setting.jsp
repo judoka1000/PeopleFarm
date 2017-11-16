@@ -33,7 +33,7 @@
 		 			</div>
 		 			<div class="row">
 		 				<div id="actionButtons" ng-if="buttons[0]" >
-							<actionbutton ng-repeat="button in buttons" name="button.name" ng-click="setClickAction(button)" src="button.image"></actionbutton>
+							<actionbutton ng-repeat="button in buttons" name="button.name" ng-click="setButtonUsed(button)" src="button.image"></actionbutton>
 						</div>
 					</div>
 				</div>
@@ -63,7 +63,7 @@
                         <tr><td>IQ : 		</td><td ng-class="getColor('iq',1)">{{persons[cp1].abilities.iq}}		    </td><td ng-class="getColor('iq',2)">{{persons[cp2].abilities.iq}}		</td></tr>
                         <tr><td>Speed : 	</td><td ng-class="getColor('speed',1)">{{persons[cp1].abilities.speed}}		</td><td ng-class="getColor('speed',2)">{{persons[cp2].abilities.speed}}		</td></tr>
                         <tr><td>Metabolism :</td><td ng-class="getColor('metabolism',1)">{{persons[cp1].abilities.metabolism}} </td><td ng-class="getColor('metabolism',2)">{{persons[cp2].abilities.metabolism}}</td></tr>
-                        <tr><td>Total score :</td><td ng-if="persons[cp1]" ng-class="getColor('total',1)">{{persons[cp1].getTotalFields()}} </td><td ng-if="persons[cp2]" ng-class="getColor('total',2)">{{persons[cp2].getTotalFields()}}</td></tr>
+                        <tr class="border-top"><td>Total stats :</td><td ng-if="persons[cp1]" ng-class="getColor('total',1)">{{persons[cp1].getTotalFields()}} </td><td ng-if="persons[cp2]" ng-class="getColor('total',2)">{{persons[cp2].getTotalFields()}}</td></tr>
                     </table>
                 </div>
  			</div>
@@ -91,7 +91,7 @@
 					<div class="form-group row">
 						<label for="setmortal" class="col-5 col-form-label">Mortal</label>
 						<div class="col-6">
-							<input id="setmortal" class="form-check-input" type="checkbox" ng-model="devSettings.mortal">
+							<input id="setmortal" class="form-check-input" type="checkbox" ng-model="devSettings.mortal" ng-click="settingsChanged()">
 						</div>
 						<div class="col-1"></div>
 					</div>

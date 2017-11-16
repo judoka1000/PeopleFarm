@@ -3,6 +3,7 @@ package com.amazone.peoplefarm.controllers;
 import com.amazone.peoplefarm.exceptions.AccountException;
 import com.amazone.peoplefarm.exceptions.AccountNotFoundException;
 import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
+import com.amazone.peoplefarm.exceptions.PersonNotFoundException;
 import com.amazone.peoplefarm.models.Response;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
@@ -44,5 +45,14 @@ public class GlobalExceptionHandler {
         httpServletResponse.setStatus(498);
         return new Response<>(false, e);
     }
+
+    @ResponseBody
+    @ExceptionHandler(PersonNotFoundException.class)
+    public Response PersonNotFoundExceptionHandler(HttpServletResponse httpServletResponse, Exception e) throws Exception {
+        httpServletResponse.setStatus(404);
+        return new Response<>(false, e);
+    }
+
+
 
 }

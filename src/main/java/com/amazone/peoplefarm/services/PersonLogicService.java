@@ -95,7 +95,7 @@ public class PersonLogicService implements PersonLogicInterface {
             }
 
             // Update hunger
-            personStatus.setHunger(personStatus.getHunger() - personAbilities.getTotalMetabolism());
+            personStatus.setHunger(personStatus.getHunger() - (20 - personAbilities.getTotalMetabolism())/2);
             // Minimum is 0
             if(personStatus.getHunger() == 0) {
                 personStatus.setHealth(Status.Health.DEAD);

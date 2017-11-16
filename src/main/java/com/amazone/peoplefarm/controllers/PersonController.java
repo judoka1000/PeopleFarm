@@ -171,7 +171,7 @@ public class PersonController {
                 break;
             case "dying":
                 state.setHealth(Status.Health.DEAD);
-                personService.save(person);
+                accountService.save(account);
                 break;
             default:
                 if(button != null) {

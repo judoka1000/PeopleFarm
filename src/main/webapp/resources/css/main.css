@@ -227,36 +227,16 @@ p.percLabel{
     background-color: lightgrey;
 }
 
+#comparePeople .border-top {
+    border-top: 1px solid darkgrey;
+}
+
 #comparePeople .green {
     color: green;
 }
 
 #comparePeople .red {
     color: red;
-}
-
-#actionCompare{
-    background: url("../images/compare.png");
-}
-
-#actionKill{
-    background-color: red;
-}
-
-#actionTest{
-    background-color: green;
-}
-
-#actionNone{
-    background: url("../images/pointercursor.png");
-}
-
-#actionInfo{
-	background-color : yellow;
-}
-
-#actionCollect{
-    background-color: lightgreen;
 }
 
 .eatHamburgerCur {
