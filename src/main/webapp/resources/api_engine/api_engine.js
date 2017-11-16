@@ -64,7 +64,7 @@ app.factory('apiEngine', function apiEngine($http){
         },
         newGame: function(func) {
             var url = baseUrl + "/newgame";
-            //console.log("Requesting /newgame");
+            console.log("Requesting /newgame");
             return $http.post(url).then(func);
         },
         renamePlayer: function(name, func) {
@@ -91,6 +91,11 @@ app.factory('apiEngine', function apiEngine($http){
         },
         buy: function(id,func) {
             var url = baseUrl + "/shop/buy/" + id;
+            console.log("Requesting " + url);
+            return $http.get(url).then(func);
+        },
+        getGameInfo: function(func) {
+            var url = baseUrl + "/gameinfo";
             console.log("Requesting " + url);
             return $http.get(url).then(func);
         }

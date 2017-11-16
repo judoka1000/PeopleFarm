@@ -8,7 +8,7 @@ textarea {
 }
 
 .container-fluid{
-	height : 90%;
+	/*height : 100%;*/
 	padding-top: 10px;
 }
 
@@ -185,11 +185,10 @@ p.percLabel{
 .settingScreen{
 	min-width : 300px;
 	//width : 80%;
-	height : 100%;
 	border-width : 1px 1px;
 	border-color : gray;
 	border-style : solid;
-    overflow : auto;
+    height: 100%;
 }
 
 .tab-content{
@@ -206,6 +205,10 @@ p.percLabel{
     background-position-x: center;
     background-repeat: no-repeat;
     display: block;
+}
+
+#settingScreenArea {
+    height : 640px;
 }
 
 #actionDogfood{

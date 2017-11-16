@@ -122,4 +122,13 @@ public class GameStateController {
         GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
         return new Response<>(true, gameState.getButtons());
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/gameinfo", method = RequestMethod.GET)
+    public Response<GameInfo> getGameInfo(Model model, HttpServletResponse httpResponse) {
+        GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
+        GameInfo gameInfo = new GameInfo(gameState.getScore());
+        return new Response<>(true, gameInfo);
+    }
 }

@@ -37,6 +37,7 @@
 						</div>
 					</div>
 				</div>
+                <br/>
 				<div id="peopleStat" ng-if="showPeopleId >= 0">
 					<h6>People Statistics:</h6>
 					<div>ID : {{persons[showPeopleId].id}}</div>

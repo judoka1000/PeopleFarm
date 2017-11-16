@@ -23,6 +23,7 @@
 </head>
 <body ng-app="PeopleApp" ng-controller="PeopleCtrl" ng-style="cursor" ng-keyup="keypressed($event)">
 
+    <jsp:include page="gameover.jsp" />
 <div class="container-fluid">
 	<div class="row">
 	    <div class="col-md-9">
@@ -56,8 +57,8 @@
                 </div>
             </div>
         </div>
-		<jsp:include page="setting.jsp" />	
-	</div>
+		<jsp:include page="setting.jsp" />
+    </div>
 </div>
 <footer>
 	<small class="rainbow">&copy; Copyright 2017, PeopleFarm Company</small>

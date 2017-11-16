@@ -93,6 +93,14 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
                 $scope.startingGame = true;
             }
         });
+
+        apiEngine.getGameInfo(function(response){
+            $scope.gameOver = response.data.data.gameOver;
+            if ($scope.gameOver) {
+                gameEngine.disableAPI();
+                $('#gameover').modal('show');
+            }
+        });
     }
 
     $scope.personClicked = function(person){
@@ -277,6 +285,7 @@ function PeopleCtrl($scope,$http,$document,$interval,$timeout,$window,apiEngine,
         apiEngine.newGame(function(){
             $scope.initializePeople();
             $scope.startingGame=false;
+            gameEngine.enableAPI();
         });
         $scope.updateGamestate();
     };
