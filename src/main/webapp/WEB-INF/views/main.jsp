@@ -21,7 +21,7 @@
     <script type="text/javascript" src="resources/person/person.js"></script>
 
 </head>
-<body ng-app="PeopleApp" ng-controller="PeopleCtrl" ng-class="cursor">
+<body ng-app="PeopleApp" ng-controller="PeopleCtrl" ng-style="cursor">
 
 <div class="container-fluid">
 	<div class="row">

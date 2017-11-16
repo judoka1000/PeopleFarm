@@ -37,6 +37,13 @@ app.factory('personsFactory', ['apiEngine','$timeout',
             this.status.currentCaptchas += add;
         }
 
+        getTotalFields(){
+            return  -(this.status.age
+                -   this.abilities.iq
+                -   this.abilities.speed
+                +   this.abilities.metabolism);
+        }
+
         getStatus(){
             var obj = this;
             var oldCollectedCaptchas = this.status.currentCaptchas;
@@ -159,7 +166,7 @@ app.factory('personsFactory', ['apiEngine','$timeout',
 
         sleep(amount=10){
             var obj = this;
-            apiEngine.personSettask(this.id,"sleeping",function(response){
+            apiEngine.personSettask(this.id,"sleep",function(response){
                 obj.getStatus();
             });
         }

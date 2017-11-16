@@ -2,10 +2,7 @@ package com.amazone.peoplefarm.controllers;
 
 import com.amazone.peoplefarm.exceptions.AccountNotFoundException;
 import com.amazone.peoplefarm.exceptions.GameStateNotFoundException;
-import com.amazone.peoplefarm.models.Account;
-import com.amazone.peoplefarm.models.DevSettings;
-import com.amazone.peoplefarm.models.GameState;
-import com.amazone.peoplefarm.models.Response;
+import com.amazone.peoplefarm.models.*;
 import com.amazone.peoplefarm.services.AccountService;
 import com.amazone.peoplefarm.services.GameLogicService;
 import com.amazone.peoplefarm.services.GameStateService;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -96,11 +94,32 @@ public class GameStateController {
 
     @ResponseBody
     @RequestMapping(value = "/putDevSettings", method = RequestMethod.PUT)
-    public Response putDevsettings(Model model, @RequestBody DevSettings devSettings, HttpServletResponse httpResponse) {
-        GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
-        gameState.setDevSettings(devSettings);
-        gameStateService.save(gameState);
+    public Response putDevsettings(Model model, @RequestBody DevSettings devSettings) throws GameStateNotFoundException, AccountNotFoundException {
+        if(!model.containsAttribute("account"))
+            throw new AccountNotFoundException("Not logged in");
+
+        Account account = accountService.findOne((Integer)model.asMap().get("account"));
+        if(account == null)
+            throw new AccountNotFoundException("Account not in database");
+
+        GameState gameState = account.getGameState();
+        if (gameState == null)
+            throw new GameStateNotFoundException("Gamestate met id " + model.asMap().get("gameState") + " niet gevonden in database.");
+
+        gameState.getDevSettings().setMortal(devSettings.isMortal());
+        gameState.getDevSettings().setAddScore(devSettings.getAddScore());
+        gameState.setScore(gameState.getScore() + devSettings.getAddScore());
+        account.setGameState(gameState);
+        accountService.save(account);
+        System.out.println(devSettings);
+
         return new Response(true);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/buttons", method = RequestMethod.GET)
+    public Response<List<Button>> getButtons(Model model, HttpServletResponse httpResponse) {
+        GameState gameState = accountService.findOne((Integer) model.asMap().get("account")).getGameState();
+        return new Response<>(true, gameState.getButtons());
+    }
 }

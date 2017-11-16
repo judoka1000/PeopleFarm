@@ -78,6 +78,21 @@ app.factory('apiEngine', function apiEngine($http){
         getAccounts: function(func) {
             var url = baseUrl + "/accounts";
             return $http.get(url).then(func);
+        },
+        getButtons: function(func) {
+            var url = baseUrl + "/buttons";
+            console.log("Requesting " + url);
+            return $http.get(url).then(func);
+        },
+        getShopButtons: function(func) {
+            var url = baseUrl + "/shop/buttons";
+            console.log("Requesting " + url);
+            return $http.get(url).then(func);
+        },
+        buy: function(id,func) {
+            var url = baseUrl + "/shop/buy/" + id;
+            console.log("Requesting " + url);
+            return $http.get(url).then(func);
         }
     };
 });
