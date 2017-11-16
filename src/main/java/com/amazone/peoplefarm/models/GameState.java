@@ -27,16 +27,9 @@ public class GameState {
     @JsonManagedReference
     List<Person> persons = new ArrayList<Person>();
 
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gamestate", orphanRemoval = true)
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    @JsonManagedReference
-
-
-    @OneToMany
+    @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
-    @JsonManagedReference
     private List<Button> buttons = new ArrayList<Button>();
-
 
     public GameState() {
     }
@@ -109,7 +102,6 @@ public class GameState {
     }
 
     public Button addButton(Button button){
-        //button.setGamestate(this);
         this.buttons.add(button);
         return(button);
     }

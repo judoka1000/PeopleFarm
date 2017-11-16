@@ -35,7 +35,6 @@ public class GameLogicService implements GameLogicInterface {
         gameState.addPerson(personLogicService.newPerson());
         gameState.addPerson(personLogicService.newPerson());
 
-
         //gameState.addButton(buttonService.findByName("Hamburger"));
         gameState.addButton(buttonService.findByName("Sleep"));
         //gameState.addButton(buttonService.findByName("Reproducing"));

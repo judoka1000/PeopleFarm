@@ -121,7 +121,7 @@
 
 			<div class="tab-pane fade" id="highscore" role="tabpanel" aria-labelledby="highscore-tab">
 				<h1>Highscore</h1>
-				<div ng-repeat="account in accounts">
+				<div ng-repeat="account in accounts | orderBy : 'gameState.score':true">
 					{{account.username}} - {{account.gameState.score}}
 				</div>
 			</div>
