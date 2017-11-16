@@ -597,3 +597,20 @@ footer {
 #setscore{
 
 }
+
+.farm-background{
+    background-size:cover;
+    background-image: url("../images/farm_background.jpg");
+    background-color: #cccccc;
+}
+
+.Absolute-Center {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.Absolute-Center.is-Responsive {
+  width: 50%;
+  height: 70%;
+}

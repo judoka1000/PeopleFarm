@@ -9,22 +9,24 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
     <script type="text/javascript" src="resources/controller/login_controller.js"></script>
 </head>
-<body>
+<body class="farm-background">
 
 <div class="container-fluid" ng-app="PeopleApp" ng-controller="LoginCtrl">
-    <h3>Login to play PeopleFarm</h3><br/>
-    <form class="form-horizontal">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" placeholder="Username" ng-model="account.username">
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password" ng-model="account.password">
-        </div>
-        <button type="submit" class="btn btn-primary" ng-click="login()">Login</button>
-        <br/><br/><p>No account yet? Click <a ng-href="create">here</a> to create an account</p>
-    </form>
+    <div class="Absolute-Center is-Responsive">
+        <img src="../../peoplefarm/resources/images/peoplefarmlogo.png">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" placeholder="Username" ng-model="account.username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password" ng-model="account.password">
+            </div>
+            <button type="submit" class="btn btn-primary" ng-click="login()">Login</button>
+            <br/><br/><p>No account yet? Click <a ng-href="create">here</a> to create an account</p>
+        </form>
+    </div>
 </div>
 <footer>
     <small class="rainbow">&copy; Copyright 2017, PeopleFarm Company</small>
