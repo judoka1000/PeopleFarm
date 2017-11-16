@@ -93,11 +93,15 @@ public class PersonController {
                 return "login";
 
             System.out.println("Current account = " + account);
-            if (account.getGameState() == null) {
-                GameState gameState = gameLogicService.newGame();
-                account.setGameState(gameState);
-                accountService.save(account);
-                System.out.println("New game gestart met id " + gameState.getId());
+            try {
+                if (account.getGameState() == null) {
+                    GameState gameState = gameLogicService.newGame();
+                    account.setGameState(gameState);
+                    accountService.save(account);
+                    System.out.println("New game gestart met id " + gameState.getId());
+                }
+            } catch(Exception e) {
+                System.out.println("Silently kill: " + e);
             }
         }
         return "main";

@@ -49,4 +49,11 @@ public class AccountController {
         accountService.save(account);
         return new Response<>(true, account.getId());
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/accounts", method = RequestMethod.GET)
+    public Response<Iterable<Account>> getAccounts(Model model) throws AccountException {
+        return new Response<>(true, accountService.findAll());
+    }
 }
+

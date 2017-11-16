@@ -13,8 +13,7 @@ public class Account {
     private String username;
     private String password;
 
-    @JsonIgnore
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name="game_id")
     private GameState gameState;
 

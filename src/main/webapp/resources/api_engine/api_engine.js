@@ -75,6 +75,10 @@ app.factory('apiEngine', function apiEngine($http){
             var url = baseUrl + "/rename";
             return $http.get(url).then(func);
         },
+        getAccounts: function(func) {
+            var url = baseUrl + "/accounts";
+            return $http.get(url).then(func);
+        },
         getButtons: function(func) {
             var url = baseUrl + "/buttons";
             console.log("Requesting " + url);
